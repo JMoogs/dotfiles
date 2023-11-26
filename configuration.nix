@@ -39,7 +39,7 @@
     };
   };
 
-  networking.hostName = "nixos"; # Define your hostname.
+  networking.hostName = "Jeremy-nixos"; # Define your hostname.
   # Pick only one of the below networking options.
   # networking.wireless.enable = true;  # Enables wireless support via wpa_supplicant.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -209,7 +209,6 @@
     programs.helix = import ./editor.nix;
     programs.tmux = (import ./tmux.nix) { pkgs = pkgs; };
     programs.git = import ./git.nix;
-    programs.plasma = import ./plasma.nix;
 
     # DO NOT CHANGE - Supposed to stay at the original install version 
     home.stateVersion = "23.05";
