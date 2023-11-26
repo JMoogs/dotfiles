@@ -128,6 +128,9 @@
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
+  # Enable wacom service
+  services.xserver.wacom.enable = true;
+
   # Allow all packages
   nixpkgs.config.allowUnfree = true;
 
@@ -158,6 +161,7 @@
       # Terminal Setup
       pkgs.tmux
       pkgs.alacritty
+      pkgs.libsForQt5.yakuake
 
       # Developing
       # Editor
@@ -166,12 +170,24 @@
       pkgs.xclip
       pkgs.git
       pkgs.lazygit
-      # Lsp for nix
+      # Lsps
       pkgs.nil
+      pkgs.haskellPackages.haskell-language-server
+      pkgs.marksman
+      # Rust
       pkgs.rustup
+      # Haskell
+      pkgs.ghc
 
       # Note taking
       pkgs.obsidian
+      pkgs.wiki-tui
+      pkgs.xf86_input_wacom
+      pkgs.wacomtablet
+      pkgs.xournal
+      # Onenote + libreoffice
+      pkgs.p3x-onenote
+      pkgs.libreoffice-qt
 
       # Discord with vencord
       (pkgs.discord.override {
@@ -179,8 +195,13 @@
         withVencord = true;
       })
 
+      # Recording
+      pkgs.obs-studio
       # Games
       pkgs.steam
+
+      # Vpn
+      pkgs.mullvad-vpn
 
     ];
 
@@ -188,6 +209,7 @@
     programs.helix = import ./editor.nix;
     programs.tmux = (import ./tmux.nix) { pkgs = pkgs; };
     programs.git = import ./git.nix;
+    programs.plasma = import ./plasma.nix;
 
     # DO NOT CHANGE - Supposed to stay at the original install version 
     home.stateVersion = "23.05";
@@ -220,6 +242,7 @@
 
   # List services that you want to enable:
 
+  services.mullvad-vpn.enable = true;
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 
