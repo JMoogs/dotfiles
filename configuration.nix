@@ -2,8 +2,10 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ config, ... }:
+{ pkgs, config, ... }:
 
+let secrets = import ./secrets.nix;
+in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -140,11 +142,17 @@
   # Environment variables
   environment.variables = {
     EDITOR = "hx";
+    SHELL = "fish";
+    OPENAI_API_KEY = secrets.OPENAI_API_KEY;
   };
 
-  # Aliases
-  programs.bash.shellAliases = {
+  # Change shell to fish
+  users.defaultUserShell = pkgs.fish;
+  programs.fish.enable = true;
+  # Alias lazygit
+  programs.fish.shellAliases = {
     lg = "lazygit";
+    dev = "nix-shell --command fish";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

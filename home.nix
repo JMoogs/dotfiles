@@ -25,6 +25,8 @@
     pkgs.rustup
     # Haskell
     pkgs.ghc
+    # Other utilities
+    pkgs.ripgrep
 
     # Note taking
     pkgs.obsidian
@@ -58,6 +60,7 @@
   programs.helix = import ./configs/editor.nix;
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
   programs.git = import ./configs/git.nix;
+  programs.fish = import ./configs/fish.nix;
 
   # DO NOT CHANGE - Supposed to stay at the original install version 
   home.stateVersion = "23.05";
