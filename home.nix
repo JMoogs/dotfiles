@@ -1,6 +1,8 @@
 {pkgs, ...}:
 
 {
+
+  home.sessionPath = [ "$HOME/Documents/Apps" ];
   home.packages = [
     # Browser
     pkgs.firefox
@@ -50,9 +52,12 @@
     pkgs.obs-studio
     # Games
     pkgs.steam
+    pkgs.prismlauncher
+    pkgs.wineWowPackages.stable
 
-    # Vpn
+    # Vpn + Torrent
     pkgs.mullvad-vpn
+
 
   ];
 

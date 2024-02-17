@@ -4,8 +4,6 @@
 
 { pkgs, config, ... }:
 
-let secrets = import ./secrets.nix;
-in
 {
   imports =
     [ # Include the results of the hardware scan.
@@ -139,11 +137,14 @@ in
     ];
   };
 
+  # age.identityPaths = [ "/home/jeremy/.ssh/id_ed25519" ];
+  # age.secrets.openai_key = {
+  #   file = ./secrets/openai_key.age;
+  # };
   # Environment variables
   environment.variables = {
     EDITOR = "hx";
     SHELL = "fish";
-    OPENAI_API_KEY = secrets.OPENAI_API_KEY;
   };
 
   # Change shell to fish

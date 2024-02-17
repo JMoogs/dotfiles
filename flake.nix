@@ -8,20 +8,26 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, home-manager, ...} @ inputs: {
+  outputs = { self, nixpkgs, home-manager, agenix, ...} @ inputs : {
 
     nixosConfigurations = {
       "Jeremy-nixos" = nixpkgs.lib.nixosSystem {
-        # specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs;};
+        system = "x86_64-linux";
         modules = [
-        ./configuration.nix
-        home-manager.nixosModules.home-manager
+          ./configuration.nix
+          home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.jeremy = import ./home.nix;
+            }
+          agenix.nixosModules.default
           {
-            home-manager.useGlobalPkgs = true;
-            home-manager.useUserPackages = true;
-            home-manager.users.jeremy = import ./home.nix;
+            environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
           }
         ];
       };     
