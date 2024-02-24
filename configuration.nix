@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ pkgs, config, ... }:
+{ pkgs, config, lib, userOptions, ... }:
 
 {
   imports =
@@ -20,24 +20,15 @@
     };
     grub = {
       enable = true;
+      # Dual boot
       useOSProber = true;
       efiSupport = true;
       device = "nodev";
       configurationLimit = 5;
-      # extraEntries = ''
-      #   menuentry "Windows 11" {
-      #     insmod part_gpt
-      #     insmod fat
-      #     insmod search_fs_uuid
-      #     insmod chain
-      #     search --fs-uuid --set=root 92d4610c-8890-11ee-827c-b06ebf82d120
-      #     chainloader /EFI/Microsoft/Boot/bootmgfw.efi
-      #   }
-      # '';
     };
   };
 
-  networking.hostName = "Jeremy-nixos"; # Define your hostname.
+  networking.hostName = userOptions.hostname; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
 
   # Set your time zone.
@@ -66,11 +57,7 @@
     LC_MEASUREMENT = "en_GB.UTF-8";
   };
 
-  console = {
-  #   font = "Lat2-Terminus16";
-    keyMap = "uk";
-  #   useXkbConfig = true; # use xkbOptions in tty.
-  };
+  console.keyMap = "uk";
 
   # Enable OpenGL
   hardware.opengl = {
@@ -79,10 +66,10 @@
     driSupport32Bit = true;
   };
 
-  # Load nvidia driver for Xorg and Wayland
-  services.xserver.videoDrivers = ["nvidia"];
+  # Xbox one controller driver
+  hardware.xone.enable = true;
 
-  hardware.nvidia = {
+  hardware.nvidia = lib.attrsets.optionalAttrs userOptions.nvidia {
     # Modesetting is required.
     modesetting.enable = true;
 
@@ -102,17 +89,31 @@
   };
   
   # Enable the X11 windowing system.
-  services.xserver.enable = true;
+  services.xserver = {
+    enable = true;
+    videoDrivers = if userOptions.nvidia then ["nvidia"] else ["modesetting" "fbdev"];
+    layout = "gb";
+
+    desktopManager = {
+      xterm.enable = false;
+    };
+
+    windowManager.i3 = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+      enable = true;
+      extraPackages = with pkgs; [
+        dmenu
+        i3lock
+      ];
+    };
+
+    displayManager.defaultSession = if userOptions.wm == "i3" then "none+i3" else null;
+    
+  };
 
 
   # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = true;
-  services.xserver.desktopManager.plasma5.enable = true;
-  
-
-  # Configure keymap in X11
-  services.xserver.layout = "gb";
-  # services.xserver.xkbOptions = "eurosign:e,caps:escape";
+  services.xserver.displayManager.sddm.enable = userOptions.wm == "plasma";
+  services.xserver.desktopManager.plasma5.enable = userOptions.wm == "plasma";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
@@ -121,10 +122,17 @@
   sound.enable = true;
   hardware.pulseaudio.enable = true;
 
+  # OpenRazer
+  hardware.openrazer = {
+    enable = true;
+    users = ["${userOptions.username}"];
+  };
+  
+
   # Enable touchpad support (enabled default in most desktopManager).
   # services.xserver.libinput.enable = true;
 
-  # Enable wacom service
+  # Enable wacom driver
   services.xserver.wacom.enable = true;
 
   # Nix & Nixpkgs config
@@ -137,10 +145,6 @@
     ];
   };
 
-  # age.identityPaths = [ "/home/jeremy/.ssh/id_ed25519" ];
-  # age.secrets.openai_key = {
-  #   file = ./secrets/openai_key.age;
-  # };
   # Environment variables
   environment.variables = {
     EDITOR = "hx";
@@ -157,37 +161,22 @@
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.
-  users.users.jeremy = {
+  users.users."${userOptions.username}" = {
      isNormalUser = true;
      extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
-     # packages = with pkgs; [
-     # ];
   };
 
   programs.steam = {
     enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
-    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server  };
+    dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
-  # List packages installed in system profile. To search, run:
-  # $ nix search wget
-  environment.systemPackages = [
-    # pkgs.wget
-    # pkgs.xclip
-  ];
 
-  # Some programs need SUID wrappers, can be configured further or are
-  # started in user sessions.
-  # programs.mtr.enable = true;
-  # programs.gnupg.agent = {
-  #   enable = true;
-  #   enableSSHSupport = true;
-  # };
 
-  # List services that you want to enable:
-
+  # Mullvad
   services.mullvad-vpn.enable = true;
+
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 

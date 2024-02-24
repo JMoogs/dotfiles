@@ -15,7 +15,15 @@
 
     nixosConfigurations = {
       "Jeremy-nixos" = nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;};
+        specialArgs = {inherit inputs;
+            userOptions = {
+              nvidia = true;
+              hostname = "Jeremy-nixos";
+              username = "jeremy";
+              wm = "i3";
+              device = "pc";
+            };
+        };
         system = "x86_64-linux";
         modules = [
           ./configuration.nix
@@ -24,6 +32,15 @@
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
               home-manager.users.jeremy = import ./home.nix;
+              home-manager.extraSpecialArgs = {
+                userOptions = {
+                  nvidia = true;
+                  hostname = "Jeremy-nixos";
+                  username = "jeremy";
+                  wm = "i3";
+                  device = "pc";
+                };
+              };
             }
           agenix.nixosModules.default
           {
@@ -31,6 +48,43 @@
           }
         ];
       };     
+
+      "Jeremy-pc-plasma" = nixpkgs.lib.nixosSystem {
+        specialArgs = {inherit inputs;
+            userOptions = {
+              nvidia = true;
+              hostname = "Jeremy-nixos";
+              username = "jeremy";
+              wm = "plasma";
+              device = "pc";
+            };
+        };
+        system = "x86_64-linux";
+        modules = [
+          ./configuration.nix
+          home-manager.nixosModules.home-manager
+            {
+              home-manager.useGlobalPkgs = true;
+              home-manager.useUserPackages = true;
+              home-manager.users.jeremy = import ./home.nix;
+              home-manager.extraSpecialArgs = {
+                userOptions = {
+                  nvidia = true;
+                  hostname = "Jeremy-nixos";
+                  username = "jeremy";
+                  wm = "plasma";
+                  device = "pc";
+                };
+              };
+            }
+          agenix.nixosModules.default
+          {
+            environment.systemPackages = [ agenix.packages.x86_64-linux.default ];
+          }
+        ];
+      };
+
+      
     };
   };
 }

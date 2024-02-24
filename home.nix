@@ -1,62 +1,79 @@
-{pkgs, ...}:
+{pkgs, lib, userOptions, ...}:
 
 {
 
   home.sessionPath = [ "$HOME/Documents/Apps" ];
-  home.packages = [
+  home.packages = with pkgs; [
     # Browser
-    pkgs.firefox
+    firefox
 
     # Terminal Setup
-    pkgs.tmux
-    pkgs.alacritty
-    pkgs.libsForQt5.yakuake
+    tmux
+    alacritty
+    (lib.mkIf (userOptions.wm == "plasma") libsForQt5.yakuake)
 
-    # Developing
+    # Dev
     # Editor
-    pkgs.helix
-    # For system clipboard working with helix
-    pkgs.xclip
-    pkgs.git
-    pkgs.lazygit
-    # Lsps
-    pkgs.nil
-    pkgs.haskellPackages.haskell-language-server
-    pkgs.marksman
+    helix
+    git
+    # Git TUI
+    lazygit
+    # LSPs
+    nil
+    haskellPackages.haskell-language-server
+    marksman
     # Rust
-    pkgs.rustup
+    rustup
     # Haskell
-    pkgs.ghc
+    ghc
     # Other utilities
-    pkgs.ripgrep
+    ripgrep
+    tree
+    xclip
+    killall
+    # System monitor
+    bottom
 
-    # Note taking
-    pkgs.obsidian
-    pkgs.wiki-tui
-    pkgs.xf86_input_wacom
-    pkgs.wacomtablet
-    pkgs.xournal
+    # Notes
+    obsidian
+    wiki-tui
+    xf86_input_wacom
+    wacomtablet
+    xournalpp
+
     # Teams + Onenote + libreoffice
-    # Microsoft stopped supporting the official teams client so had to swap.
-    pkgs.teams-for-linux
-    pkgs.p3x-onenote
-    pkgs.libreoffice-qt
+    teams-for-linux
+    p3x-onenote
+    libreoffice-qt
 
     # Discord with vencord
-    (pkgs.discord.override {
+    (discord.override {
       withOpenASAR = true;
       withVencord = true;
     })
 
     # Recording
-    pkgs.obs-studio
-    # Games
-    pkgs.steam
-    pkgs.prismlauncher
-    pkgs.wineWowPackages.stable
+    obs-studio
 
-    # Vpn + Torrent
-    pkgs.mullvad-vpn
+    # Games
+    steam
+    prismlauncher
+    heroic
+    wineWowPackages.stable
+
+    # VPN 
+    mullvad-vpn
+
+    # Screenshots
+    flameshot
+    # Wallpaper
+    (lib.mkIf (userOptions.wm == "i3") feh)
+    font-awesome
+    # Sound controls
+    pavucontrol
+    libpulseaudio
+    playerctl
+    
 
 
   ];
@@ -66,6 +83,39 @@
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
   programs.git = import ./configs/git.nix;
   programs.fish = import ./configs/fish.nix;
+  programs.rofi = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+    enable = true;
+    theme = ./configs/i3/rofiTheme.rasi;
+  };
+
+  xsession = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+    enable = true;
+    windowManager.i3 = {
+      enable = true;
+      config = import ./configs/i3/i3.nix;
+      extraConfig = if userOptions.device == "pc" then "workspace 1 output DP-2\nworkspace 2 output HDMI-1\nworkspace 3 output HDMI-1" else null;
+    };
+  };
+
+  services.polybar = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+    enable = true;
+    package = pkgs.polybar.override {
+      i3Support = true;
+      pulseSupport = true;
+    };
+    config = ./configs/i3/polybar/config;
+    script = ":";
+  };
+
+  services.picom = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+    enable = true;
+    activeOpacity = 1.0;
+    inactiveOpacity = 0.92;
+    opacityRules = [
+      "100:class_g = 'i3lock'"
+      "100:class_g = 'firefox'"
+    ];
+  };
 
   # DO NOT CHANGE - Supposed to stay at the original install version 
   home.stateVersion = "23.05";
