@@ -1,4 +1,4 @@
-{
+let modifier = "Mod4"; in {
     terminal = "alacritty";
     startup = [
      {command = "/etc/nixos/configs/i3/layoutPC.sh"; always = true;}
@@ -7,14 +7,60 @@
      {command = "picom"; always = true;}
      {command = "i3-msg \"exec firefox; exec discord; workspace 1;\"";}
     ];
+    # Removes i3bars
     bars = [];
+
+    # Dracula theme
+    colors = {
+     background = "#282A36";
+     focused = let c = "#44475A"; in { border = c; background = c; childBorder = c; text = c; indicator = c; };
+     urgent = let c = "#FF5555 "; in { border = c; background = c; childBorder = c; text = c; indicator = c; };
+     unfocused = let c = "#282A36"; in { border = c; background = c; childBorder = c; text = c; indicator = c; };
+    };
+
+    window.titlebar = false;
+
+
+    gaps.inner = 9;
 
     assigns = {"1" = [{ class = "alacritty";} ]; "2" = [{ class = "firefox"; }]; "3" = [{ class = "discord"; }]; };
 
-    keybindings = let modifier = "Mod4"; in {
+    modes = {
+     "resize" = {
+ 
+      # Go back to normal mode
+      "${modifier}+r" = "mode \"default\"";
+      "Escape" = "mode \"default\"";
+      "Return" = "mode \"default\"";
+
+      "w" = "resize grow height 1 px or 1 ppt";
+      "a" = "resize shrink width 1 px or 1 ppt";
+      "s" = "resize shrink height 1 px or 1 ppt";
+      "d" = "resize grow width 1 px or 1 ppt";
+      "Up" = "resize grow height 1 px or 1 ppt";
+      "Left" = "resize shrink width 1 px or 1 ppt";
+      "Down" = "resize shrink height 1 px or 1 ppt";
+      "Right" = "resize grow width 1 px or 1 ppt";
+
+      "${modifier} + w" = "resize grow height 5 px or 5 ppt";
+      "${modifier} + a" = "resize shrink width 5 px or 5 ppt";
+      "${modifier} + s" = "resize shrink height 5 px or 5 ppt";
+      "${modifier} + d" = "resize grow width 5 px or 5 ppt";
+      "${modifier} + Up" = "resize grow height 5 px or 5 ppt";
+      "${modifier} + Left" = "resize shrink width 5 px or 5 ppt";
+      "${modifier} + Down" = "resize shrink height 5 px or 5 ppt";
+      "${modifier} + Right" = "resize grow width 5 px or 5 ppt";
+     };
+     
+    };
+
+    keybindings = {
 
      # Launch apps
      "${modifier}+d" = "exec \"rofi -modi drun,run -show drun\"";
+
+     # Swap to resize mode
+     "${modifier}+r" = "mode \"resize\"";
 
      # Change window, vim + arrows
      "${modifier}+j" = "focus down";

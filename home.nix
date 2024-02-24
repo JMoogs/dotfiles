@@ -115,6 +115,7 @@
       "100:class_g = 'i3lock'"
       "100:class_g = 'firefox'"
     ];
+    settings = { corner-radius = 4; };
   };
 
   # DO NOT CHANGE - Supposed to stay at the original install version 
