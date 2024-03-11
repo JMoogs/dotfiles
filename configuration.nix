@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ pkgs, config, lib, userOptions, ... }:
+{ pkgs, config, lib, userOptions, unstable, ... }:
 
 {
   imports =
@@ -64,6 +64,7 @@
     enable = true;
     driSupport = true;
     driSupport32Bit = true;
+    extraPackages = if userOptions.nvidia then with pkgs; [ libvdpau-va-gl nvidia-vaapi-driver ] else [];
   };
 
   # Xbox one controller driver
@@ -85,7 +86,15 @@
   	# accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
-    package = config.boot.kernelPackages.nvidiaPackages.stable;
+    package = if userOptions.wm == "hyprland" then config.boot.kernelPackages.nvidiaPackages.production else config.boot.kernelPackages.nvidiaPackages.stable;
+  };
+
+  # Wayland 
+  programs.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    xwayland.enable = true;
+    portalPackage = unstable.xdg-desktop-portal-hyprland;
+    package = unstable.hyprland;
   };
   
   # Enable the X11 windowing system.
@@ -96,7 +105,16 @@
 
     desktopManager = {
       xterm.enable = false;
+      # Enable the Plasma 5 Desktop Environment.
+      plasma5.enable = userOptions.wm == "plasma";
     };
+
+    # Plasma part 2 + Hyprland login manager
+    displayManager.sddm.enable = userOptions.wm == "plasma" || userOptions.wm == "hyprland";
+    displayManager.sddm.wayland.enable = userOptions.wm == "hyprland";
+
+    # This setting only works for X11 so it's useless atm :(
+    # displayManager.setupCommands = lib.optionalString (userOptions.wm == "hyprland") "xrandr --output HDMI-0 --off --output DP-0 --off --output DP-1 --off --output HDMI-A-2 --mode 1920x1080 --pos 2560x273 --rotate normal --output DP-2 --primary --mode 2560x1440 --rate 143.91 --pos 0x0 --rotate normal --output DP-3 --off";
 
     windowManager.i3 = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
       enable = true;
@@ -107,20 +125,34 @@
     };
 
     displayManager.defaultSession = if userOptions.wm == "i3" then "none+i3" else null;
+
+    # Enable wacom driver
+    wacom.enable = true;
     
   };
 
 
-  # Enable the Plasma 5 Desktop Environment.
-  services.xserver.displayManager.sddm.enable = userOptions.wm == "plasma";
-  services.xserver.desktopManager.plasma5.enable = userOptions.wm == "plasma";
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
 
   # Enable sound.
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+  # sound.enable = true;
+  # hardware.pulseaudio.enable = true;
+  services.pipewire = {
+    enable = true;
+    alsa.enable = true;
+    alsa.support32Bit = true;
+    pulse.enable = true;
+    wireplumber.enable = true;
+    jack.enable = true;
+  };
+  # Screensharing
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+    extraPortals = with pkgs; [xdg-desktop-portal-gtk]; 
+  };
 
   # OpenRazer
   hardware.openrazer = {
@@ -130,10 +162,6 @@
   
 
   # Enable touchpad support (enabled default in most desktopManager).
-  # services.xserver.libinput.enable = true;
-
-  # Enable wacom driver
-  services.xserver.wacom.enable = true;
 
   # Nix & Nixpkgs config
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
@@ -172,10 +200,11 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
-
-
   # Mullvad
   services.mullvad-vpn.enable = true;
+
+  # Allow swaylock to unluck
+  security.pam.services.swaylock = {};
 
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;

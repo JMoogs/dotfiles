@@ -1,4 +1,4 @@
-{pkgs, lib, userOptions, ...}:
+{pkgs, lib, userOptions, unstable, ...}:
 
 {
 
@@ -11,6 +11,20 @@
     tmux
     alacritty
     (lib.mkIf (userOptions.wm == "plasma") libsForQt5.yakuake)
+
+
+    # Wayland setup (WIP)
+    # Notifications
+    (lib.mkIf (userOptions.wm == "hyprland") dunst)
+    # Other
+    (lib.mkIf (userOptions.wm == "hyprland") qt6.qtwayland)
+    (lib.mkIf (userOptions.wm == "hyprland") libsForQt5.qt5.qtwayland)
+    (lib.mkIf (userOptions.wm == "hyprland") wofi)
+    (lib.mkIf (userOptions.wm == "hyprland") libva)
+    # Cool stuff
+    cava 
+    neofetch 
+    cbonsai
 
     # Dev
     # Editor
@@ -29,13 +43,15 @@
     # Other utilities
     ripgrep
     tree
-    xclip
+    (lib.mkIf (userOptions.wm != "hyprland") xclip)
+    (lib.mkIf (userOptions.wm == "hyprland") wl-clipboard)
     killall
     # System monitor
     bottom
 
     # Notes
-    obsidian
+    # Use unstable: https://github.com/NixOS/nixpkgs/issues/276988
+    unstable.obsidian
     wiki-tui
     xf86_input_wacom
     wacomtablet
@@ -51,6 +67,14 @@
       withOpenASAR = true;
       withVencord = true;
     })
+    # Use 2 clients for hyprland, as a workaround to screen flickering in XWayland, and keybinds not working in Wayland. One client for text and one for voice with PTT/toggle mute/toggle deafen
+    (lib.mkIf (userOptions.wm == "hyprland") (discord-ptb.override {
+      withOpenASAR = true;
+      withVencord = true;
+    }))
+    
+    (lib.mkIf (userOptions.wm == "hyprland") unstable.xwaylandvideobridge)
+
 
     # Recording
     obs-studio
@@ -65,13 +89,15 @@
     mullvad-vpn
 
     # Screenshots
-    flameshot
+    (lib.mkIf (userOptions.wm != "hyprland") flameshot)
+    (lib.mkIf (userOptions.wm == "hyprland") grimblast)
+
     # Wallpaper
     (lib.mkIf (userOptions.wm == "i3") feh)
     font-awesome
     # Sound controls
     pavucontrol
-    libpulseaudio
+    pulseaudio
     playerctl
     
 
@@ -86,6 +112,30 @@
   programs.rofi = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
     enable = true;
     theme = ./configs/i3/rofiTheme.rasi;
+  };
+  programs.waybar = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; };
+  };
+  programs.cava = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    settings = import ./configs/hypr/cava.nix;
+  };
+
+  wayland.windowManager.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    settings = (import ./configs/hypr/hypr.nix) { inherit lib; inherit userOptions; };
+    package = unstable.hyprland;
+  };
+
+  programs.swaylock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    settings = {
+      color = "282a36";
+      font-size = 24;
+      line-color = "44475a";
+    };
+    
   };
 
   xsession = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
@@ -103,7 +153,7 @@
       i3Support = true;
       pulseSupport = true;
     };
-    config = ./configs/i3/polybar/config;
+    settings = (import ./configs/i3/polybar/polybar.nix) { inherit userOptions; };
     script = ":";
   };
 

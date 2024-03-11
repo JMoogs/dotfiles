@@ -8,6 +8,7 @@ alert = #ff5555
 disabled = #6272a4
 
 [bar/desktop]
+monitor = ${env:MONITOR:}
 width = 100%
 height = 24pt
 
@@ -32,7 +33,7 @@ font-4 = monospace;2
 
 modules-left = i3
 modules-center = playerctl date time
-modules-right = pulseaudio memory cpu temperature filesystem powermenu
+modules-right = pulseaudio memory cpu gpu temperature filesystem powermenu
 
 cursor-click = pointer
 cursor-scroll = ns-resize
@@ -137,6 +138,13 @@ format-prefix = " "
 format-prefix-foreground = ${colors.primary}
 label = %percentage:2%%
 
+[module/gpu]
+type = custom/script
+exec = echo $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%
+interval = 5
+format-prefix = " "
+format-prefix-foreground = ${colors.primary}
+
 [module/wlan]
 type = internal/network
 interface = wlo1
@@ -171,7 +179,7 @@ ramp-signal-font-format = 4
 type = internal/date
 interval = 1
 
-date = %a %b %e %Y
+date = %a %b %d %Y
 
 label = %date%
 format-prefix = "  " 
@@ -254,6 +262,8 @@ pseudo-transparency = true
 
 [module/playerctl]
 type = custom/script
+format-prefix = " "
+format-prefix-foreground = ${colors.primary}
 tail = true
-exec = stdbuf -o0 playerctl metadata -Ff '♪ {{trunc(title,70)}} %{A1:playerctl previous:}%{A} %{A1:playerctl play-pause:}<<{{uc(status)}}>>%{A} %{A1:playerctl next:}%{A}' | stdbuf -i0 -o0 sed -e 's/<<PLAYING>>//' -e 's/<<PAUSED>>//'
+exec = stdbuf -o0 playerctl metadata -Ff '{{trunc(title,70)}} %{A1:playerctl previous:}%{A} %{A1:playerctl play-pause:}<<{{uc(status)}}>>%{A} %{A1:playerctl next:}%{A}' | stdbuf -i0 -o0 sed -e 's/<<PLAYING>>//' -e 's/<<PAUSED>>//'
 exec-if = playerctl metadata -f {{playerName}} 2>/dev/null | grep -v mopidy >/dev/null
