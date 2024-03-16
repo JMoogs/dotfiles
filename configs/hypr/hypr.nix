@@ -14,6 +14,7 @@
   exec-once = ["dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" 
   "waybar"
   "firefox"
+  "waypaper --restore"
   ];
 
   # Source a file (multi-file configs)
@@ -28,6 +29,11 @@
     kb_layout = "gb";
     follow_mouse = 1;
     sensitivity = 0;
+    tablet = if userOptions.device == "pc" then {
+      # Doesn't seem to work
+      transform = 2;
+      output = "DP-2";
+    } else null;
   };
 
   general = {
@@ -35,8 +41,10 @@
       gaps_in = 5;
       gaps_out = 20;
       border_size = 2;
-      "col.active_border" = "rgba(33ccffee) rgba(00ff99ee) 45deg";
-      "col.inactive_border" = "rgba(595959aa)";
+      "col.active_border" = "rgb(44475A) rgb(BD93F9) 90deg";
+      "col.inactive_border" = "rgba(44475AAA)";
+      "col.nogroup_border" = "rgba(282A36DD)";
+      "col.nogroup_border_active" = "rgb(BD93F9) rgb(44475A) 90deg";
 
       layout = "dwindle";
 
@@ -56,9 +64,13 @@
       };
 
       drop_shadow = "yes";
-      shadow_range = 4;
+      # shadow_range = 4;
       shadow_render_power = 3;
-      "col.shadow" = "rgba(1a1a1aee)";
+
+      shadow_range = 60;
+      shadow_scale = 0.97;
+      shadow_offset = "1 2";
+      "col.shadow" = "rgba(1E202966)";
   };
 
   
@@ -88,6 +100,7 @@
       force_default_wallpaper = -1; # Set to 0 to disable the anime mascot wallpapers
   };
 
+
   
   "$mainMod" = "SUPER";
   
@@ -104,7 +117,8 @@
     # Firefox shortcut
     "$mainMod, F, exec, firefox"
     # App Launcher
-    "$mainMod, D, exec, wofi --show drun"
+    # "$mainMod, D, exec, rofi -modi drun, rofi -show drun"
+    "$mainMod, D, exec, rofi -show drun"
     # Full screen
     "$mainMod SHIFT, F, fullscreen"
     # Lock screen
@@ -158,8 +172,19 @@
     "$mainMod SHIFT, S, movetoworkspace, special:magic"
 
     # Scroll through existing workspaces with mainMod + scroll
-    "$mainMod, mouse_down, workspace, e+1"
-    "$mainMod, mouse_up, workspace, e-1"
+    "$mainMod, mouse_down, workspace, e-1"
+    "$mainMod, mouse_up, workspace, e+1"
+
+    # Volume and Playback controls
+    ",XF86AudioLowerVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ -3%"
+    ",XF86AudioRaiseVolume, exec, pactl set-sink-volume @DEFAULT_SINK@ +3%"
+    ",XF86AudioMute, exec, pactl set-sink-mute @DEFAULT_SINK@ toggle"
+    ",XF86AudioPlay, exec, playerctl play-pause"
+    ",XF86AudioNext, exec, playerctl next"
+    ",XF86AudioPrev, exec, playerctl previous"
+
+    # Toggle opacity
+    "$mainMod, Q, toggleopaque"
 
     # Discord PTT binding
     ", mouse:276, pass, ^(discord)$"
@@ -174,6 +199,9 @@
   windowrulev2 = [
     # Discord fix (?)
     "forceinput, class:^(discord)$, xwayland:0"
+    "opacity 0.94 0.94, class:^(Alacritty)$"
+    "opacity 0.90, class:^(discord)$"
   ];
+
   
 }

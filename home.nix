@@ -14,12 +14,9 @@
 
 
     # Wayland setup (WIP)
-    # Notifications
-    (lib.mkIf (userOptions.wm == "hyprland") dunst)
     # Other
     (lib.mkIf (userOptions.wm == "hyprland") qt6.qtwayland)
     (lib.mkIf (userOptions.wm == "hyprland") libsForQt5.qt5.qtwayland)
-    (lib.mkIf (userOptions.wm == "hyprland") wofi)
     (lib.mkIf (userOptions.wm == "hyprland") libva)
     # Cool stuff
     cava 
@@ -43,13 +40,12 @@
     # Other utilities
     ripgrep
     tree
-    (lib.mkIf (userOptions.wm != "hyprland") xclip)
-    (lib.mkIf (userOptions.wm == "hyprland") wl-clipboard)
     killall
+    (if userOptions.wm == "hyprland" then wl-clipboard else xclip)
     # System monitor
     bottom
 
-    # Notes
+    # Note taking
     # Use unstable: https://github.com/NixOS/nixpkgs/issues/276988
     unstable.obsidian
     wiki-tui
@@ -67,14 +63,10 @@
       withOpenASAR = true;
       withVencord = true;
     })
-    # Use 2 clients for hyprland, as a workaround to screen flickering in XWayland, and keybinds not working in Wayland. One client for text and one for voice with PTT/toggle mute/toggle deafen
-    (lib.mkIf (userOptions.wm == "hyprland") (discord-ptb.override {
-      withOpenASAR = true;
-      withVencord = true;
-    }))
-    
+    # Wayland PTT fix
+    (lib.mkIf (userOptions.wm == "hyprland") (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {}))
+    # Screenshare fix
     (lib.mkIf (userOptions.wm == "hyprland") unstable.xwaylandvideobridge)
-
 
     # Recording
     obs-studio
@@ -89,12 +81,15 @@
     mullvad-vpn
 
     # Screenshots
-    (lib.mkIf (userOptions.wm != "hyprland") flameshot)
-    (lib.mkIf (userOptions.wm == "hyprland") grimblast)
+    (if userOptions.wm == "hyprland" then grimblast else flameshot)
 
     # Wallpaper
-    (lib.mkIf (userOptions.wm == "i3") feh)
+    feh # General image viewing as well
+    lutgen # This thing is awesome
     font-awesome
+    (lib.mkIf (userOptions.wm == "hyprland") swww)
+    (lib.mkIf (userOptions.wm == "hyprland") waypaper)
+
     # Sound controls
     pavucontrol
     pulseaudio
@@ -109,13 +104,17 @@
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
   programs.git = import ./configs/git.nix;
   programs.fish = import ./configs/fish.nix;
-  programs.rofi = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+
+  programs.rofi = lib.attrsets.optionalAttrs (userOptions.wm == "i3" || userOptions.wm == "hyprland") {
     enable = true;
-    theme = ./configs/i3/rofiTheme.rasi;
+    theme = ./configs/rofiTheme.rasi;
+    package = if userOptions.wm == "hyprland" then pkgs.rofi-wayland else pkgs.rofi;
   };
   programs.waybar = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; };
+    # style = import ./configs/hypr/waybar.css;
+    style = ./configs/hypr/waybar.css;
   };
   programs.cava = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
@@ -145,6 +144,11 @@
       config = import ./configs/i3/i3.nix;
       extraConfig = if userOptions.device == "pc" then "workspace 1 output DP-2\nworkspace 2 output HDMI-1\nworkspace 3 output HDMI-1" else null;
     };
+  };
+
+  services.dunst = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    configFile = ./configs/hypr/dunst;
   };
 
   services.polybar = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {

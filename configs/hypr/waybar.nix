@@ -39,8 +39,8 @@
 
     "clock" = {
       interval = 1;
-      format = "{:%H:%M }  ";
-      format-alt = "{:%T, %A, %B %d, %Y }  ";
+      format = " {:%H:%M}";
+      format-alt = " {:%T, %A, %B %d, %Y }";
       tooltip-format = "<tt><small>{calendar}</small></tt>";
       calendar = {
         mode = "month";
@@ -114,7 +114,7 @@
     # Maybe look to using a TUI?
     "mpris" = {
       # The delay feels horrible
-      interval = 2;
+      interval = 1;
       format = " {title}";
       format-paused = " {title}";
       # Defaults to:
