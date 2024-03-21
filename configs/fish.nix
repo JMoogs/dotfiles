@@ -1,7 +1,7 @@
 {
   enable = true;
   functions = {
-    
+    # Set the prompt to [user]@[hostname] [path] normally, but <nix-shell> [path] when in a nix shell.
     fish_greeting = '''';
     fish_prompt = '';
       set -l nix_shell_info (

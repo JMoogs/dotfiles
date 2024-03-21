@@ -4,129 +4,206 @@
 
   home.sessionPath = [ "$HOME/Documents/Apps" ];
   home.packages = with pkgs; [
-    # Browser
+    # Browsers
+
+    # Main browser
+    floorp
+    # Backup browser
     firefox
+    # -----------------------------
 
     # Terminal Setup
-    tmux
+
+    # Emulator
     alacritty
-    (lib.mkIf (userOptions.wm == "plasma") libsForQt5.yakuake)
+    # Multiplexer
+    tmux
+    # -----------------------------
 
+    # Development
 
-    # Wayland setup (WIP)
-    # Other
-    (lib.mkIf (userOptions.wm == "hyprland") qt6.qtwayland)
-    (lib.mkIf (userOptions.wm == "hyprland") libsForQt5.qt5.qtwayland)
-    (lib.mkIf (userOptions.wm == "hyprland") libva)
-    # Cool stuff
-    cava 
-    neofetch 
-    cbonsai
-
-    # Dev
     # Editor
     helix
+    # Git
     git
     # Git TUI
     lazygit
+
     # LSPs
+      # Nix
     nil
+      # Haskell
     haskellPackages.haskell-language-server
+      # Markdown
     marksman
-    # Rust
+
+    # Compilers
+      # Rust
     rustup
-    # Haskell
+      # Haskell
     ghc
-    # Other utilities
+
+    # -----------------------------
+
+    # Utilities 
+
+    # Search tool (grep alternative)
     ripgrep
+    # List subdirectories (ls alternative)
     tree
+    # Self explanatory
     killall
-    (if userOptions.wm == "hyprland" then wl-clipboard else xclip)
-    # System monitor
+    # System monitor (TUI)
     bottom
 
+    # -----------------------------
+
     # Note taking
+
+    # Obisdian for MD notes
     # Use unstable: https://github.com/NixOS/nixpkgs/issues/276988
     unstable.obsidian
+    # Wikipedia tui
     wiki-tui
-    xf86_input_wacom
-    wacomtablet
+    # Handwriting software
     xournalpp
 
-    # Teams + Onenote + libreoffice
-    teams-for-linux
-    p3x-onenote
-    libreoffice-qt
+    # -----------------------------
+
+    # Comms
 
     # Discord with vencord
     (discord.override {
       withOpenASAR = true;
       withVencord = true;
     })
-    # Wayland PTT fix
-    (lib.mkIf (userOptions.wm == "hyprland") (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {}))
-    # Screenshare fix
-    (lib.mkIf (userOptions.wm == "hyprland") unstable.xwaylandvideobridge)
+    # Matrix
+    element-desktop
+
+    # -----------------------------
+
+    # Ricing
+
+    # System info display
+    neofetch 
+    # Draw trees in terminal
+    cbonsai
+    # Change image colours for wallpapers
+    lutgen # This thing is awesome
+    # Font containing different symbols
+    font-awesome
+
+    # -----------------------------
+
+    # Work
+
+    # MS Teams
+    teams-for-linux
+    # MS Onenote
+    p3x-onenote
+    # Word alternative
+    libreoffice-qt
+
+    # -----------------------------
+
+    # Games
+
+    # Steam
+    steam
+    # Minecraft launchger
+    prismlauncher
+    # Alt. Launcher for GOG and Epic games
+    heroic
+    # Windows emulation
+    wineWowPackages.stable
+
+    # -----------------------------
+
+    # VPN 
+
+    mullvad-vpn
+
+    # -----------------------------
+
+    # Misc.
 
     # Recording
     obs-studio
+    # Image viewing and x11 wallpapers
+    feh
 
-    # Games
-    steam
-    prismlauncher
-    heroic
-    wineWowPackages.stable
-
-    # VPN 
-    mullvad-vpn
-
-    # Screenshots
-    (if userOptions.wm == "hyprland" then grimblast else flameshot)
-
-    # Wallpaper
-    feh # General image viewing as well
-    lutgen # This thing is awesome
-    font-awesome
-    (lib.mkIf (userOptions.wm == "hyprland") swww)
-    (lib.mkIf (userOptions.wm == "hyprland") waypaper)
-
-    # Sound controls
+    # Sound/music controls
     pavucontrol
     pulseaudio
     playerctl
-    
 
+  ] ++ lib.optionals (userOptions.wm == "hyprland") [
+
+    # Clipboard for wayland
+    wl-clipboard
+
+    # Wallpapers
+    swww
+    waypaper
+    
+    # Wayland PTT fix for discord
+    (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {})
+    # Wayland screenshare fix
+    unstable.xwaylandvideobridge
+
+    # Libraries for wayland
+    qt6.qtwayland
+    libsForQt5.qt5.qtwayland
+    libva
+
+  ] ++ lib.optionals (userOptions.wm == "i3") [
+
+    # Clipboard for x11
+    xclip
 
   ];
 
-  programs.alacritty = import ./configs/alacritty.nix;
+  programs.alacritty = (import ./configs/alacritty.nix) { inherit userOptions; };
   programs.helix = import ./configs/editor.nix;
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
   programs.git = import ./configs/git.nix;
   programs.fish = import ./configs/fish.nix;
 
-  programs.rofi = lib.attrsets.optionalAttrs (userOptions.wm == "i3" || userOptions.wm == "hyprland") {
+  # Theme for GTK apps
+  gtk = {
+    enable = true;
+    theme = {
+      name = "dracula";
+      package = pkgs.dracula-theme;
+    };
+  };
+  # App launcher
+  programs.rofi = {
     enable = true;
     theme = ./configs/rofiTheme.rasi;
     package = if userOptions.wm == "hyprland" then pkgs.rofi-wayland else pkgs.rofi;
   };
-  programs.waybar = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
-    enable = true;
-    settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; };
-    # style = import ./configs/hypr/waybar.css;
-    style = ./configs/hypr/waybar.css;
-  };
-  programs.cava = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+  # Audio visualiser
+  programs.cava = {
     enable = true;
     settings = import ./configs/hypr/cava.nix;
   };
 
+  # Taskbar for hypr
+  programs.waybar = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; };
+    style = ./configs/hypr/waybar.css;
+  };
+
+  # Hyprland
   wayland.windowManager.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     settings = (import ./configs/hypr/hypr.nix) { inherit lib; inherit userOptions; };
     package = unstable.hyprland;
   };
 
+  # Lock screen for hypr
   programs.swaylock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     settings = {
@@ -137,20 +214,23 @@
     
   };
 
-  xsession = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
-    enable = true;
-    windowManager.i3 = {
-      enable = true;
-      config = import ./configs/i3/i3.nix;
-      extraConfig = if userOptions.device == "pc" then "workspace 1 output DP-2\nworkspace 2 output HDMI-1\nworkspace 3 output HDMI-1" else null;
-    };
-  };
-
+  # Notification daemon for hyprl
   services.dunst = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     configFile = ./configs/hypr/dunst;
   };
 
+  # i3wm
+  xsession = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
+    enable = true;
+    windowManager.i3 = {
+      enable = true;
+      config = import ./configs/i3/i3.nix;
+      extraConfig = if userOptions.device == "pc" then "workspace 1 output DP-2\nworkspace 2 output HDMI-1\nworkspace 3 output HDMI-1" else "";
+    };
+  };
+
+  # Taskbar for i3
   services.polybar = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
     enable = true;
     package = pkgs.polybar.override {
@@ -161,6 +241,7 @@
     script = ":";
   };
 
+  # Compositor for i3
   services.picom = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
     enable = true;
     activeOpacity = 1.0;

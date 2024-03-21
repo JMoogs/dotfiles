@@ -1,11 +1,14 @@
+{lib, userOptions, ...}:
+
 let modifier = "Mod4"; in {
     terminal = "alacritty";
-    startup = [
+    startup = lib.optionals (userOptions.device == "pc") [
      {command = "/etc/nixos/configs/i3/layoutPC.sh"; always = true;}
+    ] ++ [
      {command = "/etc/nixos/configs/i3/polybar/launch.sh"; always = true;}
-     {command = "feh --bg-scale /etc/nixos/wallpaper.png"; always = true;}
+     {command = "feh --bg-scale /etc/nixos/wallpapers/wallpaper_default.png"; always = true;}
      {command = "picom"; always = true;}
-     {command = "i3-msg \"exec firefox; exec discord; workspace 1;\"";}
+     {command = "i3-msg \"exec floorp; exec discord; workspace 1;\"";}
     ];
     # Removes i3bars
     bars = [];
@@ -23,7 +26,7 @@ let modifier = "Mod4"; in {
 
     gaps.inner = 9;
 
-    assigns = {"1" = [{ class = "alacritty";} ]; "2" = [{ class = "firefox"; }]; "3" = [{ class = "discord"; }]; };
+    assigns = {"1" = [{ class = "alacritty";} ]; "2" = [{ class = "floorp"; }]; "3" = [{ class = "discord"; }]; };
 
     modes = {
      "resize" = {
@@ -146,8 +149,8 @@ let modifier = "Mod4"; in {
      "${modifier}+Shift+r" = "restart";
      # Alacritty
      "${modifier}+Return" = "exec alacritty";
-     # Firefox
-     "${modifier}+f" = "exec firefox";
+     # Firefox (floorp)
+     "${modifier}+f" = "exec floorp";
      # Backup console
      "${modifier}+Shift+Return" = "exec i3-sensible-terminal";
     };

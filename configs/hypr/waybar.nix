@@ -81,6 +81,7 @@
       window-rewrite = {
         "class<Alacritty>" = "";
         "class<firefox>" = "";
+        "class<floorp>" = "";
         "class<discord>" = "";
         "class<com\\.obsproject\\.Studio>" = "";
         "class<.*libre.*>" = "";
@@ -100,6 +101,7 @@
       format = "{title}";
       rewrite = {
         "(.*) — Mozilla Firefox" = "  $1";
+        "(.*) — Ablaze Floorp" = "  $1";
         "(.*) - Discord" = "  $1";
         "cava" = " ";
       };

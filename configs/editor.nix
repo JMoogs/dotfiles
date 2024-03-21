@@ -22,6 +22,7 @@
       normal = {
         esc = ["collapse_selection" "keep_primary_selection"];
       };
+      # Force using helix bindings
       insert = {
         up = "no_op";
         down = "no_op";

@@ -10,11 +10,11 @@
   "2, monitor:HDMI-A-2, default = true"] else null;
 
   # Execute your favorite apps at launch
-  # exec-once = waybar & hyprpaper & firefox
+  # exec-once = waybar & hyprpaper & firefox (floorp)
   exec-once = ["dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" 
   "waybar"
-  "firefox"
-  "waypaper --restore"
+  "floorp"
+  "waypaper --restore --random"
   ];
 
   # Source a file (multi-file configs)
@@ -114,8 +114,8 @@
     "$mainMod SHIFT, Escape, exit,"
     # Floating
     "$mainMod, V, togglefloating, "
-    # Firefox shortcut
-    "$mainMod, F, exec, firefox"
+    # Firefox (floorp) shortcut
+    "$mainMod, F, exec, floorp"
     # App Launcher
     # "$mainMod, D, exec, rofi -modi drun, rofi -show drun"
     "$mainMod, D, exec, rofi -show drun"
@@ -199,7 +199,7 @@
   windowrulev2 = [
     # Discord fix (?)
     "forceinput, class:^(discord)$, xwayland:0"
-    "opacity 0.94 0.94, class:^(Alacritty)$"
+    "opacity 0.91 0.91, class:^(Alacritty)$"
     "opacity 0.90, class:^(discord)$"
   ];
 

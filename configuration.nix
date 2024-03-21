@@ -6,12 +6,13 @@
 
 {
   imports =
-    [ # Include the results of the hardware scan.
+    [ 
+      # Include the results of the hardware scan.
       ./hardware-configuration.nix
     ];
 
 
-  # Use grub as the windows EFI partition is only 100mb
+  # Use Grub as the windows EFI partition is only 100mb
   boot.loader = {
     efi = {
       canTouchEfiVariables = true;
@@ -24,6 +25,7 @@
       useOSProber = true;
       efiSupport = true;
       device = "nodev";
+      # Store 5 generations
       configurationLimit = 5;
     };
   };
@@ -93,6 +95,7 @@
   programs.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     xwayland.enable = true;
+    # Use unstable hyprland
     portalPackage = unstable.xdg-desktop-portal-hyprland;
     package = unstable.hyprland;
   };
@@ -103,14 +106,8 @@
     videoDrivers = if userOptions.nvidia then ["nvidia"] else ["modesetting" "fbdev"];
     layout = "gb";
 
-    desktopManager = {
-      xterm.enable = false;
-      # Enable the Plasma 5 Desktop Environment.
-      plasma5.enable = userOptions.wm == "plasma";
-    };
-
-    # Plasma part 2 + Hyprland login manager
-    displayManager.sddm.enable = userOptions.wm == "plasma" || userOptions.wm == "hyprland";
+    # Hyprland login manager
+    displayManager.sddm.enable = userOptions.wm == "hyprland";
     displayManager.sddm.wayland.enable = userOptions.wm == "hyprland";
 
     # This setting only works for X11 so it's useless atm :(
@@ -137,8 +134,7 @@
   # services.printing.enable = true;
 
   # Enable sound.
-  # sound.enable = true;
-  # hardware.pulseaudio.enable = true;
+  # Use pipewire since it's needed for screensharing, etc. on Hyprland
   services.pipewire = {
     enable = true;
     alsa.enable = true;
@@ -167,10 +163,7 @@
   nix.settings.experimental-features = [ "nix-command" "flakes" ];
   nixpkgs.config = {
     allowUnfree = true;
-    permittedInsecurePackages = [
-      "electron-25.9.0"
-      "teams-1.5.00.23.861"
-    ];
+    permittedInsecurePackages = []; # Currently none required
   };
 
   # Environment variables
@@ -203,7 +196,7 @@
   # Mullvad
   services.mullvad-vpn.enable = true;
 
-  # Allow swaylock to unluck
+  # Allow swaylock to unlock PC
   security.pam.services.swaylock = {};
 
   # Enable the OpenSSH daemon.
