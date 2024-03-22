@@ -9,6 +9,7 @@
       url = "github:nix-community/home-manager/release-23.11";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    ags.url = "github:Aylur/ags";
   };
 
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs : {
@@ -28,6 +29,7 @@
               home-manager.useUserPackages = true;
               home-manager.users."${opts.username}" = import ./home.nix;
               home-manager.extraSpecialArgs = {
+                inherit inputs;
                 userOptions = opts;
                 unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
               };
@@ -49,6 +51,7 @@
               home-manager.useUserPackages = true;
               home-manager.users."${opts.username}"= import ./home.nix;
               home-manager.extraSpecialArgs = {
+                inherit inputs;
                 userOptions = opts;
                 unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
               };

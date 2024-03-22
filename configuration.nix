@@ -179,6 +179,8 @@
   programs.fish.shellAliases = {
     lg = "lazygit";
     dev = "nix-shell --command fish";
+    hbuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-pc-hypr";
+    ibuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

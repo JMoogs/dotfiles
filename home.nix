@@ -1,6 +1,8 @@
-{pkgs, lib, userOptions, unstable, ...}:
+{pkgs, lib, userOptions, unstable, inputs, ...}:
 
 {
+
+  imports = lib.optionals (userOptions.wm == "hyprland") [ inputs.ags.homeManagerModules.default];
 
   home.sessionPath = [ "$HOME/Documents/Apps" ];
   home.packages = with pkgs; [
@@ -14,16 +16,11 @@
 
     # Terminal Setup
 
-    # Emulator
-    alacritty
     # Multiplexer
     tmux
     # -----------------------------
 
     # Development
-
-    # Editor
-    helix
     # Git
     git
     # Git TUI
@@ -156,6 +153,13 @@
     libsForQt5.qt5.qtwayland
     libva
 
+    # Dependencies for ags
+    bun
+    dart-sass
+    fd
+    brightnessctl
+    
+
   ] ++ lib.optionals (userOptions.wm == "i3") [
 
     # Clipboard for x11
@@ -163,8 +167,19 @@
 
   ];
 
-  programs.alacritty = (import ./configs/alacritty.nix) { inherit userOptions; };
-  programs.helix = import ./configs/editor.nix;
+  # Terminal emulator
+  programs.alacritty = {
+    enable = true;
+    settings = (import ./configs/alacritty.nix) {inherit userOptions; };
+  };
+
+  # Editor
+  programs.helix = {
+    defaultEditor = true;
+    enable = true;
+    settings = import ./configs/editor.nix;
+  };
+
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
   programs.git = import ./configs/git.nix;
   programs.fish = import ./configs/fish.nix;
@@ -211,7 +226,12 @@
       font-size = 24;
       line-color = "44475a";
     };
-    
+  };
+
+  # Widgets for hypr
+  programs.ags = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    configDir = ./configs/hypr/ags;
   };
 
   # Notification daemon for hyprl
