@@ -18,7 +18,7 @@
 - Notifications: [Dunst](https://github.com/dunst-project/dunst)
 - Screenshots: [Grimblast](https://github.com/hyprwm/contrib)
 
-### I3 Specific
+### i3 Specific
 - Bar: [Polybar](https://github.com/polybar/polybar)
 - Lock screen: [i3lock](https://github.com/i3/i3lock)
 - Screenshots: [Flameshot](https://flameshot.org/)

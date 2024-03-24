@@ -2,6 +2,7 @@
   theme = "dracula";
   editor = {
     line-number = "relative";
+    idle-timeout = 50;
     mouse = false;
     bufferline = "multiple";
     cursor-shape = {

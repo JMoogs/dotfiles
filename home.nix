@@ -76,6 +76,8 @@
     })
     # Matrix
     element-desktop
+    # Email
+    thunderbird
 
     # -----------------------------
 
@@ -112,7 +114,7 @@
     # Alt. Launcher for GOG and Epic games
     heroic
     # Windows emulation
-    wineWowPackages.stable
+    unstable.wineWowPackages.waylandFull
 
     # -----------------------------
 
@@ -136,6 +138,8 @@
 
   ] ++ lib.optionals (userOptions.wm == "hyprland") [
 
+    grimblast
+
     # Clipboard for wayland
     wl-clipboard
 
@@ -147,6 +151,8 @@
     (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {})
     # Wayland screenshare fix
     unstable.xwaylandvideobridge
+    # Primary monitor fix
+    wlr-randr
 
     # Libraries for wayland
     qt6.qtwayland
@@ -162,6 +168,8 @@
 
   ] ++ lib.optionals (userOptions.wm == "i3") [
 
+    flameshot
+    
     # Clipboard for x11
     xclip
 

@@ -15,7 +15,7 @@
   "waybar"
   "floorp"
   "waypaper --restore --random"
-  ];
+  ] ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
 
   # Source a file (multi-file configs)
   # source = ~/.config/hypr/myColors.conf
