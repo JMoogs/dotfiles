@@ -102,6 +102,8 @@
     p3x-onenote
     # Word alternative
     libreoffice-qt
+    # Calculator
+    unstable.numbat
 
     # -----------------------------
 
@@ -118,9 +120,12 @@
 
     # -----------------------------
 
-    # VPN 
+    # Security
 
+    # VPN
     mullvad-vpn
+    # Password manager
+    bitwarden
 
     # -----------------------------
 
@@ -186,6 +191,7 @@
     defaultEditor = true;
     enable = true;
     settings = import ./configs/editor.nix;
+    package = unstable.helix;
   };
 
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };

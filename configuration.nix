@@ -186,6 +186,8 @@
     dev = "nix-shell --command fish";
     hbuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-pc-hypr";
     ibuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos";
+    # I do this so often that I may as well
+    carog = "cargo";
   };
 
   # Define a user account. Don't forget to set a password with ‘passwd’.

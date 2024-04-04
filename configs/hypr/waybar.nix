@@ -116,7 +116,7 @@
     # Maybe look to using a TUI?
     "mpris" = {
       # The delay feels horrible
-      interval = 1;
+      interval = 0.5;
       format = " {title}";
       format-paused = " {title}";
       # Defaults to:

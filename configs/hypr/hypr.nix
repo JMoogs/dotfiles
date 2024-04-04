@@ -199,7 +199,7 @@
   windowrulev2 = [
     # Discord fix (?)
     "forceinput, class:^(discord)$, xwayland:0"
-    "opacity 0.91 0.91, class:^(Alacritty)$"
+    "opacity 0.88, class:^(Alacritty)$"
     "opacity 0.90, class:^(discord)$"
   ];
 
