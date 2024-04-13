@@ -144,6 +144,14 @@
     label = "%percentage_used:2%%";
   };
 
+  "module/cpu" = {
+    type = "internal/cpu";
+    interval = 2;
+    format-prefix = " ";
+    format-prefix-foreground = "\${colors.primary}";
+    labal = "%percentage:2%%";
+  };
+
   "module/gpu" = {
     type = "custom/script";
     exec = "echo $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%";

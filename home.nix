@@ -42,8 +42,21 @@
 
     # -----------------------------
 
+    # Media
+
+    # Mpv (media player) with mpris support
+    (mpv.override {scripts = [unstable.mpvScripts.mpris]; })
+    # Youtube downloader
+    yt-dlp
+    # Other utilities
+    ffmpeg
+
+    # -----------------------------
+
     # Utilities 
 
+    # Mouse config software
+    piper
     # Search tool (grep alternative)
     ripgrep
     # List subdirectories (ls alternative)
@@ -91,6 +104,7 @@
     lutgen # This thing is awesome
     # Font containing different symbols
     font-awesome
+    nerdfonts
 
     # -----------------------------
 
@@ -107,7 +121,7 @@
 
     # -----------------------------
 
-    # Games
+    # Entertainment
 
     # Steam
     steam
@@ -117,6 +131,9 @@
     heroic
     # Windows emulation
     unstable.wineWowPackages.waylandFull
+    # Anime
+    ani-cli
+    
 
     # -----------------------------
 
@@ -192,6 +209,13 @@
     enable = true;
     settings = import ./configs/editor.nix;
     package = unstable.helix;
+  };
+
+  # New multiplexer?
+  programs.zellij = {
+    enable = true;
+    enableFishIntegration = true;
+    settings = import ./configs/zellij.nix {inherit userOptions; };
   };
 
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
@@ -285,6 +309,13 @@
       "100:class_g = 'firefox'"
     ];
     settings = { corner-radius = 4; };
+  };
+
+  # Gpg
+  programs.gpg.enable = true;
+  services.gpg-agent = {
+    enable = true;
+    pinentryFlavor = "gnome3";
   };
 
   # DO NOT CHANGE - Supposed to stay at the original install version 

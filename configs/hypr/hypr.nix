@@ -122,7 +122,7 @@
     # Full screen
     "$mainMod SHIFT, F, fullscreen"
     # Lock screen
-    "ALT, L, exec, swaylock"
+    "CONTROL ALT, L, exec, swaylock"
     # No idea tbh
     "$mainMod, P, pseudo," # dwindle
     "$mainMod, W, togglesplit," # dwindle
@@ -188,6 +188,11 @@
 
     # Discord PTT binding
     ", mouse:276, pass, ^(discord)$"
+
+    # OBS bindings
+    "$mainMod, Insert, pass, ^(com\.obsproject\.Studio)$"
+    "$mainMod, Home, pass, ^(com\.obsproject\.Studio)$"
+    "$mainMod, Prior, pass, ^(com\.obsproject\.Studio)$"
   ];
 
 

@@ -79,12 +79,12 @@
       format = "{id}: {windows}";
       window-rewrite-default = "";
       window-rewrite = {
-        "class<Alacritty>" = "";
-        "class<firefox>" = "";
-        "class<floorp>" = "";
-        "class<discord>" = "";
-        "class<com\\.obsproject\\.Studio>" = "";
-        "class<.*libre.*>" = "";
+        "class<Alacritty>" = " ";
+        "class<firefox>" = " ";
+        "class<floorp>" = " ";
+        "class<discord>" = " ";
+        "class<com\\.obsproject\\.Studio>" = " ";
+        "class<.*libre.*>" = " ";
       };
       # format = "{id}: {icon}";
       # format-icons = {
@@ -117,7 +117,7 @@
     "mpris" = {
       # The delay feels horrible
       interval = 0.5;
-      format = " {title}";
+      format = "󰗃 {title}";
       format-paused = " {title}";
       # Defaults to:
       # left click = "play/pause";

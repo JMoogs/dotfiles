@@ -41,27 +41,35 @@
   # networking.proxy.noProxy = "127.0.0.1,localhost,internal.domain";
 
   # Select internationalisation properties.
-  i18n.defaultLocale = "en_GB.UTF-8";
-  i18n.supportedLocales = [
-    "C.UTF-8/UTF-8"
-    "en_GB.UTF-8/UTF-8"
-    "ja_JP.UTF-8/UTF-8"
-  ];
-  i18n.extraLocaleSettings = {
-    # LANG = "en_GB.UTF-8";
-    # LC_MESSAGES = "en_GB.UTF-8";
-    # LC_IDENTIFICATION = "en_GB.UTF-8";
-    # LC_ALL = "en_GB.UTF-8";
-    # LC_CTYPE = "en_GB.UTF-8";
-    # LC_NUMERIC = "en_GB.UTF-8";
-    # LC_TIME = "en_GB.UTF-8";
-    # LC_COLLATE = "en_GB.UTF-8";
-    # LC_NAME = "en_GB.UTF-8";
-    # LC_MONETARY = "en_GB.UTF-8";
-    # LC_PAPER = "en_GB.UTF-8";
-    # LC_ADDRESS = "en_GB.UTF-8";
-    # LC_TELEPHONE = "en_GB.UTF-8";
-    # LC_MEASUREMENT = "en_GB.UTF-8";
+  i18n = {
+    defaultLocale = "en_GB.UTF-8";
+    supportedLocales = [
+      "C.UTF-8/UTF-8"
+      "en_GB.UTF-8/UTF-8"
+      "ja_JP.UTF-8/UTF-8"
+    ];
+    # inputMethod = {
+    #   enabled = "fcitx5";
+    #   fcitx5.addons = with pkgs; [
+    #     fcitx5-mozc
+    #   ];
+    # };
+    extraLocaleSettings = {
+      # LANG = "en_GB.UTF-8";
+      # LC_MESSAGES = "en_GB.UTF-8";
+      # LC_IDENTIFICATION = "en_GB.UTF-8";
+      # LC_ALL = "en_GB.UTF-8";
+      # LC_CTYPE = "en_GB.UTF-8";
+      # LC_NUMERIC = "en_GB.UTF-8";
+      # LC_TIME = "en_GB.UTF-8";
+      # LC_COLLATE = "en_GB.UTF-8";
+      # LC_NAME = "en_GB.UTF-8";
+      # LC_MONETARY = "en_GB.UTF-8";
+      # LC_PAPER = "en_GB.UTF-8";
+      # LC_ADDRESS = "en_GB.UTF-8";
+      # LC_TELEPHONE = "en_GB.UTF-8";
+      # LC_MEASUREMENT = "en_GB.UTF-8";
+    };
   };
 
   console.keyMap = "uk";
@@ -104,6 +112,9 @@
     portalPackage = unstable.xdg-desktop-portal-hyprland;
     package = unstable.hyprland;
   };
+
+  # Corectrl
+  programs.corectrl.enable = true;
   
   # Enable the X11 windowing system.
   services.xserver = {
@@ -114,9 +125,6 @@
     # Hyprland login manager
     displayManager.sddm.enable = userOptions.wm == "hyprland";
     displayManager.sddm.wayland.enable = userOptions.wm == "hyprland";
-
-    # This setting only works for X11 so it's useless atm :(
-    # displayManager.setupCommands = lib.optionalString (userOptions.wm == "hyprland") "xrandr --output HDMI-0 --off --output DP-0 --off --output DP-1 --off --output HDMI-A-2 --mode 1920x1080 --pos 2560x273 --rotate normal --output DP-2 --primary --mode 2560x1440 --rate 143.91 --pos 0x0 --rotate normal --output DP-3 --off";
 
     windowManager.i3 = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
       enable = true;
@@ -186,6 +194,10 @@
     dev = "nix-shell --command fish";
     hbuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-pc-hypr";
     ibuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos";
+    cdconfig = "cd /etc/nixos";
+    edithome = "sudoedit /etc/nixos/home.nix";
+    editconfig = "sudoedit /etc/nixos/configuration.nix";
+    editflake = "sudoedit /etc/nixos/flake.nix";
     # I do this so often that I may as well
     carog = "cargo";
   };
@@ -193,7 +205,7 @@
   # Define a user account. Don't forget to set a password with ‘passwd’.
   users.users."${userOptions.username}" = {
      isNormalUser = true;
-     extraGroups = [ "wheel" ]; # Enable ‘sudo’ for the user.
+     extraGroups = [ "wheel" "corectrl" ]; # Enable ‘sudo’ for the user.
   };
 
   programs.steam = {
@@ -201,6 +213,12 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
+
+  # Waydroid for android apps
+  virtualisation.waydroid.enable = true;
+
+  # Ratbagd for mouse config?
+  services.ratbagd.enable = true;
 
   # Mullvad
   services.mullvad-vpn.enable = true;
