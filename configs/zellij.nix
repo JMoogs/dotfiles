@@ -15,7 +15,7 @@
 
   pane_frames = false;
 
-  theme_dir = "/etc/nixos/configs/zellij";
+  theme_dir = "/etc/nixos/configs/theming/zellij";
 
   theme = "dracula_modified";
 

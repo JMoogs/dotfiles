@@ -1,8 +1,9 @@
-{ userOptions, ... }:
+{ userOptions, themes, ... }:
 
 
 {
-    import = [ "/etc/nixos/configs/alacritty_dracula.yml" ];
+    # import = [ "/etc/nixos/configs/alacritty_dracula.yml" ];
+    import = [ themes.alacrittyTheme ];
     font = {
       size = 15.5;
     };

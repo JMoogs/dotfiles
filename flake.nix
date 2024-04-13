@@ -15,7 +15,7 @@
   outputs = { self, nixpkgs, nixpkgs-unstable, home-manager, ...} @ inputs : {
 
     nixosConfigurations = {
-      "Jeremy-nixos" = let opts = {nvidia = true; hostname = "Jeremy-nixos"; username = "jeremy"; wm = "i3"; device = "pc";}; in nixpkgs.lib.nixosSystem rec {
+      "Jeremy-nixos" = let opts = {nvidia = true; hostname = "Jeremy-nixos"; username = "jeremy"; wm = "i3"; device = "pc"; theme = "dracula"; }; in nixpkgs.lib.nixosSystem rec {
         specialArgs = {inherit inputs;
             userOptions = opts;
             unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };
@@ -37,7 +37,7 @@
         ];
       };     
 
-      "Jeremy-pc-hypr" = let opts = { nvidia = true; hostname = "Jeremy-nixos"; username = "jeremy"; wm = "hyprland"; device = "pc"; }; in nixpkgs.lib.nixosSystem rec {
+      "Jeremy-pc-hypr" = let opts = { nvidia = true; hostname = "Jeremy-nixos"; username = "jeremy"; wm = "hyprland"; device = "pc"; theme = "frappe"; }; in nixpkgs.lib.nixosSystem rec {
         specialArgs = {inherit inputs;
             userOptions = opts;
             unstable = import nixpkgs-unstable { inherit system; config.allowUnfree = true; };

@@ -1,5 +1,7 @@
+{ themes, ... }:
+
 {
-  theme = "dracula";
+  theme = themes.helixTheme;
   editor = {
     line-number = "relative";
     idle-timeout = 50;

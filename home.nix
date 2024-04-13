@@ -1,6 +1,6 @@
 {pkgs, lib, userOptions, unstable, inputs, ...}:
 
-{
+let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in{
 
   imports = lib.optionals (userOptions.wm == "hyprland") [ inputs.ags.homeManagerModules.default];
 
@@ -63,6 +63,8 @@
     tree
     # Self explanatory
     killall
+    # Get files from the web
+    wget
     # System monitor (TUI)
     bottom
 
@@ -200,14 +202,14 @@
   # Terminal emulator
   programs.alacritty = {
     enable = true;
-    settings = (import ./configs/alacritty.nix) {inherit userOptions; };
+    settings = (import ./configs/alacritty.nix) {inherit userOptions; inherit themes; };
   };
 
   # Editor
   programs.helix = {
     defaultEditor = true;
     enable = true;
-    settings = import ./configs/editor.nix;
+    settings = import ./configs/editor.nix { inherit themes; };
     package = unstable.helix;
   };
 
@@ -215,7 +217,7 @@
   programs.zellij = {
     enable = true;
     enableFishIntegration = true;
-    settings = import ./configs/zellij.nix {inherit userOptions; };
+    settings = (import ./configs/zellij.nix) {inherit userOptions; };
   };
 
   programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
@@ -225,21 +227,23 @@
   # Theme for GTK apps
   gtk = {
     enable = true;
-    theme = {
-      name = "dracula";
-      package = pkgs.dracula-theme;
-    };
+    # theme = {
+    #   name = "dracula";
+    #   package = pkgs.dracula-theme;
+    # };
+    theme = themes.gtkTheme;
   };
   # App launcher
   programs.rofi = {
     enable = true;
-    theme = ./configs/rofiTheme.rasi;
+    # theme = ./configs/rofiTheme.rasi;
+    theme = themes.rofiTheme;
     package = if userOptions.wm == "hyprland" then pkgs.rofi-wayland else pkgs.rofi;
   };
   # Audio visualiser
   programs.cava = {
     enable = true;
-    settings = import ./configs/hypr/cava.nix;
+    settings = (import ./configs/hypr/cava.nix) { inherit themes; };
   };
 
   # Taskbar for hypr
@@ -260,7 +264,8 @@
   programs.swaylock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     settings = {
-      color = "282a36";
+      # color = "282a36";
+      color = themes.swaylockColour;
       font-size = 24;
       line-color = "44475a";
     };
@@ -275,7 +280,7 @@
   # Notification daemon for hyprl
   services.dunst = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
-    configFile = ./configs/hypr/dunst;
+    configFile = themes.dunstTheme;
   };
 
   # i3wm

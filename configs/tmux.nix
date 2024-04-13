@@ -1,3 +1,4 @@
+# I think we leave this one with dracula on all configs
 {pkgs, ...}:
 {
   enable = true;
