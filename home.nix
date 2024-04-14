@@ -2,7 +2,11 @@
 
 let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in{
 
-  imports = lib.optionals (userOptions.wm == "hyprland") [ inputs.ags.homeManagerModules.default];
+  imports = lib.optionals (userOptions.wm == "hyprland") [
+    inputs.ags.homeManagerModules.default
+    inputs.hyprlock.homeManagerModules.default
+  
+  ];
 
   home.sessionPath = [ "$HOME/Documents/Apps" ];
   home.packages = with pkgs; [
@@ -65,6 +69,8 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     killall
     # Get files from the web
     wget
+    # Check file types
+    file
     # System monitor (TUI)
     bottom
 
@@ -227,10 +233,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   # Theme for GTK apps
   gtk = {
     enable = true;
-    # theme = {
-    #   name = "dracula";
-    #   package = pkgs.dracula-theme;
-    # };
     theme = themes.gtkTheme;
   };
   # App launcher
@@ -270,6 +272,9 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
       line-color = "44475a";
     };
   };
+
+  programs.hyprlock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
+    (import ./configs/hypr/hyprlock.nix {inherit themes;});
 
   # Widgets for hypr
   programs.ags = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {

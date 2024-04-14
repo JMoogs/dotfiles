@@ -40,6 +40,32 @@ let theme = userOptions.theme; in {
 
   dunstTheme = /etc/nixos/configs/theming/dunst/${theme};
 
+  hyprTheme = if theme == "dracula" then {
+    base = "rgb(282a36)";
+    text = "rgb(f8f8f2)";
+    accent = "rgb(ffb86c)"; # Using dracula orange
+    surface0 = "rgb(44475a)";
+    red = "rgb(ff5555)";
+    yellow = "rgb(f1fa8c)";
+  }
+  else if theme == "frappe" then {
+    base = "rgb(303446)";
+    text = "rgb(c6d0f5)";
+    accent = "rgb(ca9ee6)"; # Mauve in catppuccin
+    surface0 = "rgb(414559)";
+    red = "rgb(e78284)";
+    yellow = "rgb(e5c890)";
+  }
+  else if theme == "latte" then {
+    base = "rgb(eff1f5)";
+    text = "rgb(4c4f69)";
+    accent = "rgb(8839ef)"; # Mauve in catppuccin
+    surface0 = "rgb(ccd0da)";
+    red = "rgb(d20f39)";
+    yellow = "rgb(df8e1d)";
+  }
+  else null;
+
    
   
 }

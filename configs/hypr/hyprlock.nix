@@ -1,0 +1,68 @@
+{ themes, ... }:
+
+# https://wiki.hyprland.org/Hypr-Ecosystem/hyprlock/
+# https://github.com/hyprwm/hyprlock/blob/main/nix/hm-module.nix
+let theme = themes.hyprTheme; in {
+  enable = true;
+
+  general = {
+    disable_loading_bar = true;
+    hide_cursor = true;
+  };
+
+  background = {
+    monitor = "";
+    # TODO: Find a way to set path
+    blur_passes = 0;
+    color = theme.base;
+  };
+
+  label = [
+    # Time
+    {
+      monitor = "";
+      text = "cmd[update:30000] echo \"$(date + \"%R\")\"";
+      color = theme.text;
+      font_size = 90;
+
+      position = "-30, 0";
+      halign = "right";
+      valign = "top";
+    }
+
+    {
+        monitor = "";
+        text = "cmd[update:43200000] echo \"$(date +\"%A, %d %B %Y\")\"";
+        color = theme.text;
+        font_size = 25;
+        position = "-30, -150";
+        halign = "right";
+        valign = "top";
+    }
+
+  ];
+
+  input-field = {
+    monitor = "";
+    size = "300, 60";
+    outline_thickness = 4;
+    dots_size = 0.2;
+    dots_spacing = 0.2;
+    dots_center = true;
+    outer_color = theme.accent;
+    inner_color = theme.surface0;
+    font_color = theme.text;
+    fade_on_empty = false;
+    placeholder_text = "<span foreground=\"##$textAlpha\"><i>󰌾 Logged in as </i><span foreground=\"##$accentAlpha\">$USER</span></span>";
+    hide_input = false;
+    check_color = theme.accent;
+    fail_color = theme.red;
+    fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
+    capslock_color = theme.yellow;
+    position = "0, -35";
+    halign = "center";
+    valign = "center";
+  };
+
+  
+}

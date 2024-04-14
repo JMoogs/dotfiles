@@ -117,12 +117,11 @@
     # Firefox (floorp) shortcut
     "$mainMod, F, exec, floorp"
     # App Launcher
-    # "$mainMod, D, exec, rofi -modi drun, rofi -show drun"
     "$mainMod, D, exec, rofi -show drun"
     # Full screen
     "$mainMod SHIFT, F, fullscreen"
     # Lock screen
-    "CONTROL ALT, L, exec, swaylock"
+    "CONTROL ALT, L, exec, hyprlock"
     # No idea tbh
     "$mainMod, P, pseudo," # dwindle
     "$mainMod, W, togglesplit," # dwindle
@@ -132,7 +131,7 @@
     "SUPER, Print, exec, grimblast copy output"
     "CONTROL, Print, exec, grimblast copy screen"
 
-    # Move focus with mainMod + arrow keys
+    # # Move focus with mainMod + arrow keys
     "$mainMod, left, movefocus, l"
     "$mainMod, right, movefocus, r"
     "$mainMod, up, movefocus, u"
@@ -182,6 +181,8 @@
     ",XF86AudioPlay, exec, playerctl play-pause"
     ",XF86AudioNext, exec, playerctl next"
     ",XF86AudioPrev, exec, playerctl previous"
+    "CONTROL $mainMod, up, exec, playerctl volume 0.04+"
+    "CONTROL $mainMod, down, exec, playerctl volume 0.04-"
 
     # Toggle opacity
     "$mainMod, Q, toggleopaque"

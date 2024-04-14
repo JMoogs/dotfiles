@@ -226,6 +226,9 @@
   # Allow swaylock to unlock PC
   security.pam.services.swaylock = {};
 
+  # Hyplock
+  security.pam.services.hyprlock = {};
+
   # Enable the OpenSSH daemon.
   # services.openssh.enable = true;
 

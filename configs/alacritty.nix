@@ -2,7 +2,6 @@
 
 
 {
-    # import = [ "/etc/nixos/configs/alacritty_dracula.yml" ];
     import = [ themes.alacrittyTheme ];
     font = {
       size = 15.5;
