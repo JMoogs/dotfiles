@@ -7,6 +7,8 @@
       set -l nix_shell_info (
         if test -n "$IN_NIX_SHELL"
           echo -n "<nix-shell>"
+        else if test "$SHLVL" -ge 4
+          echo -n "<nix-shell>"
         else
           echo -n "$USER@$hostname"
         end

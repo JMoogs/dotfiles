@@ -2,7 +2,7 @@
 # your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 
-{ pkgs, config, lib, userOptions, unstable, ... }:
+{ pkgs, config, lib, userOptions,  ... }:
 
 {
   imports =
@@ -103,7 +103,7 @@
   	# accessible via `nvidia-settings`.
     nvidiaSettings = true;
 
-    package = if userOptions.wm == "hyprland" then config.boot.kernelPackages.nvidiaPackages.production else config.boot.kernelPackages.nvidiaPackages.stable;
+    # package = if userOptions.wm == "hyprland" then config.boot.kernelPackages.nvidiaPackages.production else config.boot.kernelPackages.nvidiaPackages.stable;
   };
 
   # Wayland 
@@ -111,8 +111,8 @@
     enable = true;
     xwayland.enable = true;
     # Use unstable hyprland
-    portalPackage = unstable.xdg-desktop-portal-hyprland;
-    package = unstable.hyprland;
+    portalPackage = pkgs.xdg-desktop-portal-hyprland;
+    package = pkgs.hyprland;
   };
 
   # Corectrl
@@ -122,11 +122,8 @@
   services.xserver = {
     enable = true;
     videoDrivers = if userOptions.nvidia then ["nvidia"] else ["modesetting" "fbdev"];
-    layout = "gb";
+    xkb.layout = "gb";
 
-    # Hyprland login manager
-    displayManager.sddm.enable = userOptions.wm == "hyprland";
-    displayManager.sddm.wayland.enable = userOptions.wm == "hyprland";
 
     windowManager.i3 = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
       enable = true;
@@ -136,12 +133,14 @@
       ];
     };
 
-    displayManager.defaultSession = if userOptions.wm == "i3" then "none+i3" else null;
-
     # Enable wacom driver
     wacom.enable = true;
-    
   };
+
+  # Hyprland login manager
+  services.displayManager.sddm.enable = userOptions.wm == "hyprland";
+  services.displayManager.sddm.wayland.enable = userOptions.wm == "hyprland";
+  services.displayManager.defaultSession = if userOptions.wm == "i3" then "none+i3" else null;
 
 
 

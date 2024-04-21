@@ -10,7 +10,7 @@
       title = "Terminal";
       opacity = if (userOptions.wm == "hyprland") then 1 else 0.93;
     };
-    keybord.bindings = [
+    keyboard.bindings = [
       { key = "Return"; mods = "Control|Shift"; action = "CreateNewWindow"; }
     ];
 }

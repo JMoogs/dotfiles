@@ -21,7 +21,7 @@ let theme = userOptions.theme; in {
 
   rofiTheme = "/etc/nixos/configs/theming/rofi/${theme}.rasi";
 
-  alacrittyTheme = "/etc/nixos/configs/theming/alacritty/${theme}.yml";
+  alacrittyTheme = "/etc/nixos/configs/theming/alacritty/${theme}.toml";
 
   helixTheme = if theme == "dracula" then "dracula"
     else if theme == "frappe" then "catppuccin_frappe"

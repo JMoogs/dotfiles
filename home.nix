@@ -1,4 +1,4 @@
-{pkgs, lib, userOptions, unstable, inputs, ...}:
+{pkgs, lib, userOptions, inputs, ...}:
 
 let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in{
 
@@ -48,7 +48,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     # Media
 
     # Mpv (media player) with mpris support
-    (mpv.override {scripts = [unstable.mpvScripts.mpris]; })
+    (mpv.override {scripts = [mpvScripts.mpris]; })
     # Youtube downloader
     yt-dlp
     # Other utilities
@@ -79,7 +79,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
     # Obisdian for MD notes
     # Use unstable: https://github.com/NixOS/nixpkgs/issues/276988
-    unstable.obsidian
+    obsidian
     # Wikipedia tui
     wiki-tui
     # Handwriting software
@@ -125,7 +125,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     # Word alternative
     libreoffice-qt
     # Calculator
-    unstable.numbat
+    numbat
 
     # -----------------------------
 
@@ -138,11 +138,11 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     # Alt. Launcher for GOG and Epic games
     heroic
     # Windows emulation
-    unstable.wineWowPackages.waylandFull
+    wineWowPackages.waylandFull
     # Anime
     ani-cli
     # Mod manager
-    unstable.r2modman
+    r2modman
     
 
     # -----------------------------
@@ -182,7 +182,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     # Wayland PTT fix for discord
     (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {})
     # Wayland screenshare fix
-    unstable.xwaylandvideobridge
+    xwaylandvideobridge
     # Primary monitor fix
     wlr-randr
 
@@ -218,7 +218,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     defaultEditor = true;
     enable = true;
     settings = import ./configs/editor.nix { inherit themes; };
-    package = unstable.helix;
   };
 
   # New multiplexer?
@@ -265,7 +264,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   wayland.windowManager.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     settings = (import ./configs/hypr/hypr.nix) { inherit lib; inherit userOptions; };
-    package = unstable.hyprland;
   };
 
   # Lock screen for hypr
@@ -273,10 +271,10 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     (import ./configs/hypr/hyprlock.nix {inherit themes;});
 
   # Widgets for hypr
-  programs.ags = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
-    enable = true;
-    configDir = ./configs/hypr/ags;
-  };
+  # programs.ags = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+  #   enable = true;
+  #   configDir = ./configs/hypr/ags;
+  # };
 
   # Notification daemon for hyprl
   services.dunst = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
@@ -323,7 +321,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   programs.gpg.enable = true;
   services.gpg-agent = {
     enable = true;
-    pinentryFlavor = "gnome3";
+    pinentryPackage = pkgs.pinentry-gnome3;
   };
 
   # DO NOT CHANGE - Supposed to stay at the original install version 
