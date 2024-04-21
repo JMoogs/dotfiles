@@ -48,12 +48,12 @@
       "en_GB.UTF-8/UTF-8"
       "ja_JP.UTF-8/UTF-8"
     ];
-    # inputMethod = {
-    #   enabled = "fcitx5";
-    #   fcitx5.addons = with pkgs; [
-    #     fcitx5-mozc
-    #   ];
-    # };
+    inputMethod = {
+      enabled = "fcitx5";
+      fcitx5.addons = with pkgs; [
+        fcitx5-mozc
+      ];
+    };
     extraLocaleSettings = {
       # LANG = "en_GB.UTF-8";
       # LC_MESSAGES = "en_GB.UTF-8";
@@ -73,6 +73,8 @@
   };
 
   console.keyMap = "uk";
+
+  fonts.packages = [ pkgs.nerdfonts ];
 
   # Enable OpenGL
   hardware.opengl = {
@@ -192,6 +194,8 @@
   programs.fish.shellAliases = {
     lg = "lazygit";
     dev = "nix-shell --command fish";
+    # for fun
+    please = "sudo";
     hbuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-pc-hypr";
     ibuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos";
     cdconfig = "cd /etc/nixos";
@@ -213,6 +217,9 @@
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
+
+  # For easyeffects
+  programs.dconf.enable = true;
 
   # Waydroid for android apps
   virtualisation.waydroid.enable = true;

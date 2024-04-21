@@ -5,7 +5,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   imports = lib.optionals (userOptions.wm == "hyprland") [
     inputs.ags.homeManagerModules.default
     inputs.hyprlock.homeManagerModules.default
-  
   ];
 
   home.sessionPath = [ "$HOME/Documents/Apps" ];
@@ -95,6 +94,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
       withOpenASAR = true;
       withVencord = true;
     })
+    webcord
     # Matrix
     element-desktop
     # Email
@@ -141,6 +141,8 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     unstable.wineWowPackages.waylandFull
     # Anime
     ani-cli
+    # Mod manager
+    unstable.r2modman
     
 
     # -----------------------------
@@ -234,6 +236,10 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   gtk = {
     enable = true;
     theme = themes.gtkTheme;
+    iconTheme = {
+      name = "Papirus";
+      package = pkgs.papirus-icon-theme;
+    };
   };
   # App launcher
   programs.rofi = {
@@ -263,16 +269,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   };
 
   # Lock screen for hypr
-  programs.swaylock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
-    enable = true;
-    settings = {
-      # color = "282a36";
-      color = themes.swaylockColour;
-      font-size = 24;
-      line-color = "44475a";
-    };
-  };
-
   programs.hyprlock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
     (import ./configs/hypr/hyprlock.nix {inherit themes;});
 
@@ -320,6 +316,8 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     ];
     settings = { corner-radius = 4; };
   };
+
+  services.easyeffects.enable = true;
 
   # Gpg
   programs.gpg.enable = true;

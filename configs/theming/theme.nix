@@ -21,11 +21,6 @@ let theme = userOptions.theme; in {
 
   rofiTheme = "/etc/nixos/configs/theming/rofi/${theme}.rasi";
 
-  swaylockColour = if theme == "dracula" then "282a36"
-    else if theme == "frappe" then "303446"
-    else if theme == "latte" then "eff1f5"
-    else null;
-
   alacrittyTheme = "/etc/nixos/configs/theming/alacritty/${theme}.yml";
 
   helixTheme = if theme == "dracula" then "dracula"

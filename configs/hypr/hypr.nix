@@ -7,7 +7,7 @@
 
   # Bind workspaces to correct monitors
   workspace = if userOptions.device == "pc" then ["1, monitor:DP-2, default=true" 
-  "2, monitor:HDMI-A-2, default = true"] else null;
+  "2, monitor:HDMI-A-2, default = true" "3, monitor:HDMI-A-2"] else null;
 
   # Execute your favorite apps at launch
   # exec-once = waybar & hyprpaper & firefox (floorp)
@@ -22,7 +22,7 @@
 
   # Some default env vars
   # + Nvidia setup
-  env = ["XCURSOR_SIZE, 24"] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "WLR_NO_HARDWARE_CURSORS, 1" "NIXOS_OZONE_WL, 1"];
+  env = ["XCURSOR_SIZE, 24" ] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "WLR_NO_HARDWARE_CURSORS, 1" "NIXOS_OZONE_WL, 1"];
 
   # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
   input = {
@@ -183,6 +183,8 @@
     ",XF86AudioPrev, exec, playerctl previous"
     "CONTROL $mainMod, up, exec, playerctl volume 0.04+"
     "CONTROL $mainMod, down, exec, playerctl volume 0.04-"
+    "CONTROL $mainMod, left, exec, playerctl position 5-"
+    "CONTROL $mainMod, right, exec, playerctl position 5+"
 
     # Toggle opacity
     "$mainMod, Q, toggleopaque"
