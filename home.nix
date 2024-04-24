@@ -256,7 +256,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   # Taskbar for hypr
   programs.waybar = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
-    settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; };
+    settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; inherit lib; };
     style = ./configs/hypr/waybar.css;
   };
 
@@ -276,7 +276,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   #   configDir = ./configs/hypr/ags;
   # };
 
-  # Notification daemon for hyprl
+  # Notification daemon for hypr
   services.dunst = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     configFile = themes.dunstTheme;

@@ -12,9 +12,9 @@
   # Execute your favorite apps at launch
   # exec-once = waybar & hyprpaper & firefox (floorp)
   exec-once = ["dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" 
+  "waypaper --restore --random"
   "waybar"
   "floorp"
-  "waypaper --restore --random"
   ] ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
 
   # Source a file (multi-file configs)
@@ -29,11 +29,7 @@
     kb_layout = "gb";
     follow_mouse = 1;
     sensitivity = 0;
-    tablet = if userOptions.device == "pc" then {
-      # Doesn't seem to work
-      transform = 2;
-      output = "DP-2";
-    } else null;
+    touchpad.natural_scroll = true;
   };
 
   general = {

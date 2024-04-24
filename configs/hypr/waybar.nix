@@ -1,4 +1,4 @@
-{userOptions, ...}:
+{userOptions, lib, ...}:
 
 {
   bar = {
@@ -8,12 +8,11 @@
     spacing = 8;
     modules-left = ["hyprland/workspaces"];
     modules-center = ["hyprland/window" "clock" "mpris"];
-    modules-right = ["cava" "pulseaudio" "network" "temperature" "cpu" "custom/gpu" "disk"];
+    modules-right = ["cava" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
 
     # Audio visualiser
     "cava" = {
-      # TODO: use ${builtins.getEnv "HOME"} or similar
-      cava_config = "/home/jeremy/.config/cava/config";
+      cava_config = "/home/${userOptions.username}/.config/cava/config";
       framerate = 30;
       autosens = 1;
       bars = 14;
@@ -156,12 +155,15 @@
       format = "{temperatureC}°C";
     };
 
-    "custom/gpu" = {
+    "custom/nvidia-gpu" = {
       interval = 6;
       exec = "echo   $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%";
     };
 
-    # TODO: Add UPower settings - makes more sense to do it at a laptop
+    "custom/battery" = {
+      interval = 10;
+      exec = "echo \" $(cat /sys/class/power_supply/BAT0/capacity)% | $(cat /sys/class/power_supply/BAT0/status)\"";
+    };
 
   };
 }

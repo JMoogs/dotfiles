@@ -8,7 +8,12 @@
   imports =
     [ 
       # Include the results of the hardware scan.
-      ./hardware-configuration.nix
+      (if userOptions.device == "pc" then
+        ./hardware-configs/PC.nix 
+      else if userOptions.device == "laptop" then
+        ./hardware-configs/laptop.nix
+      else null)
+      # ./hardware-configuration.nix
     ];
 
 
@@ -195,8 +200,16 @@
     dev = "nix-shell --command fish";
     # for fun
     please = "sudo";
-    hbuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-pc-hypr";
-    ibuild = "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos";
+    hbuild = if userOptions.device == "pc" then
+      "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-pc-hypr"
+     else if userOptions.device == "laptop" then
+      "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-laptop-hypr"
+     else null;
+    ibuild = if userOptions.device == "pc" then
+      "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos"
+    else if userOptions.device == "laptop" then
+      "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-laptop-i3"
+    else null;
     cdconfig = "cd /etc/nixos";
     edithome = "sudoedit /etc/nixos/home.nix";
     editconfig = "sudoedit /etc/nixos/configuration.nix";
@@ -232,7 +245,7 @@
   # Allow swaylock to unlock PC
   security.pam.services.swaylock = {};
 
-  # Hyplock
+  # Hyprlock
   security.pam.services.hyprlock = {};
 
   # Enable the OpenSSH daemon.
