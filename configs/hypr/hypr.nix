@@ -30,6 +30,10 @@
     follow_mouse = 1;
     sensitivity = 0;
     touchpad.natural_scroll = true;
+    tablet = {
+      output = "DP-2";
+      left_handed = true;
+    };
   };
 
   general = {
