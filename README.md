@@ -1,20 +1,22 @@
-# My NixOS Dotfiles
+# My NixOS + home-manager dotfiles
 
 ## Setup
 
+**NixOS version: Unstable**
+
 ### General
-- Theme: [Dracula](https://draculatheme.com/)
+- Themes: [Dracula](https://draculatheme.com/), [catppuccin mocha](https://catppuccin.com/), and [catppuccin latte](https://catppuccin.com/)
 - Terminal Emulator: [Alacritty](https://github.com/alacritty/alacritty)
 - Shell: [Fish](https://fishshell.com/)
-- Terminal Multiplexer: [Tmux](https://github.com/tmux/tmux)
+- Terminal Multiplexers: [Tmux](https://github.com/tmux/tmux) and [Zellij](https://github.com/zellij-org/zellij)
 - Editor: [Helix](https://helix-editor.com/)
-- Browser: [Floorp](https://floorp.app/en/) and [Firefox](https://www.mozilla.org/en-GB/firefox/)
+- Browsers: [Floorp](https://floorp.app/en/) and [Firefox](https://www.mozilla.org/en-GB/firefox/)
 - Launcher: [Rofi](https://github.com/davatorium/rofi)
-- Window Manager: [Hyprland](https://github.com/hyprwm/Hyprland) or [i3](https://i3wm.org/)
+- Window Managers: [Hyprland](https://github.com/hyprwm/Hyprland) and [i3](https://i3wm.org/)
 
 ### Hyprland Specific
 - Bar: [Waybar](https://github.com/Alexays/Waybar)
-- Lock screen: [Swaylock](https://github.com/swaywm/swaylock)
+- Lock screen: [Hyprlock](https://github.com/hyprwm/hyprlock)
 - Notifications: [Dunst](https://github.com/dunst-project/dunst)
 - Screenshots: [Grimblast](https://github.com/hyprwm/contrib)
 

@@ -1,12 +1,14 @@
 {pkgs, lib, userOptions, inputs, ...}:
 
-let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in{
+let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in {
 
   imports = lib.optionals (userOptions.wm == "hyprland") [
     inputs.ags.homeManagerModules.default
     inputs.hyprlock.homeManagerModules.default
+    inputs.hypridle.homeManagerModules.default
   ];
 
+  # For any extra programs I want to install
   home.sessionPath = [ "$HOME/Documents/Apps" ];
   home.packages = with pkgs; [
     # Browsers
@@ -72,13 +74,14 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     file
     # System monitor (TUI)
     bottom
+    # File sync
+    syncthing
 
     # -----------------------------
 
     # Note taking
 
     # Obisdian for MD notes
-    # Use unstable: https://github.com/NixOS/nixpkgs/issues/276988
     obsidian
     # Wikipedia tui
     wiki-tui
@@ -141,8 +144,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     wineWowPackages.waylandFull
     # Anime
     ani-cli
-    # Mod manager
-    r2modman
     
 
     # -----------------------------
@@ -199,12 +200,25 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     
 
   ] ++ lib.optionals (userOptions.wm == "i3") [
-
+    # Screenshot tool
     flameshot
-    
     # Clipboard for x11
     xclip
 
+  ] ++ lib.optionals (userOptions.device == "pc") [
+     # For heavier things that I probably won't use on my laptop
+     
+    # Other maths
+    (sage.override {
+     requireSageTests = false; 
+    })
+
+    # Game engine
+    godot_4
+    gdtoolkit
+
+    # Mod manager
+    r2modman
   ];
 
   # Terminal emulator
@@ -218,6 +232,19 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     defaultEditor = true;
     enable = true;
     settings = import ./configs/editor.nix { inherit themes; };
+    languages = {
+      language-server.godot = {
+        command = "nc";
+        args = [ "127.0.0.1" "6005"];
+      };
+      
+      language = [
+        {
+          name = "gdscript";
+          language-servers = ["godot"];
+        }
+      ];
+    };
   };
 
   # New multiplexer?
@@ -269,6 +296,10 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   # Lock screen for hypr
   programs.hyprlock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
     (import ./configs/hypr/hyprlock.nix {inherit themes;});
+
+  # Idle manager
+  services.hypridle = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
+    (import ./configs/hypr/hypridle.nix {inherit userOptions; inherit lib;});
 
   # Widgets for hypr
   # programs.ags = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {

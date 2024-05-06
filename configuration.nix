@@ -109,6 +109,7 @@
     nvidiaSettings = true;
 
     # package = if userOptions.wm == "hyprland" then config.boot.kernelPackages.nvidiaPackages.production else config.boot.kernelPackages.nvidiaPackages.stable;
+
   };
 
   # Wayland 
@@ -183,6 +184,7 @@
   nixpkgs.config = {
     allowUnfree = true;
     permittedInsecurePackages = []; # Currently none required
+    nvidia.acceptLicense = true;
   };
 
   # Environment variables
@@ -252,8 +254,8 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  # networking.firewall.allowedTCPPorts = [ ... ];
-  # networking.firewall.allowedUDPPorts = [ ... ];
+  networking.firewall.allowedTCPPorts = [ 7777 ];
+  networking.firewall.allowedUDPPorts = [ 7777 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;
 

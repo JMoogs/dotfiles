@@ -7,13 +7,13 @@
 
   listeners = [
     {
-      timeout = 300;
+      timeout = 150;
       onTimeout = "loginctl lock-session";
     }
     
   ] ++ lib.optionals (userOptions.device == "laptop") [
     {
-      timeout = 330;
+      timeout = 180;
       onTimeout = "systemctl suspend";
     }
   ];

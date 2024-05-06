@@ -12,12 +12,22 @@
 
     hyprlock.url = "github:hyprwm/hyprlock";
     hyprlock.inputs.nixpkgs.follows = "nixpkgs";
+
+    hypridle.url = "github:hyprwm/hypridle";
+    hypridle.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, home-manager, ...} @ inputs : {
 
     nixosConfigurations = {
-      "Jeremy-nixos" = let opts = {nvidia = true; hostname = "Jeremy-nixos"; username = "jeremy"; wm = "i3"; device = "pc"; theme = "dracula"; }; in nixpkgs.lib.nixosSystem rec {
+      "Jeremy-nixos" = let opts = { 
+        nvidia = true;
+        hostname = "Jeremy-nixos";
+        username = "jeremy";
+        wm = "i3";
+        device = "pc";
+        theme = "frappe";
+       }; in nixpkgs.lib.nixosSystem  {
         specialArgs = {inherit inputs;
             userOptions = opts;
         };
@@ -37,7 +47,14 @@
         ];
       };     
 
-      "Jeremy-pc-hypr" = let opts = { nvidia = true; hostname = "Jeremy-nixos"; username = "jeremy"; wm = "hyprland"; device = "pc"; theme = "frappe"; }; in nixpkgs.lib.nixosSystem rec {
+      "Jeremy-pc-hypr" = let opts = {
+        nvidia = true;
+        hostname = "Jeremy-nixos";
+        username = "jeremy";
+        wm = "hyprland";
+        device = "pc";
+        theme = "frappe";
+       }; in nixpkgs.lib.nixosSystem  {
         specialArgs = {inherit inputs;
             userOptions = opts;
         };
@@ -57,7 +74,14 @@
         ];
       };
 
-      "Jeremy-laptop-hypr" = let opts = { nvidia = false; hostname = "Jeremy-nixos-laptop"; username = "jeremy"; wm = "hyprland"; device = "laptop"; theme = "frappe"; }; in nixpkgs.lib.nixosSystem rec {
+      "Jeremy-laptop-hypr" = let opts = { 
+        nvidia = false;
+        hostname = "Jeremy-nixos-laptop";
+        username = "jeremy";
+        wm = "hyprland";
+        device = "laptop";
+        theme = "frappe";
+       }; in nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;
             userOptions = opts;
         };
@@ -77,7 +101,14 @@
         ];
       };
 
-      "Jeremy-laptop-i3" = let opts = { nvidia = false; hostname = "Jeremy-nixos-laptop"; username = "jeremy"; wm = "i3"; device = "laptop"; theme = "frappe"; }; in nixpkgs.lib.nixosSystem rec {
+      "Jeremy-laptop-i3" = let opts = { 
+        nvidia = false;
+        hostname = "Jeremy-nixos-laptop";
+        username = "jeremy";
+        wm = "i3";
+        device = "laptop";
+        theme = "frappe";
+       }; in nixpkgs.lib.nixosSystem {
         specialArgs = {inherit inputs;
             userOptions = opts;
         };
