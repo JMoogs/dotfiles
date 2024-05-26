@@ -148,6 +148,7 @@
       on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
       on-click-right = "pgrep pavucontrol | xargs kill || pavucontrol &> /dev/null";
       scroll-step = 1.0;
+      ignored-sinks = ["Easy Effects Sink"];
     };
 
     "temperature" = {

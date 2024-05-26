@@ -1,20 +1,22 @@
 {lib, userOptions, ...}:
 
 {
-  enable = true;
+  enable = false;
 
-  lockCmd = "pidof hyprlock | hyprlock";
+  settings = {
+    lockCmd = "pidof hyprlock | hyprlock";
 
-  listeners = [
-    {
-      timeout = 150;
-      onTimeout = "loginctl lock-session";
-    }
+    listener = [
+      {
+        timeout = if userOptions.device == "laptop" then 120 else 600;
+        on-timeout = "loginctl lock-session";
+      }
     
-  ] ++ lib.optionals (userOptions.device == "laptop") [
-    {
-      timeout = 180;
-      onTimeout = "systemctl suspend";
-    }
-  ];
+    ] ++ lib.optionals (userOptions.device == "laptop") [
+      {
+        timeout = 180;
+        on-timeout = "systemctl suspend";
+      }
+    ];
+  };
 }

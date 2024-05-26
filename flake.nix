@@ -10,11 +10,14 @@
     };
     ags.url = "github:Aylur/ags";
 
-    hyprlock.url = "github:hyprwm/hyprlock";
-    hyprlock.inputs.nixpkgs.follows = "nixpkgs";
+    # Temporary until next hyprland version
+    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
 
-    hypridle.url = "github:hyprwm/hypridle";
-    hypridle.inputs.nixpkgs.follows = "nixpkgs";
+    # hyprlock.url = "github:hyprwm/hyprlock";
+    # hyprlock.inputs.nixpkgs.follows = "nixpkgs";
+
+    # hypridle.url = "github:hyprwm/hypridle";
+    # hypridle.inputs.nixpkgs.follows = "nixpkgs";
   };
 
   outputs = { self, nixpkgs, home-manager, ...} @ inputs : {

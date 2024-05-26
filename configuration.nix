@@ -34,6 +34,8 @@
       configurationLimit = 5;
     };
   };
+  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelParams = ["nvidia_drm.fbdev=1"];
 
   networking.hostName = userOptions.hostname; # Define your hostname.
   networking.networkmanager.enable = true;  # Easiest to use and most distros use this by default.
@@ -109,6 +111,16 @@
     nvidiaSettings = true;
 
     # package = if userOptions.wm == "hyprland" then config.boot.kernelPackages.nvidiaPackages.production else config.boot.kernelPackages.nvidiaPackages.stable;
+    # Use 555 
+    # package = config.boot.kernelPackages.nvidiaPackages.mkDriver {
+    #   version = "555.42.02";
+    #   sha256_64bit = "sha256-k7cI3ZDlKp4mT46jMkLaIrc2YUx1lh1wj/J4SVSHWyk=";
+    #   sha256_aarch64 = "sha256-rtDxQjClJ+gyrCLvdZlT56YyHQ4sbaL+d5tL4L4VfkA=";
+    #   openSha256 = "sha256-rtDxQjClJ+gyrCLvdZlT56YyHQ4sbaL+d5tL4L4VfkA=";
+    #   settingsSha256 = "sha256-rtDxQjClJ+gyrCLvdZlT56YyHQ4sbaL+d5tL4L4VfkA="; 
+    #   persistencedSha256 = lib.fakeSha256;
+    # };
+    package = config.boot.kernelPackages.nvidiaPackages.beta;
 
   };
 
@@ -152,6 +164,11 @@
 
   # Enable CUPS to print documents.
   # services.printing.enable = true;
+  services.printing = {
+    enable = true;
+    drivers = [pkgs.hplip];
+  };
+
 
   # Enable sound.
   # Use pipewire since it's needed for screensharing, etc. on Hyprland
@@ -180,12 +197,26 @@
   # Enable touchpad support (enabled default in most desktopManager).
 
   # Nix & Nixpkgs config
-  nix.settings.experimental-features = [ "nix-command" "flakes" ];
+  nix.settings = {
+    experimental-features = [ "nix-command" "flakes" ];
+    # Temporary
+    substituters = ["https://hyprland.cachix.org"];
+    trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
+  };
+
   nixpkgs.config = {
     allowUnfree = true;
     permittedInsecurePackages = []; # Currently none required
     nvidia.acceptLicense = true;
   };
+  nixpkgs.overlays = [
+    # Openrazer fix: https://github.com/NixOS/nixpkgs/issues/310205
+    (self: super: {
+      openrazer-daemon = super.openrazer-daemon.overrideAttrs (oldAttrs: {
+        nativeBuildInputs = (oldAttrs.nativeBuildInputs or []) ++ [pkgs.gobject-introspection pkgs.wrapGAppsHook3 pkgs.python3Packages.wrapPython];
+      });
+    })
+  ];
 
   # Environment variables
   environment.variables = {
@@ -254,7 +285,7 @@
   # services.openssh.enable = true;
 
   # Open ports in the firewall.
-  networking.firewall.allowedTCPPorts = [ 7777 ];
+  networking.firewall.allowedTCPPorts = [ 7777 22000 ];
   networking.firewall.allowedUDPPorts = [ 7777 ];
   # Or disable the firewall altogether.
   # networking.firewall.enable = false;

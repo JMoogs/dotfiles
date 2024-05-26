@@ -4,8 +4,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
   imports = lib.optionals (userOptions.wm == "hyprland") [
     inputs.ags.homeManagerModules.default
-    inputs.hyprlock.homeManagerModules.default
-    inputs.hypridle.homeManagerModules.default
   ];
 
   # For any extra programs I want to install
@@ -74,13 +72,15 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     file
     # System monitor (TUI)
     bottom
-    # File sync
-    syncthing
 
     # -----------------------------
 
     # Note taking
 
+    # Typst
+    typst
+    typst-lsp
+    zathura
     # Obisdian for MD notes
     obsidian
     # Wikipedia tui
@@ -144,6 +144,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     wineWowPackages.waylandFull
     # Anime
     ani-cli
+    # syncplay
     
 
     # -----------------------------
@@ -219,6 +220,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
     # Mod manager
     r2modman
+
   ];
 
   # Terminal emulator
@@ -291,6 +293,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   wayland.windowManager.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
     enable = true;
     settings = (import ./configs/hypr/hypr.nix) { inherit lib; inherit userOptions; };
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
   };
 
   # Lock screen for hypr
@@ -354,6 +357,9 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     enable = true;
     pinentryPackage = pkgs.pinentry-gnome3;
   };
+
+  # File syncing
+  services.syncthing.enable = true;
 
   # DO NOT CHANGE - Supposed to stay at the original install version 
   home.stateVersion = "23.05";

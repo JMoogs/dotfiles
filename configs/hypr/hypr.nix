@@ -3,7 +3,7 @@
 {
   # See https://wiki.hyprland.org/Configuring/Monitors/
   monitor = if userOptions.device == "pc" then ["DP-2, 2560x1440@144, 0x0, 1"
-   "HDMI-A-2, 1920x1080@60, 2560x300, 1"] else [", preferred, auto, 1"];
+   "HDMI-A-2, 1920x1080@60, 2560x300, 1" "Unknown-1, disable"] else [", preferred, auto, 1"];
 
   # Bind workspaces to correct monitors
   workspace = if userOptions.device == "pc" then ["1, monitor:DP-2, default=true" 
@@ -22,7 +22,7 @@
 
   # Some default env vars
   # + Nvidia setup
-  env = ["XCURSOR_SIZE, 24" ] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "WLR_NO_HARDWARE_CURSORS, 1" "NIXOS_OZONE_WL, 1"];
+  env = ["XCURSOR_SIZE, 24" ] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "NIXOS_OZONE_WL, 1"];
 
   # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
   input = {
@@ -51,6 +51,11 @@
       # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
       allow_tearing = false;
   };
+
+  # cursor = {
+  #   no_hardware_cursors = true;
+  #   enable_hyprcursor = false;
+  # };
 
   
   decoration = {
