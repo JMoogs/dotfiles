@@ -97,6 +97,9 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
       withOpenASAR = true;
       withVencord = true;
     })
+    # Vekstop for screensharing
+    vesktop
+
     webcord
     # Matrix
     element-desktop
@@ -220,6 +223,10 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
     # Mod manager
     r2modman
+
+    # VMs
+    qemu
+    quickemu
 
   ];
 

@@ -31,7 +31,7 @@
       efiSupport = true;
       device = "nodev";
       # Store 5 generations
-      configurationLimit = 5;
+      configurationLimit = 15;
     };
   };
   boot.kernelPackages = pkgs.linuxPackages_latest;
@@ -268,6 +268,7 @@
 
   # Waydroid for android apps
   virtualisation.waydroid.enable = true;
+  virtualisation.libvirtd.enable = true;
 
   # Ratbagd for mouse config?
   services.ratbagd.enable = true;
