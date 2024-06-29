@@ -86,7 +86,7 @@
   # Enable OpenGL
   hardware.opengl = {
     enable = true;
-    driSupport = true;
+    # driSupport = true;
     driSupport32Bit = true;
     extraPackages = if userOptions.nvidia then with pkgs; [ libvdpau-va-gl nvidia-vaapi-driver ] else [];
   };
@@ -183,7 +183,7 @@
   # Screensharing
   xdg.portal = {
     enable = true;
-    wlr.enable = true;
+    # wlr.enable = true;
     extraPortals = with pkgs; [xdg-desktop-portal-gtk]; 
   };
 
@@ -222,6 +222,14 @@
   environment.variables = {
     EDITOR = "hx";
     SHELL = "fish";
+  };
+
+  # Needed for cava to work with waybar rn: https://github.com/Alexays/Waybar/issues/3276
+  environment.sessionVariables = {
+    XDG_CACHE_HOME  = "$HOME/.cache";
+    XDG_CONFIG_HOME = "$HOME/.config";
+    XDG_DATA_HOME   = "$HOME/.local/share";
+    XDG_STATE_HOME  = "$HOME/.local/state";
   };
 
   # Change shell to fish

@@ -6,16 +6,14 @@
     position = "top";
     height = 30;
     spacing = 8;
-    modules-left = ["hyprland/workspaces"];
-    modules-center = ["hyprland/window" "clock" "mpris"];
-    # modules-right = ["cava" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
-    # Temporarily remove cava as it causes a segfault: 
-    # https://github.com/Alexays/Waybar/issues?q=is%3Aissue+cava
-    modules-right = ["pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
+    # modules-left = ["hyprland/workspaces"];
+    # modules-center = ["hyprland/window" "clock" "mpris"];
+    modules-center = [ "clock" "mpris"];
+    modules-right = ["cava" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
 
     # Audio visualiser
-
     "cava" = {
+      cava_config = "/home/${userOptions.username}/.config/cava/config";
       framerate = 30;
       autosens = 1;
       bars = 14;
@@ -75,39 +73,39 @@
       format = " {percentage_used}%";
     };
 
-    "hyprland/workspaces" = {
-      all-outputs = true;
-      # show-special = true;
-      format = "{id}: {windows}";
-      window-rewrite-default = "";
-      window-rewrite = {
-        "class<Alacritty>" = " ";
-        "class<firefox>" = " ";
-        "class<floorp>" = " ";
-        "class<discord>" = " ";
-        "class<com\\.obsproject\\.Studio>" = " ";
-        "class<.*libre.*>" = " ";
-      };
-      # format = "{id}: {icon}";
-      # format-icons = {
-      #   "1" = "";
-      #   "2" = "";
-      #   "3" = "";
-      #   "urgent" = "";
-      #   "special" = "";
-      #   "default" = "";
-      # };
-    };
+    # "hyprland/workspaces" = {
+    #   all-outputs = true;
+    #   # show-special = true;
+    #   format = "{id}: {windows}";
+    #   window-rewrite-default = "";
+    #   window-rewrite = {
+    #     "class<Alacritty>" = " ";
+    #     "class<firefox>" = " ";
+    #     "class<floorp>" = " ";
+    #     "class<discord>" = " ";
+    #     "class<com\\.obsproject\\.Studio>" = " ";
+    #     "class<.*libre.*>" = " ";
+    #   };
+    #   # format = "{id}: {icon}";
+    #   # format-icons = {
+    #   #   "1" = "";
+    #   #   "2" = "";
+    #   #   "3" = "";
+    #   #   "urgent" = "";
+    #   #   "special" = "";
+    #   #   "default" = "";
+    #   # };
+    # };
 
-    "hyprland/window" = {
-      format = "{title}";
-      rewrite = {
-        "(.*) — Mozilla Firefox" = "  $1";
-        "(.*) — Ablaze Floorp" = "  $1";
-        "(.*) - Discord" = "  $1";
-        "cava" = " ";
-      };
-    };
+    # "hyprland/window" = {
+    #   format = "{title}";
+    #   rewrite = {
+    #     "(.*) — Mozilla Firefox" = "  $1";
+    #     "(.*) — Ablaze Floorp" = "  $1";
+    #     "(.*) - Discord" = "  $1";
+    #     "cava" = " ";
+    #   };
+    # };
 
     "memory" = {
       interval = 6;

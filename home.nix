@@ -70,6 +70,8 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     wget
     # Check file types
     file
+    # File transfer tool
+    croc
     # System monitor (TUI)
     bottom
 
@@ -97,6 +99,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
       withOpenASAR = true;
       withVencord = true;
     })
+    # discord
     # Vekstop for screensharing
     vesktop
 
@@ -219,7 +222,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
     # Game engine
     godot_4
-    gdtoolkit
+    gdtoolkit_4
 
     # Mod manager
     r2modman
