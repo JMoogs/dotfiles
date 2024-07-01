@@ -95,11 +95,11 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     # Comms
 
     # Discord with vencord
-    (discord.override {
-      withOpenASAR = true;
-      withVencord = true;
-    })
-    # discord
+    # (discord.override {
+    #   withOpenASAR = true;
+    #   withVencord = true;
+    # })
+    discord
     # Vekstop for screensharing
     vesktop
 
