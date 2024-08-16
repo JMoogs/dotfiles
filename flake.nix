@@ -11,7 +11,15 @@
     ags.url = "github:Aylur/ags";
 
     # Temporary until next hyprland version
-    hyprland.url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+    hyprland = {
+      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    nixvim = {
+      url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # hyprlock.url = "github:hyprwm/hyprlock";
     # hyprlock.inputs.nixpkgs.follows = "nixpkgs";

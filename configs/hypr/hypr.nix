@@ -14,7 +14,7 @@
   exec-once = ["dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" 
   "waypaper --restore --random"
   "waybar"
-  "floorp"
+  "firefox"
   ] ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
 
   # Source a file (multi-file configs)
@@ -22,7 +22,7 @@
 
   # Some default env vars
   # + Nvidia setup
-  env = ["XCURSOR_SIZE, 24" ] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "NIXOS_OZONE_WL, 1"];
+  env = ["XCURSOR_SIZE, 24" "HYPRCURSOR_THEME, HyprBibataModernClassicSVG" ] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "NIXOS_OZONE_WL, 1"];
 
   # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
   input = {
@@ -120,7 +120,7 @@
     # Floating
     "$mainMod, V, togglefloating, "
     # Firefox (floorp) shortcut
-    "$mainMod, F, exec, floorp"
+    "$mainMod, F, exec, firefox"
     # App Launcher
     "$mainMod, D, exec, rofi -show drun"
     # Full screen
@@ -192,7 +192,7 @@
     "CONTROL $mainMod, right, exec, playerctl position 5+"
 
     # Toggle opacity
-    "$mainMod, Q, toggleopaque"
+    "$mainMod, Q, exec, hyprctl setprop active opaque toggle"
 
     # Discord PTT binding
     ", mouse:276, pass, ^(discord)$"

@@ -2,7 +2,7 @@
 
 let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in {
 
-  imports = lib.optionals (userOptions.wm == "hyprland") [
+  imports = [ inputs.nixvim.homeManagerModules.nixvim ] ++ lib.optionals (userOptions.wm == "hyprland") [
     inputs.ags.homeManagerModules.default
   ];
 
@@ -12,9 +12,9 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     # Browsers
 
     # Main browser
-    floorp
-    # Backup browser
     firefox
+    # Backup browser
+    floorp
     # -----------------------------
 
     # Terminal Setup
@@ -47,8 +47,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
     # Media
 
-    # Mpv (media player) with mpris support
-    (mpv.override {scripts = [mpvScripts.mpris]; })
     # Youtube downloader
     yt-dlp
     # Other utilities
@@ -64,6 +62,10 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     ripgrep
     # List subdirectories (ls alternative)
     tree
+    # Cooler cat
+    bat
+    # curl with cloudflare bypass
+    curl-impersonate
     # Self explanatory
     killall
     # Get files from the web
@@ -96,7 +98,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
     # Discord with vencord
     (discord.override {
-      withOpenASAR = true;
+      # withOpenASAR = true;
       withVencord = true;
     })
     # discord
@@ -231,7 +233,30 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
     qemu
     quickemu
 
+    # Jetbrains
+    jetbrains.rust-rover
+    jetbrains.clion
+
   ];
+
+  # Nixvim (testing)
+  programs.nixvim = import ./configs/neovim {inherit themes; inherit pkgs;};
+
+  # Neovim (testing)
+  # Programs.neovim = {
+  #   enable = true;
+  #   defaultEditor = true;
+  #   viAlias = true;
+  #   vimAlias = true;
+  #   plugins = with pkgs; [
+  #     vimPlugins.lazy-nvim
+  #     # vimPlugins.nvim-treesitter.withAllGrammars
+  #     vimPlugins.which-key-nvim
+  #   ];
+
+  #   # extraConfig = lib.fileContents ./configs/neovim/init.vim;
+  #   extraLuaConfig = lib.fileContents ./configs/neovim/init.lua;
+  # };
 
   # Terminal emulator
   programs.alacritty = {
@@ -241,7 +266,7 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
 
   # Editor
   programs.helix = {
-    defaultEditor = true;
+    # defaultEditor = true;
     enable = true;
     settings = import ./configs/editor.nix { inherit themes; };
     languages = {
@@ -309,6 +334,24 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   # Lock screen for hypr
   programs.hyprlock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
     (import ./configs/hypr/hyprlock.nix {inherit themes;});
+
+    # Mpv (media player) with mpris support among other things
+  programs.mpv = {
+    enable = true;
+    scripts = with pkgs; [
+      mpvScripts.mpris
+      mpvScripts.sponsorblock
+      mpvScripts.youtube-upnext
+      mpvScripts.mpv-cheatsheet
+      mpvScripts.uosc
+      (mpvScripts.quality-menu.override { oscSupport = true; })
+    ];
+    config = { osd-font-size = 10; };
+    extraInput = ''
+        Alt+f script-binding quality_menu/video_formats_toggle #! Stream Quality > Video
+        Alt+g script-binding quality_menu/audio_formats_toggle #! Stream Quality > Audio
+    '';
+  };
 
   # Idle manager
   services.hypridle = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")

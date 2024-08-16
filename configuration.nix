@@ -84,10 +84,9 @@
   fonts.packages = [ pkgs.nerdfonts ];
 
   # Enable OpenGL
-  hardware.opengl = {
+  hardware.graphics = {
     enable = true;
-    # driSupport = true;
-    driSupport32Bit = true;
+    enable32Bit = true;
     extraPackages = if userOptions.nvidia then with pkgs; [ libvdpau-va-gl nvidia-vaapi-driver ] else [];
   };
 
@@ -135,6 +134,14 @@
 
   # Corectrl
   programs.corectrl.enable = true;
+
+  # Sunshine for streaming
+  services.sunshine = {
+    enable = true;
+    autoStart = true;
+    capSysAdmin = true;
+    openFirewall = true;
+  };
   
   # Enable the X11 windowing system.
   services.xserver = {
@@ -220,7 +227,8 @@
 
   # Environment variables
   environment.variables = {
-    EDITOR = "hx";
+    # EDITOR = "hx";
+    EDITOR = "nvim";
     SHELL = "fish";
   };
 
