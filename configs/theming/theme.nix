@@ -74,6 +74,10 @@ in {
     }
     else null;
 
+  # Home manager expects configuration in Nix, but it's easier to just convert back
+  # and forth rather than rewriting in Nix.
+  yaziTheme = builtins.fromTOML (builtins.readFile ./yazi/${theme}.toml);
+
   dunstTheme = /etc/nixos/configs/theming/dunst/${theme};
 
   hyprTheme =

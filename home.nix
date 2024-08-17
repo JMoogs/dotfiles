@@ -52,7 +52,6 @@ in {
       wget # Get files from the web
       file # Check file types
       bottom # A TUI system monitor
-      yazi # File manager
       # -----------------------------
       # Note taking
       typst # A program for writing and formatting scientific documents
@@ -227,6 +226,13 @@ in {
   # Lock screen
   programs.hyprlock =
     import ./configs/hypr/hyprlock.nix {inherit themes;};
+
+  # File manager
+  programs.yazi = {
+    enable = true;
+    theme = themes.yaziTheme;
+    enableFishIntegration = true;
+  };
 
   # Mpv (media player) with mpris support among other things
   programs.mpv = {
