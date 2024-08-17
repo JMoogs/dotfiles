@@ -16,6 +16,9 @@ in {
   ];
 
   # Any extra programs I want in my path can be added to this folder:
+  home.sessionVariables = {
+    CONFIG_THEME = themes.name;
+  };
   home.sessionPath = ["$HOME/Documents/Apps"];
   home.packages = with pkgs;
     [
@@ -40,6 +43,7 @@ in {
       # Media
       yt-dlp # Youtube downloader
       ffmpeg # Media processing
+      pulseaudio # Required for waybar muting
       pavucontrol # Sound controls
       playerctl # Playing media controls
       # -----------------------------
@@ -102,6 +106,7 @@ in {
       wl-clipboard # Clipboard
       grimblast # Screenshot utility
       hyprpaper # Set wallpapers
+      hyprshade # Blue light filter and other shaders
       # waypaper # wallpaper GUI + randomizer
       (pkgs.callPackage ./pkgs/waypaper.nix {}) # Custom waypaper for now as unstable isn't updated to 2.2, which is required for the Hyprpaper backend
       (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {}) # A fix for PTT on Discord on Wayland
@@ -260,16 +265,17 @@ in {
   };
 
   # Widgets for hypr
-  # programs.ags = {
-  #   enable = true;
-  #   configDir = ./configs/hypr/ags;
-  # };
-
-  # Notification daemon for hypr
-  services.dunst = {
+  programs.ags = {
     enable = true;
-    configFile = themes.dunstTheme;
+    configDir = ./configs/hypr/ags;
   };
+
+  # Currently testing using ags as a replacement
+  # Notification daemon for hypr
+  # services.dunst = {
+  #   enable = true;
+  #   configFile = themes.dunstTheme;
+  # };
 
   # Audio effects
   services.easyeffects.enable = true;

@@ -175,9 +175,12 @@
     wacom.enable = true;
   };
 
-  # Hyprland login manager
-  services.displayManager.sddm.enable = true;
-  services.displayManager.sddm.wayland.enable = true;
+  # Login manager
+  services.displayManager.sddm = {
+    enable = true;
+    wayland.enable = true;
+    theme = "sugar-candy";
+  };
 
   # Enable CUPS to print documents.
   services.printing = {
@@ -253,6 +256,10 @@
     XDG_DATA_HOME = "$HOME/.local/share";
     XDG_STATE_HOME = "$HOME/.local/state";
   };
+
+  environment.systemPackages = [
+    pkgs.libsForQt5.qt5.qtgraphicaleffects
+  ];
 
   # Change shell to fish
   programs.fish.enable = true;

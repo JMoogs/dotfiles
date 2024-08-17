@@ -1,17 +1,25 @@
-{userOptions, lib, ...}:
-
 {
+  userOptions,
+  lib,
+  ...
+}: {
   bar = {
     layer = "top";
     position = "top";
-    height = 30;
-    spacing = 8;
-    modules-left = ["hyprland/workspaces"];
-    modules-center = ["hyprland/window" "clock" "mpris"];
-    # modules-right = ["cava" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
-    # Temporarily remove cava as it causes a segfault: 
+    mod = "dock";
+    gtk-layer-shell = true;
+    exclusive = true;
+    passthrough = false;
+    height = 40;
+    modules-left = ["custom/leftpad" "hyprland/workspaces" "custom/rightpad"];
+    modules-center = ["custom/leftpad" "hyprland/window" "clock" "mpris" "custom/rightpad"];
+
+    # NOTE: Temporarily remove cava as it causes a segfault:
     # https://github.com/Alexays/Waybar/issues?q=is%3Aissue+cava
-    modules-right = ["pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
+    # Broken as of 2024-08-17
+
+    # modules-right = ["cava" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk"];
+    modules-right = ["custom/leftpad" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk" "custom/rightpad"];
 
     # Audio visualiser
 
@@ -32,12 +40,11 @@
       hide_on_silence = true;
       sleep_timer = 5;
       input_delay = 2;
-      format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█" ];
+      format-icons = ["▁" "▂" "▃" "▄" "▅" "▆" "▇" "█"];
       actions = {
         on-right-click = "mode";
       };
     };
-
 
     "clock" = {
       interval = 1;
@@ -79,32 +86,41 @@
       all-outputs = true;
       # show-special = true;
       format = "{id}: {windows}";
-      window-rewrite-default = "";
+      # format = "{icon} {windows}";
+      format-icons = {
+        "1" = "一";
+        "2" = "二";
+        "3" = "三";
+        "4" = "四";
+        "5" = "五";
+        "6" = "六";
+        "7" = "七";
+        "8" = "八";
+        "9" = "九";
+        "10" = "十";
+      };
+      window-rewrite-default = " ";
       window-rewrite = {
         "class<Alacritty>" = " ";
+        "class<kitty>" = " ";
         "class<firefox>" = " ";
         "class<floorp>" = " ";
         "class<discord>" = " ";
         "class<com\\.obsproject\\.Studio>" = " ";
         "class<.*libre.*>" = " ";
       };
-      # format = "{id}: {icon}";
-      # format-icons = {
-      #   "1" = "";
-      #   "2" = "";
-      #   "3" = "";
-      #   "urgent" = "";
-      #   "special" = "";
-      #   "default" = "";
-      # };
     };
 
     "hyprland/window" = {
       format = "{title}";
       rewrite = {
+        # Both formats are used at this format
         "(.*) — Mozilla Firefox" = "  $1";
+        "Mozilla Firefox" = " ";
         "(.*) — Ablaze Floorp" = "  $1";
-        "(.*) - Discord" = "  $1";
+        "Ablaze Floorp" = " ";
+        " - Discord" = " "; # To prevent an extra space when no more text is to be displayed
+        "(.*) - Discord" = "  $1"; # Discord always displays like this, even if `(.*)` is empty
         "cava" = " ";
       };
     };
@@ -117,7 +133,7 @@
     # Firefox doesn't implement that much, is what it is :(
     # Maybe look to using a TUI?
     "mpris" = {
-      # The delay feels horrible
+      # Delay feels really bad here
       interval = 0.5;
       format = "󰗃 {title}";
       format-paused = " {title}";
@@ -150,6 +166,7 @@
       # Toggle pavucontrol
       on-click = "pactl set-sink-mute @DEFAULT_SINK@ toggle";
       on-click-right = "pgrep pavucontrol | xargs kill || pavucontrol &> /dev/null";
+      # Scrolling changes volume
       scroll-step = 1.0;
       ignored-sinks = ["Easy Effects Sink"];
     };
@@ -161,7 +178,7 @@
 
     "custom/nvidia-gpu" = {
       interval = 6;
-      exec = "echo   $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%";
+      exec = "echo  $(nvidia-smi --query-gpu=utilization.gpu --format=csv,noheader,nounits)%";
     };
 
     "custom/battery" = {
@@ -169,5 +186,16 @@
       exec = "echo \" $(cat /sys/class/power_supply/BAT0/capacity)% | $(cat /sys/class/power_supply/BAT0/status)\"";
     };
 
+    "custom/leftpad" = {
+      format = " ";
+      interval = "once";
+      tooltip = false;
+    };
+
+    "custom/rightpad" = {
+      format = " ";
+      interval = "once";
+      tooltip = false;
+    };
   };
 }

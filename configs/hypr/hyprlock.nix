@@ -1,15 +1,14 @@
-{ themes, ... }:
-
+{themes, ...}:
 # Reference:
 # https://wiki.hyprland.org/Hypr-Ecosystem/hyprlock/
 # https://github.com/hyprwm/hyprlock/blob/main/nix/hm-module.nix
-# Config stolen from catppuccin: https://github.com/catppuccin/hyprlock/blob/main/hyprlock.conf
-
-let theme = themes.hyprTheme; in {
+# Stolen from: https://github.com/FireStreaker2/dotfiles/blob/main/hypr/hyprlock.conf
+let
+  theme = themes.hyprTheme;
+in {
   enable = true;
 
   settings = {
-    
     general = {
       disable_loading_bar = true;
       hide_cursor = true;
@@ -19,7 +18,13 @@ let theme = themes.hyprTheme; in {
       {
         monitor = "";
         path = themes.hyprlockWallpaper;
-        blur_passes = 0;
+        blur_size = 4;
+        blur_passes = 3;
+        noise = 0.0117;
+        contrast = 1.3;
+        brightness = 0.8;
+        vibrancy = 0.21;
+        vibrancy_darkness = 0.0;
         color = theme.base;
       }
     ];
@@ -28,55 +33,51 @@ let theme = themes.hyprTheme; in {
       # Time
       {
         monitor = "";
-        text = "cmd[update:30000] echo \"$(date +\"%R\")\"";
+        text = "cmd[update:1000] echo \"<b><big> $(date +'%H:%M') </big></b>\"";
         color = theme.text;
-        font_size = 90;
+        font_size = 64;
+        font_family = "JetBrains Mono Nerd Font 10";
+        shadow_passes = 3;
+        shadow_size = 3;
 
-        position.x = -30;
-        position.y = 0;
-        halign = "right";
-        valign = "top";
+        position = "0, 10";
+        halign = "center";
+        valign = "center";
       }
 
+      # Date
       {
         monitor = "";
-        text = "cmd[update:43200000] echo \"$(date +\"%A, %d %B %Y\")\"";
+        text = "cmd[update:1800000] echo \"<b> $(date +'%A, %-d %B %Y') </b>\"";
         color = theme.text;
-        font_size = 25;
-        position.x = -30;
-        position.y = -150;
-        halign = "right";
-        valign = "top";
-      }
 
-    ];
+        font_size = 24;
+        font_family = "JetBrains Mono Nerd Font 10";
 
-    input-field = [
-      {
-        monitor = "";
-        size.width = 300;
-        size.height = 60;
-        outline_thickness = 4;
-        dots_size = 0.2;
-        dots_spacing = 0.2;
-        dots_center = true;
-        outer_color = theme.accent;
-        inner_color = theme.surface0;
-        font_color = theme.text;
-        fade_on_empty = false;
-        placeholder_text = "<span foreground=\"##${theme.textAlpha}\"><i>󰌾 Logged in as </i><span foreground=\"##${theme.accentAlpha}\">$USER</span></span>";
-        hide_input = false;
-        check_color = theme.accent;
-        fail_color = theme.red;
-        fail_text = "<i>$FAIL <b>($ATTEMPTS)</b></i>";
-        capslock_color = theme.yellow;
-        position.x = 0;
-        position.y = -35;
+        position = "0, -40";
         halign = "center";
         valign = "center";
       }
     ];
 
+    input-field = [
+      {
+        monitor = "";
+        size = "250, 50";
+        outline_thickness = 3;
+        dots_size = 0.26;
+        dots_spacing = 0.64;
+        dots_center = true;
+        fade_on_empty = true;
+        placeholder_text = "<i>Password...</i>";
+        hide_input = false;
+        check_color = theme.accent;
+        fail_color = theme.red;
+        capslock_color = theme.yellow;
+        position = "0, 50";
+        halign = "center";
+        valign = "bottom";
+      }
+    ];
   };
-  
 }

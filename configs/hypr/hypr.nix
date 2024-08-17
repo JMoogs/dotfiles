@@ -30,6 +30,7 @@
       "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
       "waypaper --restore --random"
       "waybar"
+      "ags"
       "firefox"
     ]
     ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
@@ -44,6 +45,7 @@
   # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
   input = {
     kb_layout = "gb";
+    kb_options = "compose:ralt";
     follow_mouse = 1;
     sensitivity = 0;
     touchpad.natural_scroll = true;
@@ -116,7 +118,7 @@
 
   misc = {
     # See https://wiki.hyprland.org/Configuring/Variables/ for more
-    force_default_wallpaper = -1; # Set to 0 to disable the anime mascot wallpapers
+    force_default_wallpaper = 0; # Set to 0 to disable the anime mascot wallpapers
   };
 
   "$mainMod" = "SUPER";
@@ -143,6 +145,8 @@
     # No idea tbh
     "$mainMod, P, pseudo," # dwindle
     "$mainMod, W, togglesplit," # dwindle
+    # Blue light filter
+    "$mainMod, B, exec, hyprshade toggle blue-light-filter"
     # Screenshots
     ", Print, exec, grimblast --freeze copy area"
     "ALT, Print, exec, grimblast copy active"
