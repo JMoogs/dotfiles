@@ -1,51 +1,57 @@
 {
   description = "My Nix/NixOS config";
 
-
   inputs = {
+    # Nixpkgs
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
+
+    # Home manager, a tool for declarative configuration of dotfiles
     home-manager = {
       url = "github:nix-community/home-manager";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Aylurs GTK shell, for widgets: https://aylur.github.io/ags-docs/
     ags.url = "github:Aylur/ags";
 
-    # Temporary until next hyprland version
+    # Use hyprland (WM) from master
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
+    # Nix version of neovim
     nixvim = {
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # hyprlock.url = "github:hyprwm/hyprlock";
-    # hyprlock.inputs.nixpkgs.follows = "nixpkgs";
-
-    # hypridle.url = "github:hyprwm/hypridle";
-    # hypridle.inputs.nixpkgs.follows = "nixpkgs";
   };
 
-  outputs = { self, nixpkgs, home-manager, ...} @ inputs : {
-
+  outputs = {
+    self,
+    nixpkgs,
+    home-manager,
+    ...
+  } @ inputs: {
     nixosConfigurations = {
-      "Jeremy-nixos" = let opts = { 
-        nvidia = true;
-        hostname = "Jeremy-nixos";
-        username = "jeremy";
-        wm = "i3";
-        device = "pc";
-        theme = "frappe";
-       }; in nixpkgs.lib.nixosSystem  {
-        specialArgs = {inherit inputs;
-            userOptions = opts;
+      "Jeremy-nixos" = let
+        opts = {
+          nvidia = true;
+          hostname = "Jeremy-nixos";
+          username = "jeremy";
+          device = "pc";
+          theme = "frappe";
         };
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
+      in
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+            userOptions = opts;
+          };
+          system = "x86_64-linux";
+          modules = [
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
@@ -55,91 +61,38 @@
                 userOptions = opts;
               };
             }
-        ];
-      };     
-
-      "Jeremy-pc-hypr" = let opts = {
-        nvidia = true;
-        hostname = "Jeremy-nixos";
-        username = "jeremy";
-        wm = "hyprland";
-        device = "pc";
-        theme = "frappe";
-       }; in nixpkgs.lib.nixosSystem  {
-        specialArgs = {inherit inputs;
-            userOptions = opts;
+          ];
         };
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
+
+      "Jeremy-laptop" = let
+        opts = {
+          nvidia = false;
+          hostname = "Jeremy-nixos-laptop";
+          username = "jeremy";
+          device = "laptop";
+          theme = "frappe";
+        };
+      in
+        nixpkgs.lib.nixosSystem {
+          specialArgs = {
+            inherit inputs;
+            userOptions = opts;
+          };
+          system = "x86_64-linux";
+          modules = [
+            ./configuration.nix
+            home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
               home-manager.useUserPackages = true;
-              home-manager.users."${opts.username}"= import ./home.nix;
+              home-manager.users."${opts.username}" = import ./home.nix;
               home-manager.extraSpecialArgs = {
                 inherit inputs;
                 userOptions = opts;
               };
             }
-        ];
-      };
-
-      "Jeremy-laptop-hypr" = let opts = { 
-        nvidia = false;
-        hostname = "Jeremy-nixos-laptop";
-        username = "jeremy";
-        wm = "hyprland";
-        device = "laptop";
-        theme = "frappe";
-       }; in nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;
-            userOptions = opts;
+          ];
         };
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users."${opts.username}"= import ./home.nix;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                userOptions = opts;
-              };
-            }
-        ];
-      };
-
-      "Jeremy-laptop-i3" = let opts = { 
-        nvidia = false;
-        hostname = "Jeremy-nixos-laptop";
-        username = "jeremy";
-        wm = "i3";
-        device = "laptop";
-        theme = "frappe";
-       }; in nixpkgs.lib.nixosSystem {
-        specialArgs = {inherit inputs;
-            userOptions = opts;
-        };
-        system = "x86_64-linux";
-        modules = [
-          ./configuration.nix
-          home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users."${opts.username}"= import ./home.nix;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                userOptions = opts;
-              };
-            }
-        ];
-      };
-      
-      
     };
   };
 }

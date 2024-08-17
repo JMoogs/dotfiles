@@ -1,6 +1,4 @@
-{userOptions, ...}:
-
-{
+{...}: {
   # Options can be found here:
   # https://zellij.dev/documentation/options
 
@@ -27,7 +25,7 @@
 
   scroll_buffer_size = 15000;
 
-  copy_command = if userOptions.wm == "hyprland" then "wl-copy" else "xclip -selection clipboard";
+  copy_command = "wl-copy";
 
   # Maybe it's a good setting, leave it on for now.
   # copy_on_select = false;
@@ -39,7 +37,4 @@
   # keybinds = {
   #   unbind = true;
   # };
-
-  
-  
 }

@@ -1,28 +1,45 @@
-{lib, userOptions, ...}:
-
 {
+  lib,
+  userOptions,
+  ...
+}: {
   # See https://wiki.hyprland.org/Configuring/Monitors/
-  monitor = if userOptions.device == "pc" then ["DP-2, 2560x1440@144, 0x0, 1"
-   "HDMI-A-2, 1920x1080@60, 2560x300, 1" "Unknown-1, disable"] else [", preferred, auto, 1"];
+  monitor =
+    if userOptions.device == "pc"
+    then [
+      "DP-2, 2560x1440@144, 0x0, 1"
+      "HDMI-A-2, 1920x1080@60, 2560x300, 1"
+      "Unknown-1, disable"
+    ]
+    else [", preferred, auto, 1"];
 
   # Bind workspaces to correct monitors
-  workspace = if userOptions.device == "pc" then ["1, monitor:DP-2, default=true" 
-  "2, monitor:HDMI-A-2, default = true" "3, monitor:HDMI-A-2"] else null;
+  workspace =
+    if userOptions.device == "pc"
+    then [
+      "1, monitor:DP-2, default=true"
+      "2, monitor:HDMI-A-2, default = true"
+      "3, monitor:HDMI-A-2"
+    ]
+    else null;
 
   # Execute your favorite apps at launch
   # exec-once = waybar & hyprpaper & firefox (floorp)
-  exec-once = ["dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP" 
-  "waypaper --restore --random"
-  "waybar"
-  "firefox"
-  ] ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
+  exec-once =
+    [
+      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
+      "waypaper --restore --random"
+      "waybar"
+      "firefox"
+    ]
+    ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
 
   # Source a file (multi-file configs)
   # source = ~/.config/hypr/myColors.conf
 
   # Some default env vars
   # + Nvidia setup
-  env = ["XCURSOR_SIZE, 24" "HYPRCURSOR_THEME, HyprBibataModernClassicSVG" ] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "NIXOS_OZONE_WL, 1"];
+  env = ["XCURSOR_SIZE, 24" "HYPRCURSOR_THEME, HyprBibataModernClassicSVG"] ++ lib.optionals (userOptions.nvidia) ["LIBVA_DRIVER_NAME, nvidia" "XDG_SESSION_TYPE, wayland" "GBM_BACKEND, nvidia-drm" "__GLX_VENDOR_LIBRARY_NAME, nvidia" "NIXOS_OZONE_WL, 1"];
 
   # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
   input = {
@@ -37,19 +54,19 @@
   };
 
   general = {
-      # See https://wiki.hyprland.org/Configuring/Variables/ for more
-      gaps_in = 5;
-      gaps_out = 20;
-      border_size = 2;
-      "col.active_border" = "rgb(44475A) rgb(BD93F9) 90deg";
-      "col.inactive_border" = "rgba(44475AAA)";
-      "col.nogroup_border" = "rgba(282A36DD)";
-      "col.nogroup_border_active" = "rgb(BD93F9) rgb(44475A) 90deg";
+    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+    gaps_in = 5;
+    gaps_out = 20;
+    border_size = 2;
+    "col.active_border" = "rgb(44475A) rgb(BD93F9) 90deg";
+    "col.inactive_border" = "rgba(44475AAA)";
+    "col.nogroup_border" = "rgba(282A36DD)";
+    "col.nogroup_border_active" = "rgb(BD93F9) rgb(44475A) 90deg";
 
-      layout = "dwindle";
+    layout = "dwindle";
 
-      # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
-      allow_tearing = false;
+    # Please see https://wiki.hyprland.org/Configuring/Tearing/ before you turn this on
+    allow_tearing = false;
   };
 
   # cursor = {
@@ -57,35 +74,33 @@
   #   enable_hyprcursor = false;
   # };
 
-  
   decoration = {
-      # See https://wiki.hyprland.org/Configuring/Variables/ for more
-      rounding = 10;
-    
-      blur = {
-          enabled = true;
-          size = 3;
-          passes = 1;
-      };
+    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+    rounding = 10;
 
-      drop_shadow = "yes";
-      # shadow_range = 4;
-      shadow_render_power = 3;
+    blur = {
+      enabled = true;
+      size = 3;
+      passes = 1;
+    };
 
-      shadow_range = 60;
-      shadow_scale = 0.97;
-      shadow_offset = "1 2";
-      "col.shadow" = "rgba(1E202966)";
+    drop_shadow = "yes";
+    # shadow_range = 4;
+    shadow_render_power = 3;
+
+    shadow_range = 60;
+    shadow_scale = 0.97;
+    shadow_offset = "1 2";
+    "col.shadow" = "rgba(1E202966)";
   };
 
-  
   animations = {
-      enabled = "yes";
+    enabled = "yes";
 
-      # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
-      bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
+    # Some default animations, see https://wiki.hyprland.org/Configuring/Animations/ for more
+    bezier = "myBezier, 0.05, 0.9, 0.1, 1.05";
 
-      animation = ["windows, 1, 7, myBezier" "windowsOut, 1, 7, default, popin 80%" "border, 1, 10, default" "borderangle, 1, 8, default" "fade, 1, 7, default" "workspaces, 1, 6, default"];
+    animation = ["windows, 1, 7, myBezier" "windowsOut, 1, 7, default, popin 80%" "border, 1, 10, default" "borderangle, 1, 8, default" "fade, 1, 7, default" "workspaces, 1, 6, default"];
   };
 
   dwindle = {
@@ -94,25 +109,23 @@
     preserve_split = "yes"; # you probably want this
   };
 
-  
   master = {
-      # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
-      new_status = "master";
+    # See https://wiki.hyprland.org/Configuring/Master-Layout/ for more
+    new_status = "master";
   };
 
   misc = {
-      # See https://wiki.hyprland.org/Configuring/Variables/ for more
-      force_default_wallpaper = -1; # Set to 0 to disable the anime mascot wallpapers
+    # See https://wiki.hyprland.org/Configuring/Variables/ for more
+    force_default_wallpaper = -1; # Set to 0 to disable the anime mascot wallpapers
   };
 
-
-  
   "$mainMod" = "SUPER";
-  
 
   bind = [
     # Terminal
-    "$mainMod, RETURN, exec, alacritty"
+    "$mainMod, RETURN, exec, kitty"
+    # Backup terminal
+    "$mainMod SHIFT, RETURN, exec, alacritty"
     # The classic
     "ALT, F4, killactive, "
     # Quit Hyprland
@@ -131,7 +144,7 @@
     "$mainMod, P, pseudo," # dwindle
     "$mainMod, W, togglesplit," # dwindle
     # Screenshots
-    ", Print, exec, grimblast copy area"
+    ", Print, exec, grimblast --freeze copy area"
     "ALT, Print, exec, grimblast copy active"
     "SUPER, Print, exec, grimblast copy output"
     "CONTROL, Print, exec, grimblast copy screen"
@@ -203,7 +216,6 @@
     "$mainMod, Prior, pass, ^(com\.obsproject\.Studio)$"
   ];
 
-
   bindm = [
     "$mainMod, mouse:272, movewindow"
     "$mainMod, mouse:273, resizewindow"
@@ -212,8 +224,7 @@
   windowrulev2 = [
     # Discord fix (?)
     "opacity 0.88, class:^(Alacritty)$"
+    "opacity 0.88, class:^(kitty)$"
     "opacity 0.90, class:^(discord)$"
   ];
-
-  
 }

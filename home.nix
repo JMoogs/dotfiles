@@ -1,298 +1,184 @@
-{pkgs, lib, userOptions, inputs, ...}:
-
-let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOptions; }; in {
-
-  imports = [ inputs.nixvim.homeManagerModules.nixvim ] ++ lib.optionals (userOptions.wm == "hyprland") [
+{
+  pkgs,
+  lib,
+  userOptions,
+  inputs,
+  ...
+}: let
+  themes = (import ./configs/theming/theme.nix) {
+    inherit pkgs;
+    inherit userOptions;
+  };
+in {
+  imports = [
+    inputs.nixvim.homeManagerModules.nixvim
     inputs.ags.homeManagerModules.default
   ];
 
-  # For any extra programs I want to install
-  home.sessionPath = [ "$HOME/Documents/Apps" ];
-  home.packages = with pkgs; [
-    # Browsers
+  # Any extra programs I want in my path can be added to this folder:
+  home.sessionPath = ["$HOME/Documents/Apps"];
+  home.packages = with pkgs;
+    [
+      # -----------------------------
+      # Browsers
+      firefox # Main browser
+      floorp # Backup browser (a firefox fork)
+      # -----------------------------
+      # Development
+      # Git
+      git
+      # Git TUI
+      lazygit
+      # LSPs (the ones that I want to be globally accessible)
+      nil # Nix - Used for my main config and other smaller scripts
+      haskellPackages.haskell-language-server # Haskell - Used for some quick scripts
+      marksman # Markdown - Often used in place of txt files
+      # Compilers (the ones I want globally)
+      rustup # Rust - For convinience as it's my most used language and `cargo install`
+      ghc # Haskell - I use `ghci` often as a calculator or for small tasks
+      # -----------------------------
+      # Media
+      yt-dlp # Youtube downloader
+      ffmpeg # Media processing
+      pavucontrol # Sound controls
+      playerctl # Playing media controls
+      # -----------------------------
+      # Utilities
+      ripgrep # A `grep` alternative for searching
+      tree # A way of listing subdirectories as an alternative to `ls` in certain scenarios
+      bat # A `cat` alternative with syntax highlighting among other things
+      curl-impersonate # Curl that impersonates firefox/chrome, allowing it to bypass cloudflare among other things
+      killall # Kill all processes matching criteria
+      wget # Get files from the web
+      file # Check file types
+      bottom # A TUI system monitor
+      yazi # File manager
+      # -----------------------------
+      # Note taking
+      typst # A program for writing and formatting scientific documents
+      typst-lsp # LSP for typst
+      zathura # Minimal PDF viewer
+      obsidian # Markdown notes
+      wiki-tui # A wikipedia TUI
+      rnote # A way of handwriting notes
+      # -----------------------------
+      # Discord
+      (discord.override {
+        # Currently disabled as it has a bug preventing Discord activities from working
+        # withOpenASAR = true; # A mod that rewrites part of Discord's code, making it faster: https://openasar.dev/
+        withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
+      })
+      vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
+      webcord # Another electron wrapper for Discord, but without mods: it also allows for screensharing on Wayland, though streams generally seem lower quality than vesktop
+      element-desktop # A matrix client
+      thunderbird # An email client
+      # -----------------------------
+      # Ricing
+      neofetch # Displays system info
+      cbonsai # Draws trees in terminal that look cool and do nothing else
+      lutgen # A tool to recolour images: https://github.com/ozwaldorf/lutgen-rs
+      font-awesome # A font with some different symbols
+      nerdfonts # More symbols
+      # -----------------------------
+      # Work
+      teams-for-linux # Microsoft Teams
+      p3x-onenote # Microsoft OneNote
+      libreoffice-qt # Alternatives to Microsoft Office
+      numbat # A calculator with type + dimension checking
+      # -----------------------------
+      # Entertainment
+      prismlauncher # An alternative minecraft launcher with modded support
+      heroic # An alternative launcher for GOG and Epic Games
+      wineWowPackages.waylandFull # A way to emulate windows
+      ani-cli # A CLI program to play anime
+      syncplay # Sync video progress to watch videos with friends
+      # -----------------------------
+      # Security
+      mullvad-vpn # VPN
+      bitwarden # Password manager
+      # -----------------------------
+      # Misc.
+      obs-studio # Recording
+      loupe # Image viewer
+      wl-clipboard # Clipboard
+      grimblast # Screenshot utility
+      hyprpaper # Set wallpapers
+      # waypaper # wallpaper GUI + randomizer
+      (pkgs.callPackage ./pkgs/waypaper.nix {}) # Custom waypaper for now as unstable isn't updated to 2.2, which is required for the Hyprpaper backend
+      (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {}) # A fix for PTT on Discord on Wayland
+      xwaylandvideobridge # A fix for Wayland screensharing
+      wlr-randr # Set primary monitor for certain games (Elden Ring)
+      # -----------------------------
+      # Libraries and random dependencies
+      qt6.qtwayland
+      libsForQt5.qt5.qtwayland
+      libva
+      bun
+      dart-sass
+      fd
+      brightnessctl # Screen brightness controls
+    ]
+    ++ lib.optionals (userOptions.device == "pc") [
+      # For heavier things that I probably won't use on my laptop
+      # Maths programming language
+      (sage.override {
+        requireSageTests = false;
+      })
+      godot_4 # Game engine
+      gdtoolkit_4 # Other tools for working with godot
+      r2modman # A mod manager
+      qemu # Virtual Machine
+      quickemu # Quick VM setup
+      jetbrains.rust-rover # Jetbrains Rust IDE
+      jetbrains.clion # Jetbrains C/C++ IDE
+    ];
 
-    # Main browser
-    firefox
-    # Backup browser
-    floorp
-    # -----------------------------
+  # Direnv to automatically enter nix shells
+  programs.direnv = {
+    enable = true;
+    nix-direnv.enable = true;
+  };
 
-    # Terminal Setup
-
-    # Multiplexer
-    tmux
-    # -----------------------------
-
-    # Development
-    # Git
-    git
-    # Git TUI
-    lazygit
-
-    # LSPs
-      # Nix
-    nil
-      # Haskell
-    haskellPackages.haskell-language-server
-      # Markdown
-    marksman
-
-    # Compilers
-      # Rust
-    rustup
-      # Haskell
-    ghc
-
-    # -----------------------------
-
-    # Media
-
-    # Youtube downloader
-    yt-dlp
-    # Other utilities
-    ffmpeg
-
-    # -----------------------------
-
-    # Utilities 
-
-    # Mouse config software
-    piper
-    # Search tool (grep alternative)
-    ripgrep
-    # List subdirectories (ls alternative)
-    tree
-    # Cooler cat
-    bat
-    # curl with cloudflare bypass
-    curl-impersonate
-    # Self explanatory
-    killall
-    # Get files from the web
-    wget
-    # Check file types
-    file
-    # File transfer tool
-    croc
-    # System monitor (TUI)
-    bottom
-
-    # -----------------------------
-
-    # Note taking
-
-    # Typst
-    typst
-    typst-lsp
-    zathura
-    # Obisdian for MD notes
-    obsidian
-    # Wikipedia tui
-    wiki-tui
-    # Handwriting software
-    xournalpp
-
-    # -----------------------------
-
-    # Comms
-
-    # Discord with vencord
-    (discord.override {
-      # withOpenASAR = true;
-      withVencord = true;
-    })
-    # discord
-    # Vekstop for screensharing
-    vesktop
-
-    webcord
-    # Matrix
-    element-desktop
-    # Email
-    thunderbird
-
-    # -----------------------------
-
-    # Ricing
-
-    # System info display
-    neofetch 
-    # Draw trees in terminal
-    cbonsai
-    # Change image colours for wallpapers
-    lutgen # This thing is awesome
-    # Font containing different symbols
-    font-awesome
-    nerdfonts
-
-    # -----------------------------
-
-    # Work
-
-    # MS Teams
-    teams-for-linux
-    # MS Onenote
-    p3x-onenote
-    # Word alternative
-    libreoffice-qt
-    # Calculator
-    numbat
-
-    # -----------------------------
-
-    # Entertainment
-
-    # Steam
-    steam
-    # Minecraft launchger
-    prismlauncher
-    # Alt. Launcher for GOG and Epic games
-    heroic
-    # Windows emulation
-    wineWowPackages.waylandFull
-    # Anime
-    ani-cli
-    # syncplay
-    
-
-    # -----------------------------
-
-    # Security
-
-    # VPN
-    mullvad-vpn
-    # Password manager
-    bitwarden
-
-    # -----------------------------
-
-    # Misc.
-
-    # Recording
-    obs-studio
-    # Image viewing and x11 wallpapers
-    feh
-
-    # Sound/music controls
-    pavucontrol
-    pulseaudio
-    playerctl
-
-  ] ++ lib.optionals (userOptions.wm == "hyprland") [
-
-    grimblast
-
-    # Clipboard for wayland
-    wl-clipboard
-
-    # Wallpapers
-    swww
-    waypaper
-    
-    # Wayland PTT fix for discord
-    (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {})
-    # Wayland screenshare fix
-    xwaylandvideobridge
-    # Primary monitor fix
-    wlr-randr
-
-    # Libraries for wayland
-    qt6.qtwayland
-    libsForQt5.qt5.qtwayland
-    libva
-
-    # Dependencies for ags
-    bun
-    dart-sass
-    fd
-    brightnessctl
-    
-
-  ] ++ lib.optionals (userOptions.wm == "i3") [
-    # Screenshot tool
-    flameshot
-    # Clipboard for x11
-    xclip
-
-  ] ++ lib.optionals (userOptions.device == "pc") [
-     # For heavier things that I probably won't use on my laptop
-     
-    # Other maths
-    (sage.override {
-     requireSageTests = false; 
-    })
-
-    # Game engine
-    godot_4
-    gdtoolkit_4
-
-    # Mod manager
-    r2modman
-
-    # VMs
-    qemu
-    quickemu
-
-    # Jetbrains
-    jetbrains.rust-rover
-    jetbrains.clion
-
-  ];
-
-  # Nixvim (testing)
-  programs.nixvim = import ./configs/neovim {inherit themes; inherit pkgs;};
-
-  # Neovim (testing)
-  # Programs.neovim = {
-  #   enable = true;
-  #   defaultEditor = true;
-  #   viAlias = true;
-  #   vimAlias = true;
-  #   plugins = with pkgs; [
-  #     vimPlugins.lazy-nvim
-  #     # vimPlugins.nvim-treesitter.withAllGrammars
-  #     vimPlugins.which-key-nvim
-  #   ];
-
-  #   # extraConfig = lib.fileContents ./configs/neovim/init.vim;
-  #   extraLuaConfig = lib.fileContents ./configs/neovim/init.lua;
-  # };
+  # Nixvim (text editor)
+  programs.nixvim = import ./configs/neovim {
+    inherit themes;
+    inherit pkgs;
+  };
 
   # Terminal emulator
   programs.alacritty = {
     enable = true;
-    settings = (import ./configs/alacritty.nix) {inherit userOptions; inherit themes; };
-  };
-
-  # Editor
-  programs.helix = {
-    # defaultEditor = true;
-    enable = true;
-    settings = import ./configs/editor.nix { inherit themes; };
-    languages = {
-      language-server.godot = {
-        command = "nc";
-        args = [ "127.0.0.1" "6005"];
-      };
-      
-      language = [
-        {
-          name = "gdscript";
-          language-servers = ["godot"];
-        }
-      ];
+    settings = (import ./configs/alacritty.nix) {
+      inherit userOptions;
+      inherit themes;
     };
   };
 
-  # New multiplexer?
-  programs.zellij = {
-    enable = true;
-    enableFishIntegration = true;
-    settings = (import ./configs/zellij.nix) {inherit userOptions; };
+  # New terminal emulator
+  programs.kitty = import ./configs/kitty.nix {
+    inherit userOptions;
+    inherit themes;
   };
 
-  programs.tmux = (import ./configs/tmux.nix) { inherit pkgs; };
+  # Helix (text editor 2)
+  programs.helix = {
+    # defaultEditor = true;
+    enable = true;
+    settings = import ./configs/editor.nix {inherit themes;};
+  };
+
+  # Terminal multiplexer
+  programs.zellij = {
+    enable = true;
+    enableFishIntegration = false;
+    settings = (import ./configs/zellij.nix) {inherit userOptions;};
+  };
+
+  # Backup multiplexer
+  programs.tmux = (import ./configs/tmux.nix) {inherit pkgs;};
+  # Git
   programs.git = import ./configs/git.nix;
+  # My shell
   programs.fish = import ./configs/fish.nix;
 
   # Theme for GTK apps
@@ -304,104 +190,82 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
       package = pkgs.papirus-icon-theme;
     };
   };
+
   # App launcher
   programs.rofi = {
     enable = true;
-    # theme = ./configs/rofiTheme.rasi;
     theme = themes.rofiTheme;
-    package = if userOptions.wm == "hyprland" then pkgs.rofi-wayland else pkgs.rofi;
+    package = pkgs.rofi-wayland;
   };
+
   # Audio visualiser
   programs.cava = {
     enable = true;
-    settings = (import ./configs/hypr/cava.nix) { inherit themes; };
+    settings = (import ./configs/hypr/cava.nix) {inherit themes;};
   };
 
-  # Taskbar for hypr
-  programs.waybar = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+  # Taskbar
+  programs.waybar = {
     enable = true;
-    settings = (import ./configs/hypr/waybar.nix) { inherit userOptions; inherit lib; };
+    settings = (import ./configs/hypr/waybar.nix) {
+      inherit userOptions;
+      inherit lib;
+    };
     style = ./configs/hypr/waybar.css;
   };
 
   # Hyprland
-  wayland.windowManager.hyprland = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+  wayland.windowManager.hyprland = {
     enable = true;
-    settings = (import ./configs/hypr/hypr.nix) { inherit lib; inherit userOptions; };
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland;
+    settings = (import ./configs/hypr/hypr.nix) {
+      inherit lib;
+      inherit userOptions;
+    };
+    package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Uses master
   };
 
-  # Lock screen for hypr
-  programs.hyprlock = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
-    (import ./configs/hypr/hyprlock.nix {inherit themes;});
+  # Lock screen
+  programs.hyprlock =
+    import ./configs/hypr/hyprlock.nix {inherit themes;};
 
-    # Mpv (media player) with mpris support among other things
+  # Mpv (media player) with mpris support among other things
   programs.mpv = {
     enable = true;
     scripts = with pkgs; [
-      mpvScripts.mpris
-      mpvScripts.sponsorblock
-      mpvScripts.youtube-upnext
-      mpvScripts.mpv-cheatsheet
-      mpvScripts.uosc
-      (mpvScripts.quality-menu.override { oscSupport = true; })
+      mpvScripts.mpris # Mpris support to control media with playerctl and to display media in taskbar
+      mpvScripts.sponsorblock # Sponsorblock
+      mpvScripts.youtube-upnext # Shows youtube's recommended videos when playing a video through mpv
+      mpvScripts.mpv-cheatsheet # Shows keybinds
+      mpvScripts.uosc # Alternate UI
+      (mpvScripts.quality-menu.override {oscSupport = true;}) # Adds a quality menu to MPV when playing youtube videos
     ];
-    config = { osd-font-size = 10; };
+    config = {osd-font-size = 10;};
+    # Add bindings to change video and audio quality when playing from youtube
     extraInput = ''
-        Alt+f script-binding quality_menu/video_formats_toggle #! Stream Quality > Video
-        Alt+g script-binding quality_menu/audio_formats_toggle #! Stream Quality > Audio
+      Alt+f script-binding quality_menu/video_formats_toggle #! Stream Quality > Video
+      Alt+g script-binding quality_menu/audio_formats_toggle #! Stream Quality > Audio
     '';
   };
 
   # Idle manager
-  services.hypridle = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland")
-    (import ./configs/hypr/hypridle.nix {inherit userOptions; inherit lib;});
+  services.hypridle = import ./configs/hypr/hypridle.nix {
+    inherit userOptions;
+    inherit lib;
+  };
 
   # Widgets for hypr
-  # programs.ags = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+  # programs.ags = {
   #   enable = true;
   #   configDir = ./configs/hypr/ags;
   # };
 
   # Notification daemon for hypr
-  services.dunst = lib.attrsets.optionalAttrs (userOptions.wm == "hyprland") {
+  services.dunst = {
     enable = true;
     configFile = themes.dunstTheme;
   };
 
-  # i3wm
-  xsession = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
-    enable = true;
-    windowManager.i3 = {
-      enable = true;
-      config = import ./configs/i3/i3.nix;
-      extraConfig = if userOptions.device == "pc" then "workspace 1 output DP-2\nworkspace 2 output HDMI-1\nworkspace 3 output HDMI-1" else "";
-    };
-  };
-
-  # Taskbar for i3
-  services.polybar = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
-    enable = true;
-    package = pkgs.polybar.override {
-      i3Support = true;
-      pulseSupport = true;
-    };
-    settings = (import ./configs/i3/polybar/polybar.nix) { inherit userOptions; };
-    script = ":";
-  };
-
-  # Compositor for i3
-  services.picom = lib.attrsets.optionalAttrs (userOptions.wm == "i3") {
-    enable = true;
-    activeOpacity = 1.0;
-    inactiveOpacity = 0.92;
-    opacityRules = [
-      "100:class_g = 'i3lock'"
-      "100:class_g = 'firefox'"
-    ];
-    settings = { corner-radius = 4; };
-  };
-
+  # Audio effects
   services.easyeffects.enable = true;
 
   # Gpg
@@ -414,6 +278,6 @@ let themes = (import ./configs/theming/theme.nix) { inherit pkgs; inherit userOp
   # File syncing
   services.syncthing.enable = true;
 
-  # DO NOT CHANGE - Supposed to stay at the original install version 
+  # DO NOT CHANGE - Supposed to stay at the original install version
   home.stateVersion = "23.05";
 }
