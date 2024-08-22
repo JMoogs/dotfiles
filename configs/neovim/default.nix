@@ -24,13 +24,13 @@
   };
 
   opts = {
-    # Sets the current number to the file number, and others to relative
+    # Sets the current number to the current line number, and others to relative
     number = true;
     relativenumber = true;
 
     # Ignore case when searching
     ignorecase = true;
-    # Override the 'ignorecase' option if the search pattern contains uppercase or '\C'
+    # Override the 'ignorecase' option if the search pattern contains uppercase
     smartcase = true;
 
     # The left column with numberings
@@ -369,7 +369,7 @@
 
       completion = {
         completeopt = "menu,menuone,noinsert";
-        keyword_length = 3;
+        keyword_length = 2;
       };
 
       # For an understanding of why these mappings were
@@ -499,14 +499,19 @@
 
     # Different language servers
     servers = {
+      # C/C++
       clangd = {
         enable = true;
       };
-
+      # Json
+      jsonls.enable = true;
+      # Typst
+      typst-lsp.enable = true;
+      # Nix
       nil-ls.enable = true;
-
+      # Python
       pyright.enable = true;
-
+      # Rust
       rust-analyzer.enable = true;
       rust-analyzer.installCargo = false;
       rust-analyzer.installRustc = false;

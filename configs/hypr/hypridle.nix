@@ -3,7 +3,7 @@
   userOptions,
   ...
 }: {
-  enable = false;
+  enable = true;
 
   settings = {
     lockCmd = "pidof hyprlock | hyprlock";

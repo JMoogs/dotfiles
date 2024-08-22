@@ -77,7 +77,6 @@ in {
       thunderbird # An email client
       # -----------------------------
       # Ricing
-      neofetch # Displays system info
       cbonsai # Draws trees in terminal that look cool and do nothing else
       lutgen # A tool to recolour images: https://github.com/ozwaldorf/lutgen-rs
       font-awesome # A font with some different symbols
@@ -268,6 +267,11 @@ in {
   programs.ags = {
     enable = true;
     configDir = ./configs/hypr/ags;
+  };
+
+  programs.fastfetch = {
+    enable = true;
+    settings = import ./configs/fastfetch.nix {};
   };
 
   # Currently testing using ags as a replacement

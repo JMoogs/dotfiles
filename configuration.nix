@@ -270,6 +270,7 @@
     lg = "lazygit";
     # Quick entry into a dev shell
     dev = "nix-shell --command fish";
+    neofetch = "fastfetch";
     rebuild =
       if userOptions.device == "pc"
       then "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos"

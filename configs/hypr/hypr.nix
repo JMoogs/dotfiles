@@ -230,5 +230,9 @@
     "opacity 0.88, class:^(Alacritty)$"
     "opacity 0.88, class:^(kitty)$"
     "opacity 0.90, class:^(discord)$"
+    "opacity 0.90, class:^(steam)$"
+    "opacity 0.88, title:^(Mozilla Firefox)$, xwayland:0" # Make firefox transparent when on the homepage (only on Wayland as the title doesn't change through XWL)
+    "opacity 0.88, title:^(New Tab)(.*)$, xwayland:0" # Sometimes it has the title new tab as well
+    "opacity 0.88, title:^(.*)(at DuckDuckGo)(.*)$, xwayland:0" # Searches can also be transparent
   ];
 }
