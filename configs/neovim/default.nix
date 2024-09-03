@@ -506,7 +506,7 @@
       # Json
       jsonls.enable = true;
       # Typst
-      typst-lsp.enable = true;
+      typst-lsp.enable = false;
       # Nix
       nil-ls.enable = true;
       # Python
@@ -515,6 +515,10 @@
       rust-analyzer.enable = true;
       rust-analyzer.installCargo = false;
       rust-analyzer.installRustc = false;
+      # Haskell
+      hls.enable = true;
+      # Scala
+      metals.enable = true;
 
       tsserver.enable = true;
     };

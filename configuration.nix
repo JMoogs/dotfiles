@@ -226,6 +226,7 @@
   nixpkgs.config = {
     # Allow unfree packages
     allowUnfree = true;
+    allowBroken = true;
     # Add insecure packages that are required here
     permittedInsecurePackages = []; # Currently none required
     # Accept the nvidia driver license when running nvidia
@@ -308,6 +309,10 @@
   # Waydroid for android apps
   virtualisation.waydroid.enable = true;
   virtualisation.libvirtd.enable = true;
+  virtualisation.podman = {
+    enable = true;
+    dockerCompat = true;
+  };
 
   # Mullvad (VPN)
   services.mullvad-vpn.enable = true;

@@ -25,7 +25,7 @@ in {
       # -----------------------------
       # Browsers
       firefox # Main browser
-      floorp # Backup browser (a firefox fork)
+      floorp # Backup (firefox fork)
       # -----------------------------
       # Development
       # Git
@@ -39,6 +39,8 @@ in {
       # Compilers (the ones I want globally)
       rustup # Rust - For convinience as it's my most used language and `cargo install`
       ghc # Haskell - I use `ghci` often as a calculator or for small tasks
+      scala # Scala
+      sbt # Scala build tool
       # -----------------------------
       # Media
       yt-dlp # Youtube downloader
@@ -59,7 +61,7 @@ in {
       # -----------------------------
       # Note taking
       typst # A program for writing and formatting scientific documents
-      typst-lsp # LSP for typst
+      # typst-lsp # LSP for typst
       zathura # Minimal PDF viewer
       obsidian # Markdown notes
       wiki-tui # A wikipedia TUI
@@ -94,6 +96,7 @@ in {
       wineWowPackages.waylandFull # A way to emulate windows
       ani-cli # A CLI program to play anime
       syncplay # Sync video progress to watch videos with friends
+      factorio-headless # Factorio server
       # -----------------------------
       # Security
       mullvad-vpn # VPN
@@ -130,10 +133,9 @@ in {
       godot_4 # Game engine
       gdtoolkit_4 # Other tools for working with godot
       r2modman # A mod manager
+      distrobox # Vms
       qemu # Virtual Machine
       quickemu # Quick VM setup
-      jetbrains.rust-rover # Jetbrains Rust IDE
-      jetbrains.clion # Jetbrains C/C++ IDE
     ];
 
   # Direnv to automatically enter nix shells
