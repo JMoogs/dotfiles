@@ -74,13 +74,11 @@ in {
         withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
       })
       vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
-      webcord # Another electron wrapper for Discord, but without mods: it also allows for screensharing on Wayland, though streams generally seem lower quality than vesktop
       element-desktop # A matrix client
       thunderbird # An email client
       # -----------------------------
       # Ricing
       cbonsai # Draws trees in terminal that look cool and do nothing else
-      lutgen # A tool to recolour images: https://github.com/ozwaldorf/lutgen-rs
       font-awesome # A font with some different symbols
       nerdfonts # More symbols
       # -----------------------------
@@ -88,22 +86,17 @@ in {
       teams-for-linux # Microsoft Teams
       p3x-onenote # Microsoft OneNote
       libreoffice-qt # Alternatives to Microsoft Office
-      numbat # A calculator with type + dimension checking
       # -----------------------------
       # Entertainment
-      prismlauncher # An alternative minecraft launcher with modded support
-      heroic # An alternative launcher for GOG and Epic Games
       wineWowPackages.waylandFull # A way to emulate windows
       ani-cli # A CLI program to play anime
       syncplay # Sync video progress to watch videos with friends
-      factorio-headless # Factorio server
       # -----------------------------
       # Security
       mullvad-vpn # VPN
       bitwarden # Password manager
       # -----------------------------
       # Misc.
-      obs-studio # Recording
       loupe # Image viewer
       wl-clipboard # Clipboard
       grimblast # Screenshot utility
@@ -136,6 +129,13 @@ in {
       distrobox # Vms
       qemu # Virtual Machine
       quickemu # Quick VM setup
+      factorio-headless # Factorio server
+      obs-studio # Recording
+      prismlauncher # An alternative minecraft launcher with modded support
+      heroic # An alternative launcher for GOG and Epic Games
+      numbat # A calculator with type + dimension checking
+      lutgen # A tool to recolour images: https://github.com/ozwaldorf/lutgen-rs
+      webcord # Another electron wrapper for Discord, but without mods: it also allows for screensharing on Wayland, though streams generally seem lower quality than vesktop
     ];
 
   # Direnv to automatically enter nix shells
