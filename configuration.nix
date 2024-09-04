@@ -1,5 +1,4 @@
-# Edit this configuration file to define what should be installed on
-# your system.  Help is available in the configuration.nix(5) man page
+# Edit this configuration file to define what should be installed on your system.  Help is available in the configuration.nix(5) man page
 # and in the NixOS manual (accessible by running `nixos-help`).
 {
   pkgs,
@@ -321,15 +320,24 @@
   security.pam.services.hyprlock = {};
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [696];
+  };
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     7777 # Terraria's Port
     22000 # Syncthing's TCP listening port
+    696
+    697
+    698
   ];
   networking.firewall.allowedUDPPorts = [
     7777 # Terraria's Port
+    696
+    697
+    698
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system
