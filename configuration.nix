@@ -50,7 +50,11 @@
   networking.networkmanager.enable = true;
 
   # Set the time zone
-  time.timeZone = "Europe/London";
+  # time.timeZone =
+  #   if userOptions.device == "laptop"
+  #   then "Asia/Tokyo"
+  #   else "Europe/London";
+  services.automatic-timezoned.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -102,7 +106,7 @@
   console.keyMap = "uk";
 
   # Add nerdfonts for different types of symbols
-  fonts.packages = [pkgs.nerdfonts];
+  fonts.packages = [pkgs.nerdfonts pkgs.ipafont pkgs.kochi-substitute];
 
   # Enable OpenGL
   hardware.graphics = {
@@ -322,6 +326,11 @@
 
   # Enable the OpenSSH daemon.
   services.openssh.enable = true;
+
+  services.postgresql = {
+    enable = true;
+    ensureDatabases = ["edict_test_db"];
+  };
 
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [

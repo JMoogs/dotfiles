@@ -26,6 +26,7 @@ in {
       # Browsers
       firefox # Main browser
       floorp # Backup (firefox fork)
+      mullvad-browser # Private browser
       # -----------------------------
       # Development
       # Git
@@ -60,11 +61,13 @@ in {
       bottom # A TUI system monitor
       # -----------------------------
       # Note taking
+      anki # Flashcards
       typst # A program for writing and formatting scientific documents
-      # typst-lsp # LSP for typst
+      typst-lsp # LSP for typst
       zathura # Minimal PDF viewer
       obsidian # Markdown notes
       wiki-tui # A wikipedia TUI
+      gimp # Editting
       rnote # A way of handwriting notes
       # -----------------------------
       # Discord

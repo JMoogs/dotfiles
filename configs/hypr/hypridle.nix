@@ -13,14 +13,14 @@
         {
           timeout =
             if userOptions.device == "laptop"
-            then 120
+            then 240
             else 600;
           on-timeout = "hyprlock";
         }
       ]
       ++ lib.optionals (userOptions.device == "laptop") [
         {
-          timeout = 180;
+          timeout = 360;
           on-timeout = "systemctl suspend";
         }
       ];
