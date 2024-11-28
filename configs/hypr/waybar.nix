@@ -48,13 +48,17 @@
 
     "clock" = {
       interval = 1;
-      format = " {:%H:%M}";
-      format-alt = " {:%T, %A, %B %d, %Y }";
-      tooltip-format = "<tt><small>{calendar}</small></tt>";
+      # format = " {:L%H:%M}";
+      format = " {:L%H:%M, %m月%e日(%a)}";
+      # Time, Weekday, Month, Day, Year
+      # format-alt = " {:%T, %A, %B %d, %Y }";
+      locale = "ja_JP.UTF-8";
+      format-alt = " {:L%T, %Y年%m月%e日(%a)}";
+      tooltip-format = "<span size='9pt' font='Noto Sans CJK HK'>{calendar}</span>";
       calendar = {
         mode = "month";
         # Have to keep it at 2 for now: https://github.com/Alexays/Waybar/issues/2240
-        mode-mon-col = 2;
+        mode-mon-col = 3;
         weeks-pos = "right";
         on-scroll = 1;
         format = {

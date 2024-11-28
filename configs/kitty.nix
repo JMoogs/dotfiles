@@ -14,7 +14,7 @@
 
   shellIntegration.enableFishIntegration = true;
 
-  theme = themes.kittyTheme;
+  themeFile = themes.kittyTheme;
 
   settings = {
     confirm_os_window_close = 0;

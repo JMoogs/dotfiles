@@ -175,6 +175,9 @@
     require('cmp').event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done()) -- For autopairs
   '';
 
+  # Required for something idk
+  plugins.web-devicons.enable = true;
+
   # Autodetect tabstop and shiftwidth
   plugins.sleuth.enable = true;
 
@@ -184,7 +187,7 @@
   # Highlight comments such as todo
   plugins.todo-comments = {
     enable = true;
-    signs = true;
+    settings.signs = true;
   };
 
   # Show pending keybinds
@@ -466,7 +469,7 @@
   # Autoformatting
   plugins.conform-nvim = {
     enable = true;
-    notifyOnError = false;
+    settings.notifyOnError = false;
     settings.format_on_save = ''
       function(bufnr)
         -- Disable "format_on_save lsp_fallback" for lanuages that don't
@@ -479,7 +482,7 @@
         }
       end
     '';
-    formattersByFt = {
+    settings.formatters_by_ft = {
       lua = ["stylua"];
       nix = ["alejandra"];
       # Conform can also run multiple formatters sequentially
@@ -506,21 +509,23 @@
       # Json
       jsonls.enable = true;
       # Typst
-      typst-lsp.enable = false;
+      typst_lsp.enable = false;
       # Nix
-      nil-ls.enable = true;
+      nil_ls.enable = true;
       # Python
       pyright.enable = true;
       # Rust
-      rust-analyzer.enable = true;
-      rust-analyzer.installCargo = false;
-      rust-analyzer.installRustc = false;
+      rust_analyzer.enable = true;
+      rust_analyzer.installCargo = false;
+      rust_analyzer.installRustc = false;
       # Haskell
       hls.enable = true;
+      # Installed globally anyways so don't install
+      hls.installGhc = false;
       # Scala
       metals.enable = true;
 
-      tsserver.enable = true;
+      ts_ls.enable = true;
     };
 
     keymaps = {
