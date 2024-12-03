@@ -49,6 +49,7 @@ in {
       pulseaudio # Required for waybar muting
       pavucontrol # Sound controls
       playerctl # Playing media controls
+      youtube-music
       # -----------------------------
       # Utilities
       ripgrep # A `grep` alternative for searching

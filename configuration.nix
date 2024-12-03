@@ -325,7 +325,10 @@
   security.pam.services.hyprlock = {};
 
   # Enable the OpenSSH daemon.
-  services.openssh.enable = true;
+  services.openssh = {
+    enable = true;
+    ports = [696];
+  };
 
   services.postgresql = {
     enable = true;
@@ -336,9 +339,15 @@
   networking.firewall.allowedTCPPorts = [
     7777 # Terraria's Port
     22000 # Syncthing's TCP listening port
+    696
+    697
+    698
   ];
   networking.firewall.allowedUDPPorts = [
     7777 # Terraria's Port
+    696
+    697
+    698
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system
