@@ -86,14 +86,13 @@
       passes = 1;
     };
 
-    drop_shadow = "yes";
-    # shadow_range = 4;
-    shadow_render_power = 3;
-
-    shadow_range = 60;
-    shadow_scale = 0.97;
-    shadow_offset = "1 2";
-    "col.shadow" = "rgba(1E202966)";
+    shadow = {
+      enabled = true;
+      range = 60;
+      render_power = 3;
+      scale = 0.97;
+      offset = "1 2";
+    };
   };
 
   animations = {

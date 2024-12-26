@@ -31,6 +31,7 @@ in {
       # Development
       # Git
       git
+      jujutsu
       # Git TUI
       lazygit
       # LSPs (the ones that I want to be globally accessible)
@@ -84,7 +85,6 @@ in {
       # Ricing
       cbonsai # Draws trees in terminal that look cool and do nothing else
       font-awesome # A font with some different symbols
-      nerdfonts # More symbols
       # -----------------------------
       # Work
       teams-for-linux # Microsoft Teams

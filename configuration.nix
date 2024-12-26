@@ -106,7 +106,7 @@
   console.keyMap = "uk";
 
   # Add nerdfonts for different types of symbols
-  fonts.packages = [pkgs.nerdfonts pkgs.ipafont pkgs.kochi-substitute pkgs.noto-fonts-cjk-sans];
+  fonts.packages = [pkgs.nerd-fonts.symbols-only pkgs.ipafont pkgs.kochi-substitute pkgs.noto-fonts-cjk-sans];
 
   # Enable OpenGL
   hardware.graphics = {
@@ -165,6 +165,7 @@
   # Enable x11 (note: I don't know if this is needed anymore, maybe for XWayland it is?)
   services.xserver = {
     enable = true;
+    displayManager.startx.enable = true;
 
     # Set drivers
     videoDrivers =
@@ -177,13 +178,6 @@
 
     # Enable the wacom tablet driver
     wacom.enable = true;
-  };
-
-  # Login manager
-  services.displayManager.sddm = {
-    enable = true;
-    wayland.enable = true;
-    theme = "sugar-candy";
   };
 
   # Enable CUPS to print documents.
