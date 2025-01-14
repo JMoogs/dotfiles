@@ -24,9 +24,9 @@ fi
 echo "---------------------------------------"
 echo "Running LUT generator to generate LUTs"
 echo "---------------------------------------"
-lutgen generate -p dracula -a shepards-method --power 12 --lum 0.5 --preserve -n 256 --level 20 -o .tmp_dracula_lut.png
-lutgen generate -p catppuccin-frappe -a shepards-method --power 12 --lum 0.5 --preserve -n 256 --level 20 -o .tmp_frappe_lut.png
-lutgen generate -p catppuccin-latte -a shepards-method --power 12  --lum 0.5 --preserve -n 256 --level 20 -o .tmp_latte_lut.png
+lutgen generate -p dracula --shepards-method --power 12 --lum 0.5 --preserve -n 256 --level 16 -o .tmp_dracula_lut.png
+lutgen generate -p catppuccin-frappe --shepards-method --power 12 --lum 0.5 --preserve -n 256 --level 16 -o .tmp_frappe_lut.png
+lutgen generate -p catppuccin-latte --shepards-method --power 12  --lum 0.5 --preserve -n 256 --level 16 -o .tmp_latte_lut.png
 
 echo "---------------------------------------"
 echo "Applying LUTs to images"

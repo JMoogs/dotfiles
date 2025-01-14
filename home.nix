@@ -29,6 +29,10 @@ in {
       mullvad-browser # Private browser
       # -----------------------------
       # Development
+      # Alternative editor
+      vscode
+      # Sqlite browser
+      sqlitebrowser
       # Git
       git
       jujutsu
@@ -124,9 +128,9 @@ in {
     ++ lib.optionals (userOptions.device == "pc") [
       # For heavier things that I probably won't use on my laptop
       # Maths programming language
-      (sage.override {
-        requireSageTests = false;
-      })
+      # (sage.override {
+      #   requireSageTests = false;
+      # })
       godot_4 # Game engine
       gdtoolkit_4 # Other tools for working with godot
       r2modman # A mod manager

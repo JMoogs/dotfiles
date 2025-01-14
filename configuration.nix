@@ -154,6 +154,13 @@
     package = pkgs.hyprland;
   };
 
+  # Tuxclocker
+  programs.tuxclocker = {
+    enable = true;
+    enabledNVIDIADevices = [0];
+    useUnfree = true;
+  };
+
   # Sunshine for streaming: https://github.com/LizardByte/Sunshine
   services.sunshine = {
     enable = true;

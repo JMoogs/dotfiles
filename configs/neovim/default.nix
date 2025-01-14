@@ -128,6 +128,20 @@
         desc = "NeoTree reveal";
       };
     }
+
+    # Copilot
+    # FIXME: Currently buggy, see: https://github.com/orgs/community/discussions/11611
+    # Using extraconfig for now
+    # {
+    #   mode = "i";
+    #   key = "<C-;>";
+    #   action = "copilot#Accept(\"\\<CR>\")";
+    #   options = {
+    #     expr = true;
+    #     silent = true;
+    #     noremap = false;
+    #   };
+    # }
   ];
 
   # Literally no clue: https://nix-community.github.io/nixvim/NeovimOptions/autoGroups/index.html
@@ -172,7 +186,10 @@
 
   # Additional lua configs 2
   extraConfigLua = ''
-    require('cmp').event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done()) -- For autopairs
+        require('cmp').event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done()) -- For autopairs
+
+    vim.api.nvim_set_keymap('i', '<C-;>', 'copilot#Accept("\<CR>")', {expr = true, silent = true, noremap = false})
+
   '';
 
   # Required for something idk
@@ -695,6 +712,18 @@
           vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
         end, '[T]oggle Inlay [H]ints')
       end
+
+      -- Possible fix for https://github.com/neovim/neovim/issues/30985
+
+      for _, method in ipairs({ 'textDocument/diagnostic', 'workspace/diagnostic' }) do
+          local default_diagnostic_handler = vim.lsp.handlers[method]
+          vim.lsp.handlers[method] = function(err, result, context, config)
+              if err ~= nil and err.code == -32802 then
+                return
+              end
+              return default_diagnostic_handler(err, result, context, config)
+          end
+      end
     '';
   };
 
@@ -748,6 +777,16 @@
         "InsertLeave"
       ];
     };
+  };
+
+  # Copilot
+  plugins.copilot-vim = {
+    enable = true;
+    settings = {
+    };
+  };
+  plugins.copilot-chat = {
+    enable = true;
   };
 
   # TODO: Add debugger if required

@@ -211,12 +211,12 @@
     "$mainMod, Q, exec, hyprctl setprop active opaque toggle"
 
     # Discord PTT binding
-    ", mouse:276, pass, ^(discord)$"
+    ", mouse:276, pass, class:^(discord)$"
 
     # OBS bindings
-    "$mainMod, Insert, pass, ^(com\.obsproject\.Studio)$"
-    "$mainMod, Home, pass, ^(com\.obsproject\.Studio)$"
-    "$mainMod, Prior, pass, ^(com\.obsproject\.Studio)$"
+    "$mainMod, Insert, pass, class:^(com\.obsproject\.Studio)$"
+    "$mainMod, Home, pass, class:^(com\.obsproject\.Studio)$"
+    "$mainMod, Prior, pass, class:^(com\.obsproject\.Studio)$"
   ];
 
   bindm = [

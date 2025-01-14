@@ -2,12 +2,20 @@
   pkgs.mkShell rec {
     buildInputs = with pkgs; [
       clang
-      # Replace llvmPackages with llvmPackages_X, where X is the latest LLVM version (at the time of writing, 16)
+      cmake
       llvmPackages.bintools
       rustup
-      pkg-config
       openssl
+      webkitgtk_4_1
+      gtk3
+      gtk4
+      libsoup_3
     ];
+
+    nativeBuildInputs = with pkgs; [
+      pkg-config
+    ];
+    
     RUSTC_VERSION = pkgs.lib.readFile ./rust-toolchain;
     # https://github.com/rust-lang/rust-bindgen#environment-variables
     LIBCLANG_PATH = pkgs.lib.makeLibraryPath [ pkgs.llvmPackages_latest.libclang.lib ];
