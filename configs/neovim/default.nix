@@ -526,7 +526,7 @@
       # Json
       jsonls.enable = true;
       # Typst
-      typst_lsp.enable = false;
+      tinymist.enable = true;
       # Nix
       nil_ls.enable = true;
       # Python

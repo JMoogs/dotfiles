@@ -38,10 +38,21 @@
     };
   };
   # Use the latest kernel
-  boot.kernelPackages = pkgs.linuxPackages_latest;
+  boot.kernelPackages =
+    if userOptions.device == "pc"
+    then pkgs.linuxPackages_6_6
+    else pkgs.linuxPackages_latest;
   boot.kernelParams =
     if userOptions.nvidia
     then ["nvidia_drm.fbdev=1"]
+    else [];
+  boot.kernelModules =
+    if userOptions.device == "pc"
+    then ["r8125"]
+    else [];
+  boot.extraModulePackages =
+    if userOptions.device == "pc"
+    then [pkgs.linuxPackages_6_6.r8125]
     else [];
 
   # Set hostname
@@ -106,7 +117,7 @@
   console.keyMap = "uk";
 
   # Add nerdfonts for different types of symbols
-  fonts.packages = [pkgs.nerd-fonts.symbols-only pkgs.ipafont pkgs.kochi-substitute pkgs.noto-fonts-cjk-sans];
+  fonts.packages = [pkgs.nerd-fonts.symbols-only pkgs.ipafont pkgs.kochi-substitute pkgs.noto-fonts-cjk-sans pkgs.roboto pkgs.source-sans-pro pkgs.source-sans];
 
   # Enable OpenGL
   hardware.graphics = {
@@ -340,15 +351,11 @@
   networking.firewall.allowedTCPPorts = [
     7777 # Terraria's Port
     22000 # Syncthing's TCP listening port
-    696
-    697
-    698
+    6970
   ];
   networking.firewall.allowedUDPPorts = [
     7777 # Terraria's Port
-    696
-    697
-    698
+    6970
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system

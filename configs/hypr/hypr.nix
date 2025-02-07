@@ -7,8 +7,8 @@
   monitor =
     if userOptions.device == "pc"
     then [
-      "DP-2, 2560x1440@144, 0x0, 1"
-      "HDMI-A-2, 1920x1080@60, 2560x300, 1"
+      "DP-1, 2560x1440@143.91, 0x0, 1"
+      "HDMI-A-1, 1920x1080@60, 2560x300, 1"
       "Unknown-1, disable"
     ]
     else [", preferred, auto, 1"];
@@ -17,9 +17,9 @@
   workspace =
     if userOptions.device == "pc"
     then [
-      "1, monitor:DP-2, default=true"
-      "2, monitor:HDMI-A-2, default = true"
-      "3, monitor:HDMI-A-2"
+      "1, monitor:DP-1, default=true"
+      "2, monitor:HDMI-A-1, default = true"
+      "3, monitor:HDMI-A-1"
     ]
     else null;
 
@@ -33,7 +33,7 @@
       "ags"
       "firefox"
     ]
-    ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-2 --primary"];
+    ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-1 --primary"];
 
   # Source a file (multi-file configs)
   # source = ~/.config/hypr/myColors.conf
@@ -230,6 +230,7 @@
     "opacity 0.88, class:^(kitty)$"
     "opacity 0.90, class:^(discord)$"
     "opacity 0.90, class:^(steam)$"
+    "opacity 0.88, class:^(code)$"
     "opacity 0.88, title:^(Mozilla Firefox)$, xwayland:0" # Make firefox transparent when on the homepage (only on Wayland as the title doesn't change through XWL)
     "opacity 0.88, title:^(New Tab)(.*)$, xwayland:0" # Sometimes it has the title new tab as well
     "opacity 0.88, title:^(.*)(at DuckDuckGo)(.*)$, xwayland:0" # Searches can also be transparent

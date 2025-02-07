@@ -1,2 +1,2 @@
 #!/usr/bin/env bash
-xrandr --output DP-2 --primary
+xrandr --output DP-1 --primary
