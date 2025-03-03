@@ -352,10 +352,12 @@
     7777 # Terraria's Port
     22000 # Syncthing's TCP listening port
     6970
+    6971
   ];
   networking.firewall.allowedUDPPorts = [
     7777 # Terraria's Port
     6970
+    6971
   ];
 
   # Copy the NixOS configuration file and link it from the resulting system

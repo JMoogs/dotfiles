@@ -6,6 +6,10 @@
   enable = true;
   defaultEditor = true;
 
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
   colorschemes = {
     dracula.enable = themes.name == "dracula";
 

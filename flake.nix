@@ -25,6 +25,9 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+
+    # Zen browser until it's packaged: https://github.com/NixOS/nixpkgs/issues/327982
+    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
   outputs = {

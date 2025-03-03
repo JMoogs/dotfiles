@@ -31,7 +31,7 @@
       "waypaper --restore --random"
       "waybar"
       "ags"
-      "firefox"
+      "zen"
     ]
     ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-1 --primary"];
 
@@ -133,8 +133,8 @@
     "$mainMod SHIFT, Escape, exit,"
     # Floating
     "$mainMod, V, togglefloating, "
-    # Firefox (floorp) shortcut
-    "$mainMod, F, exec, firefox"
+    # Browser shortcut
+    "$mainMod, F, exec, zen"
     # App Launcher
     "$mainMod, D, exec, rofi -show drun"
     # Full screen

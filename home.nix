@@ -25,8 +25,8 @@ in {
       # -----------------------------
       # Browsers
       firefox # Main browser
-      floorp # Backup (firefox fork)
-      mullvad-browser # Private browser
+      inputs.zen-browser.packages."${system}".default
+      floorp # Backup 2 (firefox fork)
       # -----------------------------
       # Development
       # Alternative editor
@@ -45,8 +45,6 @@ in {
       # Compilers (the ones I want globally)
       rustup # Rust - For convinience as it's my most used language and `cargo install`
       ghc # Haskell - I use `ghci` often as a calculator or for small tasks
-      scala # Scala
-      sbt # Scala build tool
       # -----------------------------
       # Media
       yt-dlp # Youtube downloader
@@ -54,14 +52,11 @@ in {
       pulseaudio # Required for waybar muting
       pavucontrol # Sound controls
       playerctl # Playing media controls
-      youtube-music
       # -----------------------------
       # Utilities
       ripgrep # A `grep` alternative for searching
       tree # A way of listing subdirectories as an alternative to `ls` in certain scenarios
       bat # A `cat` alternative with syntax highlighting among other things
-      curl-impersonate # Curl that impersonates firefox/chrome, allowing it to bypass cloudflare among other things
-      killall # Kill all processes matching criteria
       wget # Get files from the web
       file # Check file types
       bottom # A TUI system monitor
@@ -69,11 +64,8 @@ in {
       # Note taking
       anki # Flashcards
       typst # A program for writing and formatting scientific documents
-      typst-lsp # LSP for typst
-      zathura # Minimal PDF viewer
       obsidian # Markdown notes
-      wiki-tui # A wikipedia TUI
-      gimp # Editting
+      gimp # Editing
       rnote # A way of handwriting notes
       # -----------------------------
       # Discord
@@ -105,13 +97,12 @@ in {
       bitwarden # Password manager
       # -----------------------------
       # Misc.
-      loupe # Image viewer
       wl-clipboard # Clipboard
       grimblast # Screenshot utility
       hyprpaper # Set wallpapers
       hyprshade # Blue light filter and other shaders
       # waypaper # wallpaper GUI + randomizer
-      (pkgs.callPackage ./pkgs/waypaper.nix {}) # Custom waypaper for now as unstable isn't updated to 2.2, which is required for the Hyprpaper backend
+      waypaper
       (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {}) # A fix for PTT on Discord on Wayland
       xwaylandvideobridge # A fix for Wayland screensharing
       wlr-randr # Set primary monitor for certain games (Elden Ring)
@@ -141,7 +132,6 @@ in {
       obs-studio # Recording
       prismlauncher # An alternative minecraft launcher with modded support
       heroic # An alternative launcher for GOG and Epic Games
-      numbat # A calculator with type + dimension checking
       lutgen # A tool to recolour images: https://github.com/ozwaldorf/lutgen-rs
       webcord # Another electron wrapper for Discord, but without mods: it also allows for screensharing on Wayland, though streams generally seem lower quality than vesktop
     ];
