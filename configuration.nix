@@ -166,13 +166,6 @@
     package = pkgs.hyprland;
   };
 
-  # Tuxclocker
-  programs.tuxclocker = {
-    enable = true;
-    enabledNVIDIADevices = [0];
-    useUnfree = true;
-  };
-
   # Sunshine for streaming: https://github.com/LizardByte/Sunshine
   services.sunshine = {
     enable = true;
@@ -343,7 +336,7 @@
   virtualisation.docker = {
     enable = true;
   };
-  hardware.nvidia-container-toolkit.enable = true;
+  hardware.nvidia-container-toolkit.enable = userOptions.nvidia;
 
   # Mullvad (VPN)
   services.mullvad-vpn = {
