@@ -65,7 +65,8 @@
   #   if userOptions.device == "laptop"
   #   then "Asia/Tokyo"
   #   else "Europe/London";
-  services.automatic-timezoned.enable = true;
+  time.timeZone = "Europe/London";
+  # services.automatic-timezoned.enable = true;
 
   # Configure network proxy if necessary
   # networking.proxy.default = "http://user:password@proxy:port/";
@@ -239,6 +240,8 @@
     trusted-public-keys = ["hyprland.cachix.org-1:a7pgxzMz7+chwVL3/pzj6jIBMioiJM7ypFP8PwtkuGc="];
   };
 
+  nix.optimise.automatic = true;
+
   nixpkgs.config = {
     # Allow unfree packages
     allowUnfree = true;
@@ -315,6 +318,7 @@
   # Enable steam
   programs.steam = {
     enable = true;
+    protontricks.enable = true;
     remotePlay.openFirewall = true; # Open ports in the firewall for Steam Remote Play
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
@@ -322,16 +326,51 @@
   # Required for EasyEffects (https://github.com/wwmm/easyeffects)
   programs.dconf.enable = true;
 
+  # Virt-manger
+  programs.virt-manager = {
+    enable = true;
+  };
+  users.groups.libvirtd.members = ["jeremy"];
+
   # Waydroid for android apps
   virtualisation.waydroid.enable = true;
   virtualisation.libvirtd.enable = true;
+  virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.podman = {
     enable = true;
-    dockerCompat = true;
+    # dockerCompat = true;
   };
+  virtualisation.docker = {
+    enable = true;
+  };
+  hardware.nvidia-container-toolkit.enable = true;
 
   # Mullvad (VPN)
-  services.mullvad-vpn.enable = true;
+  services.mullvad-vpn = {
+    enable = true;
+    package = pkgs.mullvad-vpn;
+  };
+
+  # Jellyfin media
+  services.jellyfin = {
+    enable = true;
+    openFirewall = true;
+    user = "jeremy";
+  };
+
+  # Sonarr
+  services.sonarr = {
+    enable = true;
+    openFirewall = true;
+    user = "jeremy";
+  };
+
+  # Bazarr
+  services.bazarr = {
+    enable = true;
+    openFirewall = true;
+    user = "jeremy";
+  };
 
   # Allows Hyprlock to unlock a device
   security.pam.services.hyprlock = {};
@@ -351,11 +390,13 @@
   networking.firewall.allowedTCPPorts = [
     7777 # Terraria's Port
     22000 # Syncthing's TCP listening port
+    9080
     6970
     6971
   ];
   networking.firewall.allowedUDPPorts = [
     7777 # Terraria's Port
+    9080
     6970
     6971
   ];

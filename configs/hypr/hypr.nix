@@ -135,6 +135,8 @@
     "$mainMod, V, togglefloating, "
     # Browser shortcut
     "$mainMod, F, exec, zen"
+    # Anki shortcut
+    "$mainMod, A, exec, anki"
     # App Launcher
     "$mainMod, D, exec, rofi -show drun"
     # Full screen

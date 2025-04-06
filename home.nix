@@ -15,20 +15,20 @@ in {
     inputs.ags.homeManagerModules.default
   ];
 
-  # Any extra programs I want in my path can be added to this folder:
   home.sessionVariables = {
     CONFIG_THEME = themes.name;
   };
+  # Any extra programs I want in my path can be added to this folder:
   home.sessionPath = ["$HOME/Documents/Apps"];
   home.packages = with pkgs;
     [
       # -----------------------------
       # Browsers
-      firefox # Main browser
-      inputs.zen-browser.packages."${system}".default
-      floorp # Backup 2 (firefox fork)
+      inputs.zen-browser.packages."${system}".default # New main browser
+      firefox # Backup browser
       # -----------------------------
       # Development
+      distrobox # VMs
       # Alternative editor
       vscode
       # Sqlite browser
@@ -60,12 +60,15 @@ in {
       wget # Get files from the web
       file # Check file types
       bottom # A TUI system monitor
+      rsync
+      rclone
       # -----------------------------
       # Note taking
       anki # Flashcards
       typst # A program for writing and formatting scientific documents
       obsidian # Markdown notes
       gimp # Editing
+      inkscape # Vector editing
       rnote # A way of handwriting notes
       # -----------------------------
       # Discord
@@ -76,6 +79,7 @@ in {
       })
       vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
       element-desktop # A matrix client
+      telegram-desktop
       thunderbird # An email client
       # -----------------------------
       # Ricing
@@ -93,7 +97,6 @@ in {
       syncplay # Sync video progress to watch videos with friends
       # -----------------------------
       # Security
-      mullvad-vpn # VPN
       bitwarden # Password manager
       # -----------------------------
       # Misc.
@@ -104,7 +107,6 @@ in {
       # waypaper # wallpaper GUI + randomizer
       waypaper
       (pkgs.callPackage ./pkgs/wayland-push-to-talk-fix.nix {}) # A fix for PTT on Discord on Wayland
-      xwaylandvideobridge # A fix for Wayland screensharing
       wlr-randr # Set primary monitor for certain games (Elden Ring)
       # -----------------------------
       # Libraries and random dependencies
@@ -126,8 +128,6 @@ in {
       gdtoolkit_4 # Other tools for working with godot
       r2modman # A mod manager
       distrobox # Vms
-      qemu # Virtual Machine
-      quickemu # Quick VM setup
       factorio-headless # Factorio server
       obs-studio # Recording
       prismlauncher # An alternative minecraft launcher with modded support
@@ -142,32 +142,16 @@ in {
     nix-direnv.enable = true;
   };
 
-  # Nixvim (text editor)
+  # Text Editor
   programs.nixvim = import ./configs/neovim {
     inherit themes;
     inherit pkgs;
   };
 
   # Terminal emulator
-  programs.alacritty = {
-    enable = true;
-    settings = (import ./configs/alacritty.nix) {
-      inherit userOptions;
-      inherit themes;
-    };
-  };
-
-  # New terminal emulator
   programs.kitty = import ./configs/kitty.nix {
     inherit userOptions;
     inherit themes;
-  };
-
-  # Helix (text editor 2)
-  programs.helix = {
-    # defaultEditor = true;
-    enable = true;
-    settings = import ./configs/editor.nix {inherit themes;};
   };
 
   # Terminal multiplexer
@@ -177,8 +161,6 @@ in {
     settings = (import ./configs/zellij.nix) {inherit userOptions;};
   };
 
-  # Backup multiplexer
-  programs.tmux = (import ./configs/tmux.nix) {inherit pkgs;};
   # Git
   programs.git = import ./configs/git.nix;
   # My shell
@@ -273,13 +255,6 @@ in {
     enable = true;
     settings = import ./configs/fastfetch.nix {};
   };
-
-  # Currently testing using ags as a replacement
-  # Notification daemon for hypr
-  # services.dunst = {
-  #   enable = true;
-  #   configFile = themes.dunstTheme;
-  # };
 
   # Audio effects
   services.easyeffects.enable = true;

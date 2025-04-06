@@ -366,6 +366,7 @@
   plugins.treesitter = {
     enable = true;
     settings.indent.enable = true;
+    settings.highlight.enable = true;
   };
 
   # Completions: https://github.com/JMartJonesy/kickstart.nixvim/blob/main/plugins/nvim-cmp.nix
@@ -546,7 +547,9 @@
       # Scala
       metals.enable = true;
 
+      # TypeScript/JavaScript
       ts_ls.enable = true;
+      eslint.enable = true;
     };
 
     keymaps = {
