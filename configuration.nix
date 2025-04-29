@@ -375,6 +375,21 @@
   # Allows Hyprlock to unlock a device
   security.pam.services.hyprlock = {};
 
+  security.pam.loginLimits = [
+    {
+      domain = "*";
+      type = "soft";
+      item = "nofile";
+      value = "1000000";
+    }
+    {
+      domain = "*";
+      type = "hard";
+      item = "nofile";
+      value = "1000000";
+    }
+  ];
+
   # Enable the OpenSSH daemon.
   services.openssh = {
     enable = true;
@@ -389,6 +404,8 @@
   # Open ports in the firewall.
   networking.firewall.allowedTCPPorts = [
     7777 # Terraria's Port
+    7778
+    27015
     22000 # Syncthing's TCP listening port
     9080
     6970
@@ -396,6 +413,8 @@
   ];
   networking.firewall.allowedUDPPorts = [
     7777 # Terraria's Port
+    7778
+    27015
     9080
     6970
     6971
