@@ -226,8 +226,7 @@
     "$mainMod, mouse:273, resizewindow"
   ];
 
-  windowrulev2 = [
-    # Discord fix (?)
+  windowrule = [
     "opacity 0.88, class:^(Alacritty)$"
     "opacity 0.88, class:^(kitty)$"
     "opacity 0.90, class:^(discord)$"

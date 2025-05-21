@@ -75,7 +75,7 @@ in {
       (discord.override {
         # Currently disabled as it has a bug preventing Discord activities from working
         # withOpenASAR = true; # A mod that rewrites part of Discord's code, making it faster: https://openasar.dev/
-        withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
+        withVencord = false; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
       })
       vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
       element-desktop # A matrix client
