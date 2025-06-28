@@ -31,11 +31,11 @@ in {
       distrobox # VMs
       # Alternative editor
       vscode
+      zed-editor
       # Sqlite browser
       sqlitebrowser
       # Git
       git
-      jujutsu
       # Git TUI
       lazygit
       # LSPs (the ones that I want to be globally accessible)
@@ -56,12 +56,14 @@ in {
       # Utilities
       ripgrep # A `grep` alternative for searching
       tree # A way of listing subdirectories as an alternative to `ls` in certain scenarios
+      pandoc
       bat # A `cat` alternative with syntax highlighting among other things
       wget # Get files from the web
       file # Check file types
       bottom # A TUI system monitor
       rsync
       rclone
+      tealdeer # A `tldr` client
       # -----------------------------
       # Note taking
       anki # Flashcards
@@ -69,13 +71,12 @@ in {
       obsidian # Markdown notes
       gimp # Editing
       inkscape # Vector editing
-      rnote # A way of handwriting notes
       # -----------------------------
       # Discord
       (discord.override {
         # Currently disabled as it has a bug preventing Discord activities from working
         # withOpenASAR = true; # A mod that rewrites part of Discord's code, making it faster: https://openasar.dev/
-        withVencord = false; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
+        withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
       })
       vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
       element-desktop # A matrix client
@@ -95,6 +96,7 @@ in {
       wineWowPackages.waylandFull # A way to emulate windows
       ani-cli # A CLI program to play anime
       syncplay # Sync video progress to watch videos with friends
+      owocr # Japanese OCR
       # -----------------------------
       # Security
       bitwarden # Password manager
@@ -120,20 +122,12 @@ in {
     ]
     ++ lib.optionals (userOptions.device == "pc") [
       # For heavier things that I probably won't use on my laptop
-      # Maths programming language
-      # (sage.override {
-      #   requireSageTests = false;
-      # })
-      godot_4 # Game engine
-      gdtoolkit_4 # Other tools for working with godot
       r2modman # A mod manager
       distrobox # Vms
-      factorio-headless # Factorio server
       obs-studio # Recording
       prismlauncher # An alternative minecraft launcher with modded support
       heroic # An alternative launcher for GOG and Epic Games
       lutgen # A tool to recolour images: https://github.com/ozwaldorf/lutgen-rs
-      webcord # Another electron wrapper for Discord, but without mods: it also allows for screensharing on Wayland, though streams generally seem lower quality than vesktop
     ];
 
   # Direnv to automatically enter nix shells

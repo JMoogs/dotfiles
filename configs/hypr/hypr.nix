@@ -154,6 +154,9 @@
     "SUPER, Print, exec, grimblast copy output"
     "CONTROL, Print, exec, grimblast copy screen"
 
+    # Resize a window to 1500x1125 (for Touhou)
+    "$mainMod, T, resizeactive, exact 1500 1125"
+
     # # Move focus with mainMod + arrow keys
     "$mainMod, left, movefocus, l"
     "$mainMod, right, movefocus, r"

@@ -333,7 +333,6 @@
   users.groups.libvirtd.members = ["jeremy"];
 
   # Waydroid for android apps
-  virtualisation.waydroid.enable = true;
   virtualisation.libvirtd.enable = true;
   virtualisation.spiceUSBRedirection.enable = true;
   virtualisation.podman = {

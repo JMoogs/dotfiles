@@ -41,7 +41,7 @@
     signcolumn = "yes";
 
     # Update time in ms
-    updatetime = 250;
+    updatetime = 400;
 
     # Changes which-key popup display time
     timeoutlen = 300;
