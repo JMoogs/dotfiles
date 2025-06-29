@@ -5,42 +5,41 @@
   inputs,
   ...
 }: let
-  themes = (import ./configs/theming/theme.nix) {
-    inherit pkgs;
+  themes = import ./home/theming/theme.nix {
     inherit userOptions;
+    inherit pkgs;
   };
 in {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
-    inputs.ags.homeManagerModules.default
+    # Shell
+    ./home/shell
+    # Fastfetch
+    ./home/fastfetch.nix
+    # Git settings
+    ./home/git.nix
   ];
 
   home.sessionVariables = {
     CONFIG_THEME = themes.name;
   };
+
   # Any extra programs I want in my path can be added to this folder:
   home.sessionPath = ["$HOME/Documents/Apps"];
   home.packages = with pkgs;
     [
       # -----------------------------
       # Browsers
-      inputs.zen-browser.packages."${system}".default # New main browser
-      firefox # Backup browser
+      firefox # Browser
       # -----------------------------
       # Development
       distrobox # VMs
       # Alternative editor
       vscode
-      zed-editor
-      # Sqlite browser
-      sqlitebrowser
       # Git
       git
-      # Git TUI
-      lazygit
       # LSPs (the ones that I want to be globally accessible)
       nil # Nix - Used for my main config and other smaller scripts
-      haskellPackages.haskell-language-server # Haskell - Used for some quick scripts
       marksman # Markdown - Often used in place of txt files
       # Compilers (the ones I want globally)
       rustup # Rust - For convinience as it's my most used language and `cargo install`
@@ -79,24 +78,17 @@ in {
         withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
       })
       vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
-      element-desktop # A matrix client
       telegram-desktop
-      thunderbird # An email client
       # -----------------------------
       # Ricing
       cbonsai # Draws trees in terminal that look cool and do nothing else
       font-awesome # A font with some different symbols
       # -----------------------------
       # Work
-      teams-for-linux # Microsoft Teams
-      p3x-onenote # Microsoft OneNote
       libreoffice-qt # Alternatives to Microsoft Office
       # -----------------------------
       # Entertainment
       wineWowPackages.waylandFull # A way to emulate windows
-      ani-cli # A CLI program to play anime
-      syncplay # Sync video progress to watch videos with friends
-      owocr # Japanese OCR
       # -----------------------------
       # Security
       bitwarden # Password manager
@@ -123,7 +115,6 @@ in {
     ++ lib.optionals (userOptions.device == "pc") [
       # For heavier things that I probably won't use on my laptop
       r2modman # A mod manager
-      distrobox # Vms
       obs-studio # Recording
       prismlauncher # An alternative minecraft launcher with modded support
       heroic # An alternative launcher for GOG and Epic Games
@@ -137,28 +128,23 @@ in {
   };
 
   # Text Editor
-  programs.nixvim = import ./configs/neovim {
+  programs.nixvim = import ./home/neovim {
     inherit themes;
     inherit pkgs;
   };
 
   # Terminal emulator
-  programs.kitty = import ./configs/kitty.nix {
-    inherit userOptions;
-    inherit themes;
-  };
+  # programs.kitty = import ./home/kitty.nix {
+  #   inherit userOptions;
+  #   inherit themes;
+  # };
 
   # Terminal multiplexer
-  programs.zellij = {
-    enable = true;
-    enableFishIntegration = false;
-    settings = (import ./configs/zellij.nix) {inherit userOptions;};
-  };
-
-  # Git
-  programs.git = import ./configs/git.nix;
-  # My shell
-  programs.fish = import ./configs/fish.nix;
+  # programs.zellij = {
+  #   enable = true;
+  #   enableFishIntegration = false;
+  #   settings = (import ./home/zellij.nix) {inherit userOptions;};
+  # };
 
   # Theme for GTK apps
   gtk = {
@@ -180,23 +166,23 @@ in {
   # Audio visualiser
   programs.cava = {
     enable = true;
-    settings = (import ./configs/hypr/cava.nix) {inherit themes;};
+    settings = (import ./home/hypr/cava.nix) {inherit themes;};
   };
 
   # Taskbar
   programs.waybar = {
     enable = true;
-    settings = (import ./configs/hypr/waybar.nix) {
+    settings = (import ./home/hypr/waybar.nix) {
       inherit userOptions;
       inherit lib;
     };
-    style = ./configs/hypr/waybar.css;
+    style = ./home/hypr/waybar.css;
   };
 
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
-    settings = (import ./configs/hypr/hypr.nix) {
+    settings = (import ./home/hypr/hypr.nix) {
       inherit lib;
       inherit userOptions;
     };
@@ -205,7 +191,7 @@ in {
 
   # Lock screen
   programs.hyprlock =
-    import ./configs/hypr/hyprlock.nix {inherit themes;};
+    import ./home/hypr/hyprlock.nix {inherit themes;};
 
   # File manager
   programs.yazi = {
@@ -234,20 +220,9 @@ in {
   };
 
   # Idle manager
-  services.hypridle = import ./configs/hypr/hypridle.nix {
+  services.hypridle = import ./home/hypr/hypridle.nix {
     inherit userOptions;
     inherit lib;
-  };
-
-  # Widgets for hypr
-  programs.ags = {
-    enable = true;
-    configDir = ./configs/hypr/ags;
-  };
-
-  programs.fastfetch = {
-    enable = true;
-    settings = import ./configs/fastfetch.nix {};
   };
 
   # Audio effects

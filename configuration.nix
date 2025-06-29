@@ -3,69 +3,26 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 {
   pkgs,
-  config,
-  lib,
   userOptions,
   ...
 }: {
-  imports = [
-    # Include the hardware configuration so that drives can be mounted, etc.
-    (
-      if userOptions.device == "pc"
-      then ./hardware-configs/PC.nix
-      else if userOptions.device == "laptop"
-      then ./hardware-configs/laptop.nix
-      else null
-    )
-  ];
+  # imports = [
+  #   # Include the hardware configuration so that drives can be mounted, etc.
+  #   (
+  #     if userOptions.device == "pc"
+  #     then ./hardware-configs/PC.nix
+  #     else if userOptions.device == "laptop"
+  #     then ./hardware-configs/laptop.nix
+  #     else null
+  #   )
+  # ];
 
-  # Setup the bootloader
-  boot.loader = {
-    efi = {
-      canTouchEfiVariables = true;
-      # By mounting on `/boot/efi`, extra files (previous generations) can be stored on the root partition rather than the EFI partition
-      efiSysMountPoint = "/boot/efi";
-    };
-    # Use grub as the bootloader
-    grub = {
-      enable = true;
-      # Use OS Prober to detect a windows install
-      useOSProber = true;
-      efiSupport = true;
-      device = "nodev";
-      # Store 15 previous generations of configs
-      configurationLimit = 15;
-    };
-  };
-  # Use the latest kernel
-  boot.kernelPackages =
-    if userOptions.device == "pc"
-    then pkgs.linuxPackages_6_6
-    else pkgs.linuxPackages_latest;
-  boot.kernelParams =
-    if userOptions.nvidia
-    then ["nvidia_drm.fbdev=1"]
-    else [];
-  boot.kernelModules =
-    if userOptions.device == "pc"
-    then ["r8125"]
-    else [];
-  boot.extraModulePackages =
-    if userOptions.device == "pc"
-    then [pkgs.linuxPackages_6_6.r8125]
-    else [];
-
-  # Set hostname
-  networking.hostName = userOptions.hostname;
   # Use networkmanager for managing networks. It is easiest to use and the default of most distros.
   networking.networkmanager.enable = true;
 
   # Set the time zone
-  # time.timeZone =
-  #   if userOptions.device == "laptop"
-  #   then "Asia/Tokyo"
-  #   else "Europe/London";
   time.timeZone = "Europe/London";
+
   # services.automatic-timezoned.enable = true;
 
   # Configure network proxy if necessary
@@ -124,39 +81,10 @@
   hardware.graphics = {
     enable = true;
     enable32Bit = true;
-    extraPackages =
-      if userOptions.nvidia
-      then [pkgs.libvdpau-va-gl pkgs.nvidia-vaapi-driver]
-      else [];
   };
 
   # Enable the Xbox One controller driver
   hardware.xone.enable = true;
-
-  # Nvidia setup
-  hardware.nvidia = lib.attrsets.optionalAttrs userOptions.nvidia {
-    # Modesetting is required
-    modesetting.enable = true;
-
-    powerManagement.enable = false;
-    powerManagement.finegrained = false;
-
-    # Use the NVidia open source kernel module (not to be confused with the
-    # independent third-party "nouveau" open source driver).
-    # Currently alpha-quality/buggy, so false is currently the recommended setting.
-    open = false;
-
-    # Enable the Nvidia settings menu,
-    # accessible via `nvidia-settings`.
-    nvidiaSettings = true;
-
-    # Set the kernel package
-    package = config.boot.kernelPackages.nvidiaPackages.beta; # Use beta as we need Nvidia 555 for Explicit Sync as of right now
-    # Options include:
-    # config.boot.kernelPackages.nvidiaPackages.stable
-    # config.boot.kernelPackages.nvidiaPackages.production
-    # config.boot.kernelPackages.nvidiaPackages.beta
-  };
 
   # Enable hyprland (note: I don't know if this actually has any effect since it's defined in home.nix)
   programs.hyprland = {
@@ -164,13 +92,6 @@
     xwayland.enable = true;
     portalPackage = pkgs.xdg-desktop-portal-hyprland;
     package = pkgs.hyprland;
-  };
-
-  # Tuxclocker
-  programs.tuxclocker = {
-    enable = true;
-    enabledNVIDIADevices = [0];
-    useUnfree = true;
   };
 
   # Sunshine for streaming: https://github.com/LizardByte/Sunshine
@@ -187,22 +108,13 @@
     displayManager.startx.enable = true;
 
     # Set drivers
-    videoDrivers =
-      if userOptions.nvidia
-      then ["nvidia"]
-      else ["modesetting" "fbdev"];
+    videoDrivers = ["modesetting" "fbdev"];
 
     # Set the layout for xkeyboard
     xkb.layout = "gb";
 
     # Enable the wacom tablet driver
     wacom.enable = true;
-  };
-
-  # Enable CUPS to print documents.
-  services.printing = {
-    enable = true;
-    drivers = [pkgs.hplip];
   };
 
   # Enable sound.
@@ -248,8 +160,6 @@
     allowBroken = true;
     # Add insecure packages that are required here
     permittedInsecurePackages = []; # Currently none required
-    # Accept the nvidia driver license when running nvidia
-    nvidia.acceptLicense = userOptions.nvidia;
   };
 
   nixpkgs.overlays = [
@@ -291,13 +201,6 @@
     # Quick entry into a dev shell
     dev = "nix-shell --command fish";
     neofetch = "fastfetch";
-    rebuild =
-      if userOptions.device == "pc"
-      then "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-nixos"
-      else if userOptions.device == "laptop"
-      then "sudo nixos-rebuild switch --flake /etc/nixos#Jeremy-laptop"
-      else null;
-
     # Aliases to quickly edit my config
     cdconfig = "cd /etc/nixos";
     edithome = "sudoedit /etc/nixos/home.nix";
@@ -342,35 +245,12 @@
   virtualisation.docker = {
     enable = true;
   };
-  hardware.nvidia-container-toolkit.enable = true;
 
   # Mullvad (VPN)
   services.mullvad-vpn = {
     enable = true;
     package = pkgs.mullvad-vpn;
   };
-
-  # Jellyfin media
-  services.jellyfin = {
-    enable = true;
-    openFirewall = true;
-    user = "jeremy";
-  };
-
-  # Sonarr
-  services.sonarr = {
-    enable = true;
-    openFirewall = true;
-    user = "jeremy";
-  };
-
-  # Bazarr
-  services.bazarr = {
-    enable = true;
-    openFirewall = true;
-    user = "jeremy";
-  };
-
   # Allows Hyprlock to unlock a device
   security.pam.services.hyprlock = {};
 
@@ -423,12 +303,4 @@
   # (/run/current-system/configuration.nix). This is useful in case you
   # accidentally delete configuration.nix.
   # system.copySystemConfiguration = true;
-
-  # This value determines the NixOS release from which the default
-  # settings for stateful data, like file locations and database versions
-  # on your system were taken. It's perfectly fine and recommended to leave
-  # this value at the release version of the first install of this system.
-  # Before changing this value read the documentation for this option
-  # (e.g. man configuration.nix or on https://nixos.org/nixos/options.html).
-  system.stateVersion = "23.05"; # Did you read the comment?
 }

@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+# A script to recolour wallpapers into my themes
+
 if [ ! -d "dracula" ]; then
   mkdir dracula
 fi

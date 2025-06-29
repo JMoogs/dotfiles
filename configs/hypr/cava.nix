@@ -1,5 +1,0 @@
-{ themes, ...}:
-
-{
-  color = themes.cavaTheme;
-}

@@ -11,9 +11,6 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Aylurs GTK shell, for widgets: https://aylur.github.io/ags-docs/
-    ags.url = "github:Aylur/ags";
-
     # Use hyprland (WM) from master
     hyprland = {
       url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
@@ -25,9 +22,6 @@
       url = "github:nix-community/nixvim";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-
-    # Zen browser until it's packaged: https://github.com/NixOS/nixpkgs/issues/327982
-    zen-browser.url = "github:0xc000022070/zen-browser-flake";
   };
 
   outputs = {
@@ -39,11 +33,10 @@
     nixosConfigurations = {
       "Jeremy-nixos" = let
         opts = {
-          nvidia = true;
-          hostname = "Jeremy-nixos";
           username = "jeremy";
           device = "pc";
           theme = "frappe";
+          nvidia = true;
         };
       in
         nixpkgs.lib.nixosSystem {
@@ -54,36 +47,9 @@
           system = "x86_64-linux";
           modules = [
             ./configuration.nix
-            home-manager.nixosModules.home-manager
-            {
-              home-manager.useGlobalPkgs = true;
-              home-manager.useUserPackages = true;
-              home-manager.users."${opts.username}" = import ./home.nix;
-              home-manager.extraSpecialArgs = {
-                inherit inputs;
-                userOptions = opts;
-              };
-            }
-          ];
-        };
-
-      "Jeremy-laptop" = let
-        opts = {
-          nvidia = false;
-          hostname = "Jeremy-nixos-laptop";
-          username = "jeremy";
-          device = "laptop";
-          theme = "frappe";
-        };
-      in
-        nixpkgs.lib.nixosSystem {
-          specialArgs = {
-            inherit inputs;
-            userOptions = opts;
-          };
-          system = "x86_64-linux";
-          modules = [
-            ./configuration.nix
+            ./modules/nvidia.nix
+            ./modules/jellyfin.nix
+            ./hosts/main
             home-manager.nixosModules.home-manager
             {
               home-manager.useGlobalPkgs = true;
