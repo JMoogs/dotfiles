@@ -6,11 +6,11 @@
 
 ### General
 - Themes: [Dracula](https://draculatheme.com/), [catppuccin mocha](https://catppuccin.com/), and [catppuccin latte](https://catppuccin.com/)
-- Terminal Emulators: [Kitty](https://github.com/kovidgoyal/kitty) with [Alacritty](https://github.com/alacritty/alacritty) as a backup
+- Terminal Emulator: [Kitty](https://github.com/kovidgoyal/kitty)
 - Shell: [Fish](https://fishshell.com/)
-- Terminal Multiplexers: [Zellij](https://github.com/zellij-org/zellij) with [Tmux](https://github.com/tmux/tmux) as a backup
-- Editors: [Neovim (NixVim)](https://github.com/nix-community/nixvim) and [Helix](https://helix-editor.com/)
-- Browsers: [Firefox](https://www.mozilla.org/en-GB/firefox/) with [Floorp](https://floorp.app/en/) as a backup
+- Terminal Multiplexers: [Zellij](https://github.com/zellij-org/zellij)
+- Editor: [Neovim (NixVim)](https://github.com/nix-community/nixvim)
+- Browsers: [Firefox](https://www.mozilla.org/en-GB/firefox/)
 - Launcher: [Rofi](https://github.com/davatorium/rofi)
 - Window Manager: [Hyprland](https://github.com/hyprwm/Hyprland)
 
@@ -24,11 +24,11 @@
 ### Other Utilities
 - File manager: [Yazi](https://github.com/sxyazi/yazi)
 - System monitor: [Bottom](https://github.com/ClementTsang/bottom)
-- PDF Viewer: [Zathura](https://github.com/pwmt/zathura) or a browser
-- Image Viewer: [Loupe](https://apps.gnome.org/en-GB/Loupe/)
+- PDF Viewer: `firefox`
+- Image Viewer: `kitten icat`
 - Media Player: [mpv](https://mpv.io/)
 - Recording Software: [OBS](https://obsproject.com/)
 
 ## Installation
 
-See [INSTALLATION.md](./INSTALLATION.md) (WIP)
+TODO
