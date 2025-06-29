@@ -29,9 +29,9 @@ in {
     }
     else null;
 
-  rofiTheme = "/etc/nixos/configs/theming/rofi/${theme}.rasi";
+  rofiTheme = "/etc/nixos/home/theming/rofi/${theme}.rasi";
 
-  alacrittyTheme = "/etc/nixos/configs/theming/alacritty/${theme}.toml";
+  alacrittyTheme = "/etc/nixos/home/theming/alacritty/${theme}.toml";
 
   kittyTheme =
     if theme == "dracula"
@@ -69,7 +69,7 @@ in {
   # and forth rather than rewriting in Nix.
   yaziTheme = builtins.fromTOML (builtins.readFile ./yazi/${theme}.toml);
 
-  dunstTheme = /etc/nixos/configs/theming/dunst/${theme};
+  dunstTheme = /etc/nixos/home/theming/dunst/${theme};
 
   hyprTheme =
     if theme == "dracula"

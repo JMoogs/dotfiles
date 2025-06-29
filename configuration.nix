@@ -6,17 +6,6 @@
   userOptions,
   ...
 }: {
-  # imports = [
-  #   # Include the hardware configuration so that drives can be mounted, etc.
-  #   (
-  #     if userOptions.device == "pc"
-  #     then ./hardware-configs/PC.nix
-  #     else if userOptions.device == "laptop"
-  #     then ./hardware-configs/laptop.nix
-  #     else null
-  #   )
-  # ];
-
   # Use networkmanager for managing networks. It is easiest to use and the default of most distros.
   networking.networkmanager.enable = true;
 
@@ -85,14 +74,6 @@
 
   # Enable the Xbox One controller driver
   hardware.xone.enable = true;
-
-  # Enable hyprland (note: I don't know if this actually has any effect since it's defined in home.nix)
-  programs.hyprland = {
-    enable = true;
-    xwayland.enable = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
-    package = pkgs.hyprland;
-  };
 
   # Sunshine for streaming: https://github.com/LizardByte/Sunshine
   services.sunshine = {
@@ -200,7 +181,8 @@
     lg = "lazygit";
     # Quick entry into a dev shell
     dev = "nix-shell --command fish";
-    neofetch = "fastfetch";
+    neofetch = "fastfetch --logo /etc/nixos/other/images/fastfetchlogo.png --logo-width 33";
+    fastfetch = "fastfetch --logo /etc/nixos/other/images/fastfetchlogo.png --logo-width 33";
     # Aliases to quickly edit my config
     cdconfig = "cd /etc/nixos";
     edithome = "sudoedit /etc/nixos/home.nix";
@@ -251,6 +233,9 @@
     enable = true;
     package = pkgs.mullvad-vpn;
   };
+
+  xdg.portal.config.common.default = "*";
+
   # Allows Hyprlock to unlock a device
   security.pam.services.hyprlock = {};
 

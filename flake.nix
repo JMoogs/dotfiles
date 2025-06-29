@@ -37,6 +37,7 @@
           device = "pc";
           theme = "frappe";
           nvidia = true;
+          wm = "hyprland";
         };
       in
         nixpkgs.lib.nixosSystem {

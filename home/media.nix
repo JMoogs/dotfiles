@@ -5,6 +5,7 @@
     pulseaudio # Required for waybar muting
     pavucontrol # Sound controls
     playerctl # Playing media controls
+    youtube-music # Youtube music client
   ];
 
   # Mpv (media player) with mpris support among other things

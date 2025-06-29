@@ -14,8 +14,14 @@
         exclusive = true;
         passthrough = false;
         height = 40;
-        modules-left = ["custom/leftpad" "hyprland/workspaces" "custom/rightpad"];
-        modules-center = ["custom/leftpad" "hyprland/window" "clock" "mpris" "custom/rightpad"];
+        modules-left =
+          if (userOptions.wm == "hyprland")
+          then ["custom/leftpad" "hyprland/workspaces" "custom/rightpad"]
+          else ["custom/leftpad" "custom/rightpad"];
+        modules-center =
+          if (userOptions.wm == "hyprland")
+          then ["custom/leftpad" "hyprland/window" "clock" "mpris" "custom/rightpad"]
+          else ["custom/leftpad" "clock" "mpris" "custom/rightpad"];
         modules-right = ["custom/leftpad" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk" "custom/rightpad"];
 
         # Audio visualiser
@@ -83,7 +89,7 @@
           format = " {percentage_used}%";
         };
 
-        "hyprland/workspaces" = {
+        "hyprland/workspaces" = lib.mkIf (userOptions.wm == "hyprland") {
           all-outputs = true;
           # show-special = true;
           format = "{id}: {windows}";
@@ -112,7 +118,7 @@
           };
         };
 
-        "hyprland/window" = {
+        "hyprland/window" = lib.mkIf (userOptions.wm == "hyprland") {
           format = "{title}";
           rewrite = {
             # Both formats are used at this format
