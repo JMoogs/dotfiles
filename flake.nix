@@ -11,15 +11,20 @@
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Use hyprland (WM) from master
-    hyprland = {
-      url = "git+https://github.com/hyprwm/Hyprland?submodules=1";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
-
     # Nix version of neovim
     nixvim = {
       url = "github:nix-community/nixvim";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
+
+    # Nixcord for Discord/Vencord declarative config
+    nixcord = {
+      url = "github:KaylorBen/nixcord";
+    };
+
+    # Nix user repository (NUR) for firefox extensions
+    nur = {
+      url = "github:nix-community/NUR";
       inputs.nixpkgs.follows = "nixpkgs";
     };
   };
@@ -28,6 +33,7 @@
     self,
     nixpkgs,
     home-manager,
+    nur,
     ...
   } @ inputs: {
     nixosConfigurations = {
@@ -61,6 +67,7 @@
                 userOptions = opts;
               };
             }
+            {nixpkgs.overlays = [nur.overlays.default];}
           ];
         };
     };

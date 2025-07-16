@@ -1,0 +1,179 @@
+@define-color rosewater #dc8a78;
+@define-color flamingo #dd7878;
+@define-color pink #ea76cb;
+@define-color mauve #8839ef;
+@define-color red #d20f39;
+@define-color maroon #e64553;
+@define-color peach #fe640b;
+@define-color yellow #df8e1d;
+@define-color green #40a02b;
+@define-color teal #179299;
+@define-color sky #04a5e5;
+@define-color sapphire #209fb5;
+@define-color blue #1e66f5;
+@define-color lavender #7287fd;
+@define-color text #4c4f69;
+@define-color subtext1 #5c5f77;
+@define-color subtext0 #6c6f85;
+@define-color overlay2 #7c7f93;
+@define-color overlay1 #8c8fa1;
+@define-color overlay0 #9ca0b0;
+@define-color surface2 #acb0be;
+@define-color surface1 #bcc0cc;
+@define-color surface0 #ccd0da;
+@define-color base #eff1f5;
+@define-color mantle #e6e9ef;
+@define-color crust #dce0e8;
+
+* {
+    border: none;
+    border-radius: 0px;
+    font-family: "JetBrainsMono Nerd Font";
+    font-weight: bold;
+    font-size: 13px;
+    min-height: 10px;
+}
+
+window#waybar {
+    background: transparent;
+}
+
+#temperature,
+#clock,
+#workspaces,
+#tray,
+#pulseaudio,
+#network,
+#cpu,
+#disk,
+#mpris,
+#window,
+#custom-battery,
+#custom-nvidia-gpu,
+#custom-rightpad,
+#custom-leftpad {
+   color: @text;
+   background-color: @surface0;
+   margin: 4px 0px 4px 0px;
+   opacity: 1;
+}
+
+tooltip {
+    background: @surface0;
+    color: @text;
+    border-radius: 22px;
+    border-width: 2px;
+    border-style: solid;
+    border-color: #000000;
+}
+
+#workspaces button {
+    box-shadow: none;
+    text-shadow: none;
+    padding: 0px;
+    border-radius: 9px;
+    margin-top: 3px;
+    margin-bottom: 3px;
+    padding-left: 4px;
+    padding-right: 4px;
+    color: @text;
+}
+
+#workspaces button.active {
+    background: shade(@sky, 0.9);
+    color: @text;
+    margin-left: 3px;
+    padding-left: 6px;
+    padding-right: 6px;
+    margin-right: 3px;
+}
+
+#workspaces button:hover {
+    background: @sky;
+    border: none;
+    color: @text;
+}
+
+#workspaces {
+    padding: 0px;
+    padding-left: 5px;
+    padding-right: 5px;
+}
+
+#window {
+    color: @overlay2;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#clock {
+   color: @text;
+   padding-left: 0px;
+   padding-right: 19px;
+}
+
+#mpris {
+    color: @text;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#pulseaudio {
+    color: @rosewater;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#temperature {
+    color: @peach;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#temperature.critical {
+    color: @red;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#cpu {
+    color: @blue;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#custom-battery {
+    color: @surface2;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#custom-nvidia-gpu {
+    color: @teal;
+    padding-left: 0px;
+    padding-right: 19px;
+}
+
+#network {
+   color: @text;
+   padding-left: 0px;
+   padding-right: 19px;
+}
+
+#disk {
+    color: @green;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+
+#custom-rightpad {
+    margin-right: 9px;
+    padding-right: 3px;
+    border-radius: 0px 22px 22px 0px;
+}
+
+#custom-leftpad {
+    margin-left: 9px;
+    padding-left: 3px;
+    border-radius: 22px 0px 0px 22px;
+}

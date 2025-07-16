@@ -1,13 +1,12 @@
 {
   lib,
   userOptions,
-  inputs,
+  config,
   pkgs,
   ...
 }: let
-  themes = import ../theming/theme.nix {
-    inherit userOptions;
-    inherit pkgs;
+  themes = import ../theming/getTheme.nix {
+    inherit config pkgs;
   };
 in {
   home.packages = with pkgs; [
@@ -18,13 +17,16 @@ in {
   # Hyprland
   wayland.windowManager.hyprland = {
     enable = true;
+    package = null;
+    portalPackage = null;
+    systemd.enable = false; # Using UWSM
     settings = (import ./hyprland.nix) {
       inherit lib;
       inherit userOptions;
     };
-    package = inputs.hyprland.packages.${pkgs.system}.hyprland; # Uses master
+    # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     xwayland.enable = true;
-    portalPackage = pkgs.xdg-desktop-portal-hyprland;
+    # portalPackage = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.xdg-desktop-portal-hyprland;
   };
 
   # Lock screen

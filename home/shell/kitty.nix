@@ -1,10 +1,10 @@
 {
-  userOptions,
   pkgs,
+  config,
   ...
 }: let
-  themes = import ../theming/theme.nix {
-    inherit userOptions;
+  themes = import ../theming/getTheme.nix {
+    inherit config;
     inherit pkgs;
   };
 in {

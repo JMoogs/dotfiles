@@ -27,9 +27,9 @@
   };
 
   # Required setup for the Realtek 8125 network driver for internet on PC
-  boot.kernelPackages = pkgs.linuxPackages_6_6;
+  boot.kernelPackages = pkgs.linuxPackages_6_15;
   boot.kernelModules = ["r8125"];
-  boot.extraModulePackages = [pkgs.linuxPackages_6_6.r8125];
+  boot.extraModulePackages = [pkgs.linuxPackages_6_15.r8125];
 
   networking.hostName = "Jeremy-nixos";
 

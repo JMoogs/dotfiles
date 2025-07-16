@@ -3,15 +3,16 @@
   lib,
   userOptions,
   inputs,
+  config,
   ...
 }: let
-  themes = import ./home/theming/theme.nix {
-    inherit userOptions;
-    inherit pkgs;
+  themes = import ./home/theming/getTheme.nix {
+    inherit pkgs config;
   };
 in {
   imports = [
     inputs.nixvim.homeManagerModules.nixvim
+    inputs.nixcord.homeModules.nixcord
     # Shell
     ./home/shell
     # Fastfetch
@@ -28,7 +29,17 @@ in {
     ./home/hypr
     # General WM config
     ./home/wm
+    # Theming options
+    ./home/theming/theming.nix
+    # Firefox - Currently testing brave
+    ./home/firefox.nix
+    # Brave
+    ./home/chromium.nix
+    # Discord + Vencord
+    ./home/discord.nix
   ];
+
+  themingModule.theme = lib.mkDefault "frappe";
 
   home.sessionVariables = {
     CONFIG_THEME = themes.name;
@@ -38,9 +49,6 @@ in {
   home.sessionPath = ["$HOME/Documents/Apps"];
   home.packages = with pkgs;
     [
-      # -----------------------------
-      # Browsers
-      firefox # Browser
       # -----------------------------
       # Development
       distrobox # VMs
@@ -62,12 +70,12 @@ in {
       gimp # Editing
       inkscape # Vector editing
       # ----------------------------- Discord
-      (discord.override {
-        # Currently disabled as it has a bug preventing Discord activities from working
-        # withOpenASAR = true; # A mod that rewrites part of Discord's code, making it faster: https://openasar.dev/
-        withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
-      })
-      vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
+      # (discord.override {
+      #   # Currently disabled as it has a bug preventing Discord activities from working
+      #   # withOpenASAR = true; # A mod that rewrites part of Discord's code, making it faster: https://openasar.dev/
+      #   withVencord = true; # A mod that allows for extra features including themes and plugins: https://vencord.dev/
+      # })
+      # vesktop # An alternative electron wrapper for Discord with Vencord built in: it allows for screensharing on Wayland
       telegram-desktop
       # -----------------------------
       # Ricing
@@ -107,13 +115,39 @@ in {
     ];
 
   # Theme for GTK apps
-  gtk = {
+  gtk = let
+    useDark =
+      if themes.name == "latte"
+      then "false"
+      else "true";
+  in {
     enable = true;
     theme = themes.gtkTheme;
     iconTheme = {
       name = "Papirus";
       package = pkgs.papirus-icon-theme;
     };
+    gtk3.extraConfig.gtk-application-prefer-dark-theme = useDark;
+    gtk4.extraConfig.gtk-application-prefer-dark-theme = useDark;
+  };
+
+  dconf.enable = true;
+  dconf.settings = {
+    "org/gnome/desktop/interface" = {
+      icon-theme = "Papirus";
+      color-scheme =
+        if themes.name == "latte"
+        then "prefer-light"
+        else "prefer-dark";
+    };
+  };
+
+  xdg.configFile = let
+    gtk4Dir = "${config.gtk.theme.package}/share/themes/${config.gtk.theme.name}/gtk-4.0";
+  in {
+    "gtk-4.0/assets".source = "${gtk4Dir}/assets";
+    "gtk-4.0/gtk.css".source = "${gtk4Dir}/gtk.css";
+    "gtk-4.0/gtk-dark.css".source = "${gtk4Dir}/gtk-dark.css";
   };
 
   # Audio effects

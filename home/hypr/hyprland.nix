@@ -23,14 +23,14 @@
     ]
     else null;
 
-  # Execute your favorite apps at launch
-  # exec-once = waybar & hyprpaper & firefox (floorp)
+  # Execute at launch
   exec-once =
     [
-      "dbus-update-activation-environment --systemd WAYLAND_DISPLAY XDG_CURRENT_DESKTOP"
-      "waypaper --restore --random"
-      "waybar"
-      "firefox"
+      # "dbus-update-activation-environment --systemd --all"
+      "uwsm app -- waypaper --restore --random"
+      "uwsm app -- waybar"
+      # Browser
+      "uwsm app -- brave"
     ]
     ++ lib.optionals (userOptions.device == "pc") ["xrandr --output DP-1 --primary"];
 
@@ -41,8 +41,9 @@
   env = ["XCURSOR_SIZE, 24" "HYPRCURSOR_THEME, HyprBibataModernClassicSVG"]; # For all categories, see https://wiki.hyprland.org/Configuring/Variables/
 
   input = {
-    kb_layout = "gb";
-    kb_options = "compose:ralt";
+    kb_layout = "gb,gb";
+    kb_variant = ",colemak";
+    kb_options = "grp:alt_shift_toggle";
     follow_mouse = 1;
     sensitivity = 0;
     touchpad.natural_scroll = true;
@@ -131,7 +132,7 @@
     # Floating
     "$mainMod, V, togglefloating, "
     # Browser shortcut
-    "$mainMod, F, exec, firefox"
+    "$mainMod, F, exec, brave"
     # Anki shortcut
     "$mainMod, A, exec, anki"
     # App Launcher

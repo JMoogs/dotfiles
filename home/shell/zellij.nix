@@ -3,7 +3,7 @@
   pkgs,
   ...
 }: let
-  themes = import ../theming/theme.nix {
+  themes = import ../theming/getTheme.nix {
     inherit userOptions;
     inherit pkgs;
   };

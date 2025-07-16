@@ -1,8 +1,14 @@
 {
   userOptions,
   lib,
+  config,
+  pkgs,
   ...
-}: {
+}: let
+  themes = import ../theming/getTheme.nix {
+    inherit config pkgs;
+  };
+in {
   programs.waybar = {
     enable = true;
     settings = {
@@ -206,6 +212,6 @@
         };
       };
     };
-    style = ./waybar.css;
+    style = themes.waybarTheme;
   };
 }

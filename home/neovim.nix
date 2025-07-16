@@ -1,11 +1,10 @@
 {
   pkgs,
-  userOptions,
+  config,
   ...
 }: let
-  themes = import ./theming/theme.nix {
-    inherit userOptions;
-    inherit pkgs;
+  themes = import ./theming/getTheme.nix {
+    inherit pkgs config;
   };
 in {
   programs.nixvim = {

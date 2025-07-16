@@ -1,33 +1,42 @@
 {
   pkgs,
-  userOptions,
+  config,
   ...
 }: let
-  theme = userOptions.theme;
+  theme = config.themingModule.theme;
 in {
   name = theme;
 
   gtkTheme =
     if theme == "dracula"
     then {
-      name = theme;
+      name = "${theme}-Dark";
       package = pkgs.dracula-theme;
     }
     else if theme == "frappe"
     then {
-      name = theme;
+      name = "${theme}-Dark";
       package = pkgs.catppuccin-gtk.override {
         variant = "frappe";
       };
     }
     else if theme == "latte"
     then {
-      name = theme;
+      name = "${theme}-Light";
       package = pkgs.catppuccin-gtk.override {
         variant = "latte";
       };
     }
     else null;
+
+  vencordTheme =
+    if theme == "dracula"
+    then ["https://raw.githubusercontent.com/dracula/BetterDiscord/master/Dracula_Official.theme.css"]
+    else if theme == "frappe"
+    then ["https://raw.githubusercontent.com/catppuccin/discord/refs/heads/main/themes/frappe.theme.css"]
+    else if theme == "latte"
+    then ["https://raw.githubusercontent.com/catppuccin/discord/refs/heads/main/themes/latte.theme.css"]
+    else [];
 
   rofiTheme = "/etc/nixos/home/theming/rofi/${theme}.rasi";
 
@@ -70,6 +79,8 @@ in {
   yaziTheme = builtins.fromTOML (builtins.readFile ./yazi/${theme}.toml);
 
   dunstTheme = /etc/nixos/home/theming/dunst/${theme};
+
+  waybarTheme = ../wm/waybarThemes/${theme}.css;
 
   hyprTheme =
     if theme == "dracula"

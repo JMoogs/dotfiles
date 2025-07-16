@@ -3,6 +3,7 @@
 # and in the NixOS manual (accessible by running `nixos-help`).
 {
   pkgs,
+  lib,
   userOptions,
   ...
 }: {
@@ -22,19 +23,16 @@
   i18n = {
     # Default locale. Determines the language for most things
     defaultLocale = "en_GB.UTF-8";
-    # Extra locales that the system should support
     supportedLocales = [
-      # The default POSIX locale
       "C.UTF-8/UTF-8"
-      # English (British)
       "en_GB.UTF-8/UTF-8"
-      # Japanese
       "ja_JP.UTF-8/UTF-8"
     ];
     # Add a way to input different languages
     inputMethod = {
       enable = true;
       type = "fcitx5";
+      fcitx5.waylandFrontend = true;
       fcitx5.addons = with pkgs; [
         # Japanese input addon
         fcitx5-mozc
@@ -110,12 +108,6 @@
     jack.enable = true;
   };
 
-  # For screensharing
-  xdg.portal = {
-    enable = true;
-    extraPortals = with pkgs; [xdg-desktop-portal-gtk];
-  };
-
   # OpenRazer to configure a razer mouse
   hardware.openrazer = {
     enable = true;
@@ -170,6 +162,7 @@
 
   environment.systemPackages = [
     pkgs.libsForQt5.qt5.qtgraphicaleffects
+    pkgs.xdg-desktop-portal-gtk
   ];
 
   # Change shell to fish
@@ -209,7 +202,6 @@
   };
 
   # Required for EasyEffects (https://github.com/wwmm/easyeffects)
-  programs.dconf.enable = true;
 
   # Virt-manger
   programs.virt-manager = {
@@ -233,8 +225,6 @@
     enable = true;
     package = pkgs.mullvad-vpn;
   };
-
-  xdg.portal.config.common.default = "*";
 
   # Allows Hyprlock to unlock a device
   security.pam.services.hyprlock = {};
@@ -283,6 +273,41 @@
     6970
     6971
   ];
+
+  programs.hyprland = lib.optionalAttrs (userOptions.wm == "hyprland") {
+    enable = true;
+    withUWSM = true;
+    xwayland.enable = true;
+  };
+
+  # For screensharing
+  xdg.portal = {
+    enable = true;
+    xdgOpenUsePortal = true;
+    extraPortals = [pkgs.xdg-desktop-portal-gtk pkgs.xdg-desktop-portal-hyprland];
+    config.common.default = "*";
+    config.hyprland.default = "*";
+  };
+
+  specialisation = {
+    latte.configuration = {
+      home-manager.users."${userOptions.username}" = {
+        themingModule.theme = "latte";
+      };
+    };
+
+    frappe.configuration = {
+      home-manager.users."${userOptions.username}" = {
+        themingModule.theme = "frappe";
+      };
+    };
+
+    dracula.configuration = {
+      home-manager.users."${userOptions.username}" = {
+        themingModule.theme = "dracula";
+      };
+    };
+  };
 
   # Copy the NixOS configuration file and link it from the resulting system
   # (/run/current-system/configuration.nix). This is useful in case you
