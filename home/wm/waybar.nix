@@ -30,8 +30,8 @@ in {
           else ["custom/leftpad" "clock" "mpris" "custom/rightpad"];
         modules-right = ["custom/leftpad" "pulseaudio" "network" "temperature" "cpu"] ++ lib.optionals (userOptions.device == "laptop") ["custom/battery"] ++ lib.optionals (userOptions.nvidia) ["custom/nvidia-gpu"] ++ ["disk" "custom/rightpad"];
 
-        # Audio visualiser
-
+        # Audio visualiser module — add "cava" to a modules array to display in the bar.
+        # The standalone cava program (wm/cava.nix) runs independently of this.
         "cava" = {
           framerate = 30;
           autosens = 1;
@@ -143,8 +143,7 @@ in {
           format = "{percentage}%";
         };
 
-        # Firefox doesn't implement that much, is what it is :(
-        # Maybe look to using a TUI?
+        # MPRIS support is limited in Firefox; most media controls work via playerctl
         "mpris" = {
           # Delay feels really bad here
           interval = 0.5;

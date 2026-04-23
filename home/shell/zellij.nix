@@ -30,7 +30,6 @@ in {
 
       theme = "dracula_modified";
 
-      # Maybe swap after learning the binds?
       # default_layout = "compact";
 
       # Start in locked mode so zellij features are only on activation
@@ -40,7 +39,6 @@ in {
 
       copy_command = "wl-copy";
 
-      # Maybe it's a good setting, leave it on for now.
       # copy_on_select = false;
 
       ui.pane_frames.hide_session_name = true;

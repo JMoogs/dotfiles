@@ -1,25 +1,6 @@
 #!/usr/bin/env bash
 
-if [ ! -d "dracula" ]; then
-  mkdir dracula
-fi
-if [ ! -d "dracula/anime" ]; then
-  mkdir dracula/anime
-fi
-
-if [ ! -d "frappe" ]; then
-  mkdir frappe
-fi
-if [ ! -d "frappe/anime" ]; then
-  mkdir frappe/anime
-fi
-
-if [ ! -d "latte" ]; then
-  mkdir latte
-fi
-if [ ! -d "latte/anime" ]; then
-  mkdir latte/anime
-fi
+mkdir -p dracula/anime frappe/anime latte/anime
 
 echo "---------------------------------------"
 echo "Running LUT generator to generate a dracula LUT"

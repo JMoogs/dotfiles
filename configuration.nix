@@ -39,23 +39,6 @@
       ];
     };
 
-    # Other environment variables to set, related to i18n
-    extraLocaleSettings = {
-      # LANG = "en_GB.UTF-8";
-      # LC_MESSAGES = "en_GB.UTF-8";
-      # LC_IDENTIFICATION = "en_GB.UTF-8";
-      # LC_ALL = "en_GB.UTF-8";
-      # LC_CTYPE = "en_GB.UTF-8";
-      # LC_NUMERIC = "en_GB.UTF-8";
-      # LC_TIME = "en_GB.UTF-8";
-      # LC_COLLATE = "en_GB.UTF-8";
-      # LC_NAME = "en_GB.UTF-8";
-      # LC_MONETARY = "en_GB.UTF-8";
-      # LC_PAPER = "en_GB.UTF-8";
-      # LC_ADDRESS = "en_GB.UTF-8";
-      # LC_TELEPHONE = "en_GB.UTF-8";
-      # LC_MEASUREMENT = "en_GB.UTF-8";
-    };
   };
 
   # The keyboard mapping for virtual consoles
@@ -81,7 +64,7 @@
     openFirewall = true;
   };
 
-  # Enable x11 (note: I don't know if this is needed anymore, maybe for XWayland it is?)
+  # xserver.enable is required for XWayland, Wacom, and display manager support on NixOS
   services.xserver = {
     enable = true;
     displayManager.startx.enable = true;
@@ -182,9 +165,7 @@
     editconfig = "sudoedit /etc/nixos/configuration.nix";
     editflake = "sudoedit /etc/nixos/flake.nix";
 
-    # For rust programming - I commonly mistype this
-    # TODO: Maybe bind this in nix-shell?
-    carog = "cargo";
+    carog = "cargo"; # Typo alias
   };
 
   # Define a user account. A password must be set imperatively using `passwd`
@@ -201,9 +182,7 @@
     dedicatedServer.openFirewall = true; # Open ports in the firewall for Source Dedicated Server
   };
 
-  # Required for EasyEffects (https://github.com/wwmm/easyeffects)
-
-  # Virt-manger
+  # Virt-manager
   programs.virt-manager = {
     enable = true;
   };

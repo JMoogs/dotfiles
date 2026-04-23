@@ -86,33 +86,39 @@ in {
     if theme == "dracula"
     then {
       base = "rgb(282a36)";
+      baseAlpha = "282a36";
       text = "rgb(f8f8f2)";
       textAlpha = "f8f8f2";
       accent = "rgb(ffb86c)"; # Using dracula orange
       accentAlpha = "ffb86c";
       surface0 = "rgb(44475a)";
+      surface0Alpha = "44475a";
       red = "rgb(ff5555)";
       yellow = "rgb(f1fa8c)";
     }
     else if theme == "frappe"
     then {
       base = "rgb(303446)";
+      baseAlpha = "303446";
       text = "rgb(c6d0f5)";
       textAlpha = "c6d0f5";
       accent = "rgb(ca9ee6)"; # Mauve in catppuccin
       accentAlpha = "ca9ee6";
       surface0 = "rgb(414559)";
+      surface0Alpha = "414559";
       red = "rgb(e78284)";
       yellow = "rgb(e5c890)";
     }
     else if theme == "latte"
     then {
       base = "rgb(eff1f5)";
+      baseAlpha = "eff1f5";
       text = "rgb(4c4f69)";
       textAlpha = "4c4f69";
       accent = "rgb(8839ef)"; # Mauve in catppuccin
       accentAlpha = "8839ef";
       surface0 = "rgb(ccd0da)";
+      surface0Alpha = "ccd0da";
       red = "rgb(d20f39)";
       yellow = "rgb(df8e1d)";
     }

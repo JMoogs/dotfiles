@@ -1,6 +1,7 @@
 {
   lib,
   userOptions,
+  themes,
   ...
 }: {
   # See https://wiki.hyprland.org/Configuring/Monitors/
@@ -26,7 +27,6 @@
   # Execute at launch
   exec-once =
     [
-      # "dbus-update-activation-environment --systemd --all"
       "uwsm app -- waypaper --restore --random"
       "uwsm app -- waybar"
       # Browser
@@ -58,10 +58,10 @@
     gaps_in = 5;
     gaps_out = 20;
     border_size = 2;
-    "col.active_border" = "rgb(44475A) rgb(BD93F9) 90deg";
-    "col.inactive_border" = "rgba(44475AAA)";
-    "col.nogroup_border" = "rgba(282A36DD)";
-    "col.nogroup_border_active" = "rgb(BD93F9) rgb(44475A) 90deg";
+    "col.active_border" = "${themes.hyprTheme.surface0} ${themes.hyprTheme.accent} 90deg";
+    "col.inactive_border" = "rgba(${themes.hyprTheme.surface0Alpha}AA)";
+    "col.nogroup_border" = "rgba(${themes.hyprTheme.baseAlpha}DD)";
+    "col.nogroup_border_active" = "${themes.hyprTheme.accent} ${themes.hyprTheme.surface0} 90deg";
 
     layout = "dwindle";
 
@@ -121,9 +121,7 @@
   "$mainMod" = "SUPER";
 
   bind = [
-    # Terminal
     "$mainMod, RETURN, exec, kitty"
-    # Backup terminal
     "$mainMod SHIFT, RETURN, exec, alacritty"
     # The classic
     "ALT, F4, killactive, "
@@ -141,7 +139,7 @@
     "$mainMod SHIFT, F, fullscreen"
     # Lock screen
     "CONTROL ALT, L, exec, hyprlock"
-    # No idea tbh
+    # Pseudotile: tile the window but keep it at its declared preferred size
     "$mainMod, P, pseudo," # dwindle
     "$mainMod, W, togglesplit," # dwindle
     # Blue light filter

@@ -23,6 +23,7 @@ in {
     settings = (import ./hyprland.nix) {
       inherit lib;
       inherit userOptions;
+      inherit themes;
     };
     # package = inputs.hyprland.packages.${pkgs.stdenv.hostPlatform.system}.hyprland;
     xwayland.enable = true;

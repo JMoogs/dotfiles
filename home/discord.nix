@@ -12,7 +12,7 @@ in {
 
     config = {
       enableReactDevtools = false;
-      enabledThemes = []; # Look into this if it can be set declaratively
+      enabledThemes = []; # Local .theme.css files; URL-based themes use themeLinks instead
       themeLinks = themes.vencordTheme;
       transparent = true;
 

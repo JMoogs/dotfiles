@@ -138,22 +138,13 @@ in {
         };
       }
 
-      # Copilot
-      # FIXME: Currently buggy, see: https://github.com/orgs/community/discussions/11611
-      # Using extraconfig for now
-      # {
-      #   mode = "i";
-      #   key = "<C-;>";
-      #   action = "copilot#Accept(\"\\<CR>\")";
-      #   options = {
-      #     expr = true;
-      #     silent = true;
-      #     noremap = false;
-      #   };
-      # }
+        # Copilot accept is wired in extraConfigLua instead — nixvim's keymap
+      # expr handling doesn't pass noremap=false correctly for copilot#Accept.
+      # See: https://github.com/orgs/community/discussions/11611
     ];
 
-    # Literally no clue: https://nix-community.github.io/nixvim/NeovimOptions/autoGroups/index.html
+    # Pre-declare augroups so autoCmd entries can reference them by name.
+    # Without this, each autoCmd would create its own unnamed group.
     autoGroups = {
       kickstart-highlight-yank = {
         clear = true;
@@ -189,11 +180,8 @@ in {
     ];
 
     # Additional lua configs
-    extraConfigLuaPre = ''
-      -- require('neodev').setup {} -- For LSP (broken?)
-    '';
+    extraConfigLuaPre = "";
 
-    # Additional lua configs 2
     extraConfigLua = ''
           require('cmp').event:on('confirm_done', require('nvim-autopairs.completion.cmp').on_confirm_done()) -- For autopairs
 
@@ -201,7 +189,7 @@ in {
 
     '';
 
-    # Required for something idk
+    # Provides Nerd Font icons for neo-tree, telescope, and other UI plugins
     plugins.web-devicons.enable = true;
 
     # Autodetect tabstop and shiftwidth
@@ -361,7 +349,7 @@ in {
         };
       };
 
-      # Once again clueless
+      # Route vim.ui.select() calls through telescope's dropdown picker
       settings = {
         extensions.__raw = "{ ['ui-select'] = { require('telescope.themes').get_dropdown() } }";
       };
@@ -374,15 +362,12 @@ in {
       settings.highlight.enable = true;
     };
 
-    # Completions: https://github.com/JMartJonesy/kickstart.nixvim/blob/main/plugins/nvim-cmp.nix
-    # idk
+    # nvim-cmp completion stack: snippet engine + LSP source + path source
     plugins.luasnip.enable = true;
-    # idk
     plugins.cmp-nvim-lsp.enable = true;
-    # idk
     plugins.cmp-path.enable = true;
 
-    # idk (bug related)
+    # jsregexp is a hard dependency of LuaSnip for regex-based snippet transforms
     extraLuaPackages = ps: [ps.jsregexp];
 
     plugins.cmp = {
@@ -499,9 +484,9 @@ in {
       settings.notifyOnError = false;
       settings.format_on_save = ''
         function(bufnr)
-          -- Disable "format_on_save lsp_fallback" for lanuages that don't
+          -- Disable "format_on_save lsp_fallback" for languages that don't
           -- have a well standardized coding style. You can add additional
-          -- lanuages here or re-enable it for the disabled ones.
+          -- languages here or re-enable it for the disabled ones.
           local disable_filetypes = { c = true, cpp = true }
           return {
             timeout_ms = 500,
@@ -800,8 +785,6 @@ in {
     plugins.copilot-chat = {
       enable = true;
     };
-
-    # TODO: Add debugger if required
 
     # Auto pairing
     plugins.nvim-autopairs.enable = true;
